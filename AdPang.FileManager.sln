@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.2.32602.215
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.WebAPI", "AdPang.FileManager.WebAPI\AdPang.FileManager.WebAPI.csproj", "{BEFAC9BD-3880-4F2A-81A9-9841D3F58780}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BEFAC9BD-3880-4F2A-81A9-9841D3F58780}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BEFAC9BD-3880-4F2A-81A9-9841D3F58780}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BEFAC9BD-3880-4F2A-81A9-9841D3F58780}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BEFAC9BD-3880-4F2A-81A9-9841D3F58780}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {CD3EA5D5-7245-468B-83F9-E0C56C3E27A7}
+	EndGlobalSection
+EndGlobal
