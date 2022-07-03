@@ -1,0 +1,14 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\AdPang.FileManager.IRepositories\AdPang.FileManager.IRepositories.csproj" />
+    <ProjectReference Include="..\AdPang.FileManager.IServices\AdPang.FileManager.IServices.csproj" />
+  </ItemGroup>
+
+</Project>

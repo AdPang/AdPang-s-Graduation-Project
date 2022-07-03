@@ -3,15 +3,31 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.2.32602.215
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.WebAPI", "AdPang.FileManager.WebAPI\AdPang.FileManager.WebAPI.csproj", "{BEFAC9BD-3880-4F2A-81A9-9841D3F58780}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.WebAPI", "AdPang.FileManager.WebAPI\AdPang.FileManager.WebAPI.csproj", "{BEFAC9BD-3880-4F2A-81A9-9841D3F58780}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "WebAPI", "WebAPI", "{CA911BB0-A059-41C2-BF27-C4A3F1BC795F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{866C21B9-EDD5-43D7-8AF3-C1C060103A3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Application-WPF", "AdPang.FileManager.Application-WPF\AdPang.FileManager.Application-WPF.csproj", "{735D1101-0088-496C-898B-DBACC8F1E5CF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.Application-WPF", "AdPang.FileManager.Application-WPF\AdPang.FileManager.Application-WPF.csproj", "{735D1101-0088-496C-898B-DBACC8F1E5CF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Shared", "AdPang.FileManager.Shared\AdPang.FileManager.Shared.csproj", "{1C34FDEA-2F88-4108-AE45-C837C592095C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.Shared", "AdPang.FileManager.Shared\AdPang.FileManager.Shared.csproj", "{1C34FDEA-2F88-4108-AE45-C837C592095C}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.EntityFrameworkCore", "AdPang.FileManager.EntityFrameworkCore\AdPang.FileManager.EntityFrameworkCore.csproj", "{7D23245D-86D7-4455-B061-962C42C56254}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.Models", "AdPang.FileManager.Models\AdPang.FileManager.Models.csproj", "{ED3E5619-A3FA-4D26-A1C2-A36F2753B0C5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Common", "AdPang.FileManager.Common\AdPang.FileManager.Common.csproj", "{67ED874A-58D0-457B-B543-A2BC8390CC00}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Extensions", "AdPang.FileManager.Extensions\AdPang.FileManager.Extensions.csproj", "{98719C4B-0265-46A0-97B0-5652A22D178C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Repositories", "AdPang.FileManager.Repositories\AdPang.FileManager.Repositories.csproj", "{FDCD9C20-F13A-4268-B445-CF69367C7441}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.IRepositories", "AdPang.FileManager.IRepositories\AdPang.FileManager.IRepositories.csproj", "{BFA2F31B-5463-431E-AAB2-CF55AD4143E0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Services", "AdPang.FileManager.Services\AdPang.FileManager.Services.csproj", "{2C69C3E9-A4EC-435C-9381-0B335625B49C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.IServices", "AdPang.FileManager.IServices\AdPang.FileManager.IServices.csproj", "{3BB392E0-10C6-406C-955C-E82196D40A24}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -31,6 +47,38 @@ Global
 		{1C34FDEA-2F88-4108-AE45-C837C592095C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1C34FDEA-2F88-4108-AE45-C837C592095C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1C34FDEA-2F88-4108-AE45-C837C592095C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7D23245D-86D7-4455-B061-962C42C56254}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7D23245D-86D7-4455-B061-962C42C56254}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7D23245D-86D7-4455-B061-962C42C56254}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7D23245D-86D7-4455-B061-962C42C56254}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED3E5619-A3FA-4D26-A1C2-A36F2753B0C5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED3E5619-A3FA-4D26-A1C2-A36F2753B0C5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED3E5619-A3FA-4D26-A1C2-A36F2753B0C5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED3E5619-A3FA-4D26-A1C2-A36F2753B0C5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67ED874A-58D0-457B-B543-A2BC8390CC00}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67ED874A-58D0-457B-B543-A2BC8390CC00}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67ED874A-58D0-457B-B543-A2BC8390CC00}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67ED874A-58D0-457B-B543-A2BC8390CC00}.Release|Any CPU.Build.0 = Release|Any CPU
+		{98719C4B-0265-46A0-97B0-5652A22D178C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{98719C4B-0265-46A0-97B0-5652A22D178C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{98719C4B-0265-46A0-97B0-5652A22D178C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{98719C4B-0265-46A0-97B0-5652A22D178C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FDCD9C20-F13A-4268-B445-CF69367C7441}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FDCD9C20-F13A-4268-B445-CF69367C7441}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FDCD9C20-F13A-4268-B445-CF69367C7441}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FDCD9C20-F13A-4268-B445-CF69367C7441}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BFA2F31B-5463-431E-AAB2-CF55AD4143E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BFA2F31B-5463-431E-AAB2-CF55AD4143E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BFA2F31B-5463-431E-AAB2-CF55AD4143E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BFA2F31B-5463-431E-AAB2-CF55AD4143E0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C69C3E9-A4EC-435C-9381-0B335625B49C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C69C3E9-A4EC-435C-9381-0B335625B49C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C69C3E9-A4EC-435C-9381-0B335625B49C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C69C3E9-A4EC-435C-9381-0B335625B49C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3BB392E0-10C6-406C-955C-E82196D40A24}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3BB392E0-10C6-406C-955C-E82196D40A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3BB392E0-10C6-406C-955C-E82196D40A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3BB392E0-10C6-406C-955C-E82196D40A24}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -38,6 +86,14 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{BEFAC9BD-3880-4F2A-81A9-9841D3F58780} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
 		{735D1101-0088-496C-898B-DBACC8F1E5CF} = {866C21B9-EDD5-43D7-8AF3-C1C060103A3F}
+		{7D23245D-86D7-4455-B061-962C42C56254} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
+		{ED3E5619-A3FA-4D26-A1C2-A36F2753B0C5} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
+		{67ED874A-58D0-457B-B543-A2BC8390CC00} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
+		{98719C4B-0265-46A0-97B0-5652A22D178C} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
+		{FDCD9C20-F13A-4268-B445-CF69367C7441} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
+		{BFA2F31B-5463-431E-AAB2-CF55AD4143E0} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
+		{2C69C3E9-A4EC-435C-9381-0B335625B49C} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
+		{3BB392E0-10C6-406C-955C-E82196D40A24} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CD3EA5D5-7245-468B-83F9-E0C56C3E27A7}
