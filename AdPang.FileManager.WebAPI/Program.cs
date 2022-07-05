@@ -11,11 +11,13 @@ using Autofac.Extensions.DependencyInjection;
 using AdPang.FileManager.Common.Helper;
 
 var builder = WebApplication.CreateBuilder(args);
+#region autoFac
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>
 {
     builder.RegisterModule<AutofacModuleRegister>();
 });
+#endregion
 
 #region Json转换设置
 builder.Services.AddControllersWithViews()
@@ -33,6 +35,10 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //AppSetting注入
 builder.Services.AddSingleton(new Appsettings(builder.Configuration));
+
+builder.Services
+    .AddJwtAddAuthentication(builder.Configuration)
+    .AddSwaggerAuthoritarian();
 
 #region dbConfig
 
@@ -90,6 +96,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+// 先开启认证
+app.UseAuthentication();
+// 然后是授权中间件
 app.UseAuthorization();
 
 

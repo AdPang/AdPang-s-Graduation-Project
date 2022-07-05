@@ -1,0 +1,19 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AdPang.FileManager.Extensions</name>
+    </assembly>
+    <members>
+        <member name="M:AdPang.FileManager.Extensions.AOP.TECLogAOP.Intercept(Castle.DynamicProxy.IInvocation)">
+            <summary>
+            实例化IInterceptor唯一方法 
+            </summary>
+            <param name="invocation">包含被拦截方法的信息</param>
+        </member>
+        <member name="T:AdPang.FileManager.Extensions.ServiceExtensions.AutoMapperSetup">
+            <summary>
+            Automapper 启动服务
+            </summary>
+        </member>
+    </members>
+</doc>

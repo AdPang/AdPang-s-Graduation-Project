@@ -1,6 +1,7 @@
 ﻿using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
 using AdPang.FileManager.EntityFrameworkCore.IdentityDb;
 using AdPang.FileManager.Models.Identity;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
@@ -54,6 +55,32 @@ namespace AdPang.FileManager.WebAPI.Controllers
                 }
             }
             return Ok("AccountRegisterSuccess");
+        }
+
+        [HttpGet]
+        [Authorize(Roles = "Admin")]
+        public string TestGetStr()
+        {
+            return "TestGetStr";
+        }
+
+
+        [HttpGet]
+        [Authorize(Roles = "Ordinary")]
+        public string TestGetStr2()
+        {
+            return "TestGetStr2";
+        }
+
+        [HttpGet]
+        [Authorize]
+        public ActionResult GetClaims()
+        {
+            return Ok(User.Claims.Select(x => new
+            {
+                Key = x.Type,
+                Value = x.Value
+            }));
         }
 
         /*public async Task<ActionResult> Login(string username,string password)
