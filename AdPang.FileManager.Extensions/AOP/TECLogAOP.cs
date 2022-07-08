@@ -9,6 +9,9 @@ using Castle.DynamicProxy;
 
 namespace AdPang.FileManager.Extensions.AOP
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class TECLogAOP : IInterceptor
     {
         /// <summary>
@@ -42,7 +45,7 @@ namespace AdPang.FileManager.Extensions.AOP
                 Directory.CreateDirectory(path);
             }
 
-            string fileName = path + $@"\InterceptLog-{DateTime.Now.ToString("yyyyMMddHHmmss")}.log";
+            string fileName = path + $@"\InterceptLog-{DateTime.Now:yyyyMMddHHmmss}.log";
 
             StreamWriter sw = File.AppendText(fileName);
             sw.WriteLine(dataIntercept);

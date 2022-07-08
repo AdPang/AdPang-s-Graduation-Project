@@ -9,6 +9,8 @@ using Autofac;
 using Newtonsoft.Json.Serialization;
 using Autofac.Extensions.DependencyInjection;
 using AdPang.FileManager.Common.Helper;
+using AdPang.FileManager.WebAPI.Middleware;
+using AdPang.FileManager.WebAPI.Filter;
 
 var builder = WebApplication.CreateBuilder(args);
 #region autoFac
@@ -41,6 +43,12 @@ builder.Services.AddAutoMapperSetup();
 builder.Services
     .AddJwtAddAuthentication(builder.Configuration)
     .AddSwaggerAuthoritarian();
+
+builder.Services.AddMvc(options =>
+{
+    options.Filters.Add(typeof(ApiLogFilter));
+});
+
 
 #region dbConfig
 
@@ -97,6 +105,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+app.UseMiddleware<ExceptionMiddleware>();
 
 // 先开启认证
 app.UseAuthentication();

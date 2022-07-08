@@ -22,14 +22,14 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
         {
 
             var cacheType = new List<Type>();
-
-            if (Appsettings.App(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool ())
+            var b = Appsettings.App(new string[] { "AppSettings", "MemoryCachingAOP", "Enabled" }).ObjToBool();
+            if (b)
             {
                 builder.RegisterType<TECCacheAOP>();
                 cacheType.Add(typeof(TECCacheAOP));
             }
-
-            if (Appsettings.App(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool())
+            b = Appsettings.App(new string[] { "AppSettings", "LogAOP", "Enabled" }).ObjToBool();
+            if (b)
             {
                 builder.RegisterType<TECLogAOP>();
                 cacheType.Add(typeof(TECLogAOP));

@@ -4,6 +4,11 @@
         <name>AdPang.FileManager.Extensions</name>
     </assembly>
     <members>
+        <member name="T:AdPang.FileManager.Extensions.AOP.TECLogAOP">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="M:AdPang.FileManager.Extensions.AOP.TECLogAOP.Intercept(Castle.DynamicProxy.IInvocation)">
             <summary>
             实例化IInterceptor唯一方法 

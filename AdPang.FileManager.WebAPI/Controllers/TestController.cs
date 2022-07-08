@@ -83,6 +83,18 @@ namespace AdPang.FileManager.WebAPI.Controllers
             }));
         }
 
+        [HttpPut]
+        public async Task<ActionResult> TestPut()
+        {
+            throw new Exception("TestPut");
+        }
+
+
+        [HttpDelete]
+        public async Task<ActionResult> TestDelete()
+        {
+            return Ok("TestDelete");
+        }
         /*public async Task<ActionResult> Login(string username,string password)
         {
 
