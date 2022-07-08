@@ -10,6 +10,17 @@
             </summary>
             <param name="invocation">包含被拦截方法的信息</param>
         </member>
+        <member name="T:AdPang.FileManager.Extensions.AutoMapper.AutoMapperConfig">
+            <summary>
+            
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.Extensions.AutoMapper.AutoMapperConfig.RegisterMappings">
+            <summary>
+            
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:AdPang.FileManager.Extensions.ServiceExtensions.AutoMapperSetup">
             <summary>
             Automapper 启动服务

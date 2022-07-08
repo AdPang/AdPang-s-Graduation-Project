@@ -20,7 +20,6 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
                 // 仔细看这个单词 上图中错误的提示里的那个
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-                
 
             }).AddJwtBearer(o => {
 
@@ -32,7 +31,7 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
 
                 o.TokenValidationParameters = new TokenValidationParameters
                 {
-                    /*ValidateIssuerSigningKey = true,
+                    ValidateIssuerSigningKey = true,
                     IssuerSigningKey = signingKey,
                     ValidateIssuer = true,
                     ValidIssuer = audienceConfig["Issuer"],//发行人
@@ -40,13 +39,14 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
                     ValidAudience = audienceConfig["Audience"],//订阅人
                     ValidateLifetime = true,
                     ClockSkew = TimeSpan.Zero,//这个是缓冲过期时间，也就是说，即使我们配置了过期时间，这里也要考虑进去，过期时间+缓冲，默认好像是7分钟，你可以直接设置为0
-                    RequireExpirationTime = true,*/
-
-                    ValidateIssuer = false,
+                    RequireExpirationTime = true,
+                    /*
+                     ValidateIssuer = false,
                     ValidateAudience = false,
                     ValidateLifetime = true,
                     ValidateIssuerSigningKey = true,
                     IssuerSigningKey = signingKey
+                    */
                 };
             });
             #endregion

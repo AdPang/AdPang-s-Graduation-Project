@@ -35,6 +35,8 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 //AppSetting×¢Èë
 builder.Services.AddSingleton(new Appsettings(builder.Configuration));
+//AutoMapper
+builder.Services.AddAutoMapperSetup();
 
 builder.Services
     .AddJwtAddAuthentication(builder.Configuration)
