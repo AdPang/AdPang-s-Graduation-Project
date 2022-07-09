@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AdPang.FileManager.Models.Identity
+namespace AdPang.FileManager.Models.IdentityEntities
 {
     public class Role : IdentityRole<Guid>
     {

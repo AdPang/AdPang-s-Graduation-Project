@@ -1,4 +1,4 @@
-﻿using AdPang.FileManager.Models.FileManager;
+﻿using AdPang.FileManager.Models.FileManagerEntities;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -17,8 +17,6 @@ namespace AdPang.FileManager.EntityFrameworkCore.FileManagerDb
         }
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            var testTableCfg = modelBuilder.Entity<TestTable>();
-            testTableCfg.HasOne(x => x.User).WithOne(x=>x.TestTable).HasForeignKey<TestTable>(x=>x.UserId);
         }
     }
 }

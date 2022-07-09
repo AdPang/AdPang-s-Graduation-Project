@@ -1,4 +1,5 @@
-﻿using AdPang.FileManager.Models.Identity;
+﻿using AdPang.FileManager.Models.IdentityEntities;
+using AdPang.FileManager.Models.LogEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 

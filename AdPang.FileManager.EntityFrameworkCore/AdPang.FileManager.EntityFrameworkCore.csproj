@@ -19,4 +19,8 @@
     <ProjectReference Include="..\AdPang.FileManager.Models\AdPang.FileManager.Models.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="MigrationDb\LogDbMigration\" />
+  </ItemGroup>
+
 </Project>

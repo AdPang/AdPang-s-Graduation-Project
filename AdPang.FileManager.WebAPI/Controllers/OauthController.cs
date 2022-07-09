@@ -1,11 +1,11 @@
 ﻿using AdPang.FileManager.Common.Helper;
-using AdPang.FileManager.Models.Identity;
 using AdPang.FileManager.Shared.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using AutoMapper;
+using AdPang.FileManager.Models.IdentityEntities;
 
 namespace AdPang.FileManager.WebAPI.Controllers
 {

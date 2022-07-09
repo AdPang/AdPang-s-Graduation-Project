@@ -51,28 +51,22 @@ namespace AdPang.FileManager.Common.Helper
         /// </summary>
         /// <param name="jwtStr"></param>
         /// <returns></returns>
-        private static TokenModelJwt SerializeJwt(string jwtStr)
+        public static string SerializeJwt(string authorStr)
         {
             var jwtHandler = new JwtSecurityTokenHandler();
-            var tokenModelJwt = new TokenModelJwt();
-
+            //var tokenModelJwt = new TokenModelJwt();
+            string userIdStr = string.Empty;
             // token校验
-            if (!string.IsNullOrEmpty(jwtStr) && jwtHandler.CanReadToken(jwtStr))
+            if (!string.IsNullOrEmpty(authorStr) && jwtHandler.CanReadToken(authorStr))
             {
 
-                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(jwtStr);
+                JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(authorStr);
+                userIdStr = jwtToken.Payload[ClaimTypes.NameIdentifier] as string;
 
-
-                jwtToken.Payload.TryGetValue("Roles", out object role);
-                jwtToken.Payload.TryGetValue("UserId", out object userId);
-
-                tokenModelJwt = new TokenModelJwt
-                {
-                    Uid = new Guid(userId.ToString()),
-                    Role = role == null ? "" : role.ToString()
-                };
+                
+                var testRoleStr = jwtToken.Payload[ClaimTypes.Role] as string;
             }
-            return tokenModelJwt;
+            return userIdStr;
         }
 
         /// <summary>
@@ -80,14 +74,14 @@ namespace AdPang.FileManager.Common.Helper
         /// </summary>
         /// <param name="httpContext"></param>
         /// <returns></returns>
-        private static TokenModelJwt ParsingJwtToken(HttpContext httpContext)
-        {
-            if (!httpContext.Request.Headers.ContainsKey("Authorization"))
-                return null;
-            var tokenHeader = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
-            TokenModelJwt tm = SerializeJwt(tokenHeader);
-            return tm;
-        }
+        //private static TokenModelJwt ParsingJwtToken(HttpContext httpContext)
+        //{
+        //    if (!httpContext.Request.Headers.ContainsKey("Authorization"))
+        //        return null;
+        //    var tokenHeader = httpContext.Request.Headers["Authorization"].ToString().Replace("Bearer ", "");
+        //    TokenModelJwt tm = SerializeJwt(tokenHeader);
+        //    return tm;
+        //}
 
     }
 }
