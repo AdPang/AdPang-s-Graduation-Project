@@ -39,12 +39,13 @@ namespace AdPang.FileManager.WebAPI.Middleware
         {
             context.Response.ContentType = "application/json";
 
-            
+            //获取请求路径
             string url = context.Request.Host + context.Request.Path + context.Request.QueryString;
+            //获取Ip
             string ipAddress = context.Connection.RemoteIpAddress is not null ?
                 context.Connection.RemoteIpAddress.ToString() : "";
 
-            
+            //将异常信息Exception插入到数据库
             logDbContext.ExceptionLog.Add(new ExceptionLog
             {
                 ExceptionMessage = e.Message,
@@ -52,21 +53,22 @@ namespace AdPang.FileManager.WebAPI.Middleware
                 RequsetUrl = url,
                 RequestIPAddress = ipAddress,
                 StackTrace = e.StackTrace,
+                ExceptionType = e.GetType().FullName,
             });
-            var a = context.TraceIdentifier;
+
             await logDbContext.SaveChangesAsync();
-
+            //打印日志
             logger.LogError(e, context.Request.Path);
-
+            //返回错误信息
             var result = new ApiResponse()
             {
                 Status = false,
-                Message = e.Message,
-                Result = 500
+                Message = e.Message
             };
             var jsonresult = JsonConvert.SerializeObject(result);
+            //返回对象
             await context.Response.WriteAsync(jsonresult);
-
+            //打印日志堆栈跟踪信息
             logger.LogError(e.StackTrace);
         }
     }

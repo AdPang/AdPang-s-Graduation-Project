@@ -10,7 +10,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.FileManagerDb
 {
     public class FileManagerDbContext : DbContext
     {
-        public virtual DbSet<TestTable> TestTable { get; set; }
+        public virtual DbSet<FileInfoTable> TestTable { get; set; }
         public FileManagerDbContext(DbContextOptions<FileManagerDbContext> options) : base(options)
         {
 

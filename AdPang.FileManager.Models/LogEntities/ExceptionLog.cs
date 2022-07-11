@@ -12,7 +12,7 @@ namespace AdPang.FileManager.Models.LogEntities
         public Guid? OperaByUserId { get; set; }
         public string? RequsetUrl { get; set; }
         public string? RequestIPAddress { get; set; }
-        public string? RequestParameter { get; set; }
+        public string? ExceptionType { get; set; }
         public string? ExceptionMessage { get; set; }
         public string? StackTrace { get; set; }
     }

@@ -86,7 +86,7 @@ namespace AdPang.FileManager.WebAPI.Controllers
         [HttpPut]
         public async Task<ActionResult> TestPut()
         {
-            throw new Exception("TestPut");
+            throw new ArgumentException("TestPut");
         }
 
 

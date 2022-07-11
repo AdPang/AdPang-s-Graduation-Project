@@ -4,6 +4,7 @@ using AdPang.FileManager.EntityFrameworkCore.LogDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdPang.FileManager.EntityFrameworkCore.MigrationDb.LogDbMigration
 {
     [DbContext(typeof(LogDbContext))]
-    partial class LogDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220709120445_ExceptionLogTable_AlterColum_ExceptionType_RemoveRequesetParameterColum")]
+    partial class ExceptionLogTable_AlterColum_ExceptionType_RemoveRequesetParameterColum
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
