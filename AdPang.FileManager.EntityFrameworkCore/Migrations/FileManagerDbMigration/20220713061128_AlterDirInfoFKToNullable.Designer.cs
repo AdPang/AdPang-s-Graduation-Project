@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigration
 {
     [DbContext(typeof(FileManagerDbContext))]
-    [Migration("20220712091813_InitFileManagerDb")]
-    partial class InitFileManagerDb
+    [Migration("20220713061128_AlterDirInfoFKToNullable")]
+    partial class AlterDirInfoFKToNullable
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -23,6 +23,106 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.CloudFileInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<long>("FileLength")
+                        .HasColumnType("bigint");
+
+                    b.Property<string>("FileMD5Str")
+                        .IsRequired()
+                        .HasMaxLength(150)
+                        .HasColumnType("nvarchar(150)")
+                        .HasColumnName("char");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FilePath")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("FileType")
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("CloudFileInfos");
+                });
+
+            modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid?>("ParentDirInfoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ParentDirInfoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("DirInfos");
+                });
+
+            modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.UserPrivateFileInfo", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<DateTime>("CreatTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("CurrentDirectoryInfoId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("FileName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<DateTime>("UpdateTime")
+                        .HasColumnType("datetime2");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CurrentDirectoryInfoId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserPrivateFileInfos");
+                });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.LocalPrivate.PrivateDiskInfo", b =>
                 {
@@ -36,6 +136,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.Property<string>("DiskName")
                         .IsRequired()
                         .HasMaxLength(150)
+                        .IsUnicode(true)
                         .HasColumnType("nvarchar(150)");
 
                     b.Property<string>("DiskSN")
@@ -197,6 +298,21 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.ToTable("AspNetUsers", (string)null);
                 });
 
+            modelBuilder.Entity("CloudFileInfoUser", b =>
+                {
+                    b.Property<Guid>("CloudFileInfosId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UsersId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("CloudFileInfosId", "UsersId");
+
+                    b.HasIndex("UsersId");
+
+                    b.ToTable("UserCloudSavedFileRealition", (string)null);
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
                 {
                     b.Property<int>("Id")
@@ -300,6 +416,54 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.CloudFileInfo", b =>
+                {
+                    b.HasOne("AdPang.FileManager.Models.IdentityEntities.User", "UploadBy")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("UploadBy");
+                });
+
+            modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo", b =>
+                {
+                    b.HasOne("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo", "ParentDirInfo")
+                        .WithMany("ChildrenDirInfo")
+                        .HasForeignKey("ParentDirInfoId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("AdPang.FileManager.Models.IdentityEntities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("ParentDirInfo");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.UserPrivateFileInfo", b =>
+                {
+                    b.HasOne("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo", "CurrentDirectoryInfo")
+                        .WithMany("ChildrenFileInfo")
+                        .HasForeignKey("CurrentDirectoryInfoId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.HasOne("AdPang.FileManager.Models.IdentityEntities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Restrict)
+                        .IsRequired();
+
+                    b.Navigation("CurrentDirectoryInfo");
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.LocalPrivate.PrivateDiskInfo", b =>
                 {
                     b.HasOne("AdPang.FileManager.Models.IdentityEntities.User", "User")
@@ -328,6 +492,21 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.Navigation("DiskInfo");
 
                     b.Navigation("User");
+                });
+
+            modelBuilder.Entity("CloudFileInfoUser", b =>
+                {
+                    b.HasOne("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.CloudFileInfo", null)
+                        .WithMany()
+                        .HasForeignKey("CloudFileInfosId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AdPang.FileManager.Models.IdentityEntities.User", null)
+                        .WithMany()
+                        .HasForeignKey("UsersId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
@@ -379,6 +558,13 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo", b =>
+                {
+                    b.Navigation("ChildrenDirInfo");
+
+                    b.Navigation("ChildrenFileInfo");
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.LocalPrivate.PrivateDiskInfo", b =>

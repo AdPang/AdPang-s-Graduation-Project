@@ -74,7 +74,6 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                         .HasColumnType("datetime2");
 
                     b.Property<Guid?>("ParentDirInfoId")
-                        .IsRequired()
                         .HasColumnType("uniqueidentifier");
 
                     b.Property<DateTime>("UpdateTime")
@@ -431,8 +430,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.HasOne("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo", "ParentDirInfo")
                         .WithMany("ChildrenDirInfo")
                         .HasForeignKey("ParentDirInfoId")
-                        .OnDelete(DeleteBehavior.Restrict)
-                        .IsRequired();
+                        .OnDelete(DeleteBehavior.NoAction);
 
                     b.HasOne("AdPang.FileManager.Models.IdentityEntities.User", "User")
                         .WithMany()

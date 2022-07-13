@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigration
 {
     [DbContext(typeof(FileManagerDbContext))]
-    [Migration("20220713054158_AddTables")]
-    partial class AddTables
+    [Migration("20220713055612_InitMainDb")]
+    partial class InitMainDb
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
