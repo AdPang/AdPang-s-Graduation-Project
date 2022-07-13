@@ -1,4 +1,5 @@
 ﻿using AdPang.FileManager.Models.FileManagerEntities;
+using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Models.LogEntities;
 using Microsoft.AspNetCore.Identity;
 using System;
@@ -11,5 +12,6 @@ namespace AdPang.FileManager.Models.IdentityEntities
 {
     public class User : IdentityUser<Guid>
     {
+        public virtual ICollection<CloudFileInfo> CloudFileInfos { get; set; } 
     }
 }

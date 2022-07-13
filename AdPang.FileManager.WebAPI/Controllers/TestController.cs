@@ -1,5 +1,4 @@
 ﻿using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
-using AdPang.FileManager.EntityFrameworkCore.IdentityDb;
 using AdPang.FileManager.Models.IdentityEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;

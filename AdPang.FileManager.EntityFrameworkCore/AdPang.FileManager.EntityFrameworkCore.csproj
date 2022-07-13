@@ -20,7 +20,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Folder Include="MigrationDb\LogDbMigration\" />
+    <Folder Include="Migrations\LogDbMigration\" />
+    <Folder Include="Migrations\FileManagerDbMigration\" />
   </ItemGroup>
 
 </Project>

@@ -1,22 +1,31 @@
-﻿using AdPang.FileManager.Models.FileManagerEntities;
+﻿using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
+using AdPang.FileManager.Models.FileManagerEntities.LocalPrivate;
+using AdPang.FileManager.Models.IdentityEntities;
+using AdPang.FileManager.Models.LogEntities;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.Reflection;
 
 namespace AdPang.FileManager.EntityFrameworkCore.FileManagerDb
 {
-    public class FileManagerDbContext : DbContext
+    public class FileManagerDbContext : IdentityDbContext<User, Role, Guid>
     {
-        public virtual DbSet<FileInfoTable> TestTable { get; set; }
-        public FileManagerDbContext(DbContextOptions<FileManagerDbContext> options) : base(options)
+        public FileManagerDbContext(DbContextOptions<FileManagerDbContext> options)
+            : base(options)
         {
-
         }
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        public virtual DbSet<PrivateFileInfo> PrivateFileInfos { get; set; }
+        public virtual DbSet<PrivateDiskInfo> PrivateDiskInfos { get; set; }
+        public virtual DbSet<CloudFileInfo> CloudFileInfos { get; set; }
+        public virtual DbSet<DirInfo> DirInfos { get; set; }
+        public virtual DbSet<UserPrivateFileInfo> UserPrivateFileInfos { get; set; }
+
+
+
+        protected override void OnModelCreating(ModelBuilder builder)
         {
+            base.OnModelCreating(builder);
+            builder.ApplyConfigurationsFromAssembly(this.GetType().Assembly);
         }
     }
 }

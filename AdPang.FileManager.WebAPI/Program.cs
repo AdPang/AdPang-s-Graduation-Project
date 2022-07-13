@@ -1,5 +1,4 @@
 using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
-using AdPang.FileManager.EntityFrameworkCore.IdentityDb;
 using AdPang.FileManager.Extensions.ServiceExtensions;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -62,7 +61,7 @@ builder.Services
 
 var connStr = builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
 #region identityConfig
-builder.Services.AddDbContext<IdentityDbContext>(options =>
+builder.Services.AddDbContext<FileManagerDbContext>(options =>
 {
     options.UseSqlServer(connStr, oo => oo.MigrationsAssembly("AdPang.FileManager.EntityFrameworkCore"));
 });
@@ -87,7 +86,7 @@ builder.Services.AddIdentityCore<User>(options =>
 var idBuilder = new IdentityBuilder(typeof(User), typeof(Role), builder.Services);
 
 idBuilder
-    .AddEntityFrameworkStores<IdentityDbContext>()
+    .AddEntityFrameworkStores<FileManagerDbContext>()
     .AddUserManager<UserManager<User>>()
     .AddRoleManager<RoleManager<Role>>()
     ;
@@ -95,9 +94,9 @@ idBuilder
 
 
 
-builder.Services.AddDbContext<FileManagerDbContext>(o =>
-    o.UseLazyLoadingProxies().UseSqlServer(connStr,
-        oo => oo.MigrationsAssembly("AdPang.FileManager.EntityFrameworkCore")));
+//builder.Services.AddDbContext<FileManagerDbContext>(o =>
+//    o.UseLazyLoadingProxies().UseSqlServer(connStr,
+//        oo => oo.MigrationsAssembly("AdPang.FileManager.EntityFrameworkCore")));
 
 #region LogDb
 var logDbConnStr = builder.Configuration.GetSection("ConnectionStrings:LogDbConnStr").Value;

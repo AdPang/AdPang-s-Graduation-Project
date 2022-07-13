@@ -3,9 +3,9 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
-namespace AdPang.FileManager.EntityFrameworkCore.MigrationDb.Identity
+namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigration
 {
-    public partial class InitialIdentityServerConfigurationDbMigration : Migration
+    public partial class InitFileManagerDb : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -154,6 +154,60 @@ namespace AdPang.FileManager.EntityFrameworkCore.MigrationDb.Identity
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "PrivateDiskInfos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DiskName = table.Column<string>(type: "nvarchar(150)", maxLength: 150, nullable: false),
+                    @char = table.Column<string>(name: "char", type: "nvarchar(64)", maxLength: 64, nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    CreatTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrivateDiskInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PrivateDiskInfos_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "PrivateFileInfos",
+                columns: table => new
+                {
+                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    UserId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    DiskId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
+                    FileName = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileType = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    FileLength = table.Column<long>(type: "bigint", nullable: false),
+                    FilePath = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    FileMD5Str = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: false),
+                    CreatTime = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    UpdateTime = table.Column<DateTime>(type: "datetime2", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_PrivateFileInfos", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_PrivateFileInfos_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_PrivateFileInfos_PrivateDiskInfos_DiskId",
+                        column: x => x.DiskId,
+                        principalTable: "PrivateDiskInfos",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
                 table: "AspNetRoleClaims",
@@ -192,6 +246,21 @@ namespace AdPang.FileManager.EntityFrameworkCore.MigrationDb.Identity
                 column: "NormalizedUserName",
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrivateDiskInfos_UserId",
+                table: "PrivateDiskInfos",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrivateFileInfos_DiskId",
+                table: "PrivateFileInfos",
+                column: "DiskId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_PrivateFileInfos_UserId",
+                table: "PrivateFileInfos",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
@@ -212,7 +281,13 @@ namespace AdPang.FileManager.EntityFrameworkCore.MigrationDb.Identity
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "PrivateFileInfos");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
+
+            migrationBuilder.DropTable(
+                name: "PrivateDiskInfos");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

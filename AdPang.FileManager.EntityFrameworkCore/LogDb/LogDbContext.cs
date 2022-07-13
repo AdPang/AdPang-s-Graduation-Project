@@ -17,10 +17,5 @@ namespace AdPang.FileManager.EntityFrameworkCore.LogDb
         {
 
         }
-        //protected override void OnModelCreating(ModelBuilder modelBuilder)
-        //{
-        //    var testTableCfg = modelBuilder.Entity<ActionLog>();
-            
-        //}
     }
 }

@@ -24,5 +24,9 @@ namespace AdPang.FileManager.Models.FileManagerEntities.Base
         /// 文件路径
         /// </summary>
         public string FilePath { get; set; }
+        /// <summary>
+        /// 文件MD5值
+        /// </summary>
+        public string FileMD5Str { get; set; }
     }
 }

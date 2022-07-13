@@ -1,4 +1,5 @@
 ﻿using AdPang.FileManager.Models.FileManagerEntities.Base;
+using AdPang.FileManager.Models.IdentityEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,8 +27,18 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
         /// </summary>
         public string FilePath { get; set; } = string.Empty;
         /// <summary>
-        /// 上传用户Id
+        /// 文件MD5值
         /// </summary>
-        public Guid UpdateBy { get; set; }
+        public string FileMD5Str { get; set; }
+        /// <summary>
+        /// 用户外键Id
+        /// </summary>
+        public Guid UserId { get; set; }
+        /// <summary>
+        /// 上传用户
+        /// </summary>
+        public virtual User UploadBy { get; set; }
+
+        public virtual ICollection<User> Users { get; set; }
     }
 }

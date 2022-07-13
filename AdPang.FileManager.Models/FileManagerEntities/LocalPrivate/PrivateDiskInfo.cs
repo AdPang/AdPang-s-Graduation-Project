@@ -1,4 +1,5 @@
 ﻿using AdPang.FileManager.Models.FileManagerEntities.Base;
+using AdPang.FileManager.Models.IdentityEntities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,8 +26,12 @@ namespace AdPang.FileManager.Models.FileManagerEntities.LocalPrivate
         /// </summary>
         public Guid UserId { get; set; }
         /// <summary>
+        /// 所属用户
+        /// </summary>
+        public virtual User User { get; set; }
+        /// <summary>
         /// 私有文件集合
         /// </summary>
-        public virtual ICollection<PrivateFileInfo> PrivateFiles { get; set; } = new List<PrivateFileInfo>();
+        public virtual ICollection<PrivateFileInfo> PrivateFiles { get; set; }
     }
 }
