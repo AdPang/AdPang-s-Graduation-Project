@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AdPang.FileManager.Models\AdPang.FileManager.Models.csproj" />
+  </ItemGroup>
+
 </Project>

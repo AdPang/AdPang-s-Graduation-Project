@@ -38,6 +38,8 @@ builder.Services.AddEndpointsApiExplorer();
 //AppSetting×¢Èë
 builder.Services.AddSingleton(new Appsettings(builder.Configuration));
 builder.Services.AddScoped(typeof(RequestInfoModel));
+builder.Services.AddScoped(typeof(VerifyCodeHelper));
+builder.Services.AddScoped(typeof(RedisHelper));
 
 //AutoMapper
 builder.Services.AddAutoMapperSetup();

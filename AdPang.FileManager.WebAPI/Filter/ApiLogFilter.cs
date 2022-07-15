@@ -35,9 +35,16 @@ namespace AdPang.FileManager.WebAPI.Filter
             var result = resultContext.Result;
             if (result == null) return;
 
-            var resultDynamic = result.GetType().Name == "EmptyResult" ? new { Value = "EmptyResult" } : resultContext.Result as dynamic;
-
-            string response = JsonConvert.SerializeObject(resultDynamic.Value);
+            //var resultDynamic = result.GetType().Name == "EmptyResult" ? new { Value = "EmptyResult" } : resultContext.Result as dynamic;
+            string response = string.Empty;
+            if (result.GetType().Name == "EmptyResult")
+            {
+                response = "EmptyResult";
+            }
+            else
+            {
+                response = JsonConvert.SerializeObject(resultContext.Result);
+            }
             string ipAddress = context.HttpContext.Connection.RemoteIpAddress is not null ?
                 context.HttpContext.Connection.RemoteIpAddress.ToString(): "";
             logDbContext.ActionLog.Add(new ActionLog

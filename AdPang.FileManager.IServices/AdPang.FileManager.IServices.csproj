@@ -6,4 +6,8 @@
     <Nullable>enable</Nullable>
   </PropertyGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\AdPang.FileManager.IRepositories\AdPang.FileManager.IRepositories.csproj" />
+  </ItemGroup>
+
 </Project>
