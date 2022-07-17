@@ -12,6 +12,9 @@ using AdPang.FileManager.WebAPI.Filter;
 using AdPang.FileManager.Common.RequestInfoModel;
 using AdPang.FileManager.Models.IdentityEntities;
 using AdPang.FileManager.EntityFrameworkCore.LogDb;
+using AdPang.FileManager.Common.Helper.Mail;
+using AdPang.FileManager.Common.Helper.VerifyCode;
+using AdPang.FileManager.Common.Helper.Redis;
 
 var builder = WebApplication.CreateBuilder(args);
 #region autoFac
@@ -37,8 +40,11 @@ builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 //AppSetting×¢Èë
 builder.Services.AddSingleton(new Appsettings(builder.Configuration));
+builder.Services.AddSingleton(new MailSendHelper(builder.Configuration));
 builder.Services.AddScoped(typeof(RequestInfoModel));
-builder.Services.AddScoped(typeof(VerifyCodeHelper));
+builder.Services.AddScoped(typeof(ImgVerifyCodeHelper));
+builder.Services.AddScoped(typeof(MailVerifyCodeHelper));
+
 builder.Services.AddScoped(typeof(RedisHelper));
 
 //AutoMapper

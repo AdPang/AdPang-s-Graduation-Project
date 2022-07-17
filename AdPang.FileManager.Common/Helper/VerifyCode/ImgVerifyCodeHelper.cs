@@ -3,60 +3,65 @@ using System.Security.Cryptography;
 using System.DrawingCore;
 using System.DrawingCore.Drawing2D;
 using System.DrawingCore.Imaging;
+using AdPang.FileManager.Common.Helper.Redis;
 
-namespace AdPang.FileManager.Common.Helper
+namespace AdPang.FileManager.Common.Helper.VerifyCode
 {
-    public class VerifyCodeHelper 
+    public class ImgVerifyCodeHelper
     {
         private readonly RedisHelper redis;
 
-        public VerifyCodeHelper(RedisHelper redis)
+        public ImgVerifyCodeHelper(RedisHelper redis)
         {
             this.redis = redis;
         }
 
-        public string Creat4VerfiyCode(Guid seed)
+        public string Creat4ImgVerfiyCode(Guid seed)
         {
-            var md5 = EncryptMD5(seed.ToString());
-            try
+            string result = VerifyCodeHelper.CreatVeriyCode(4, seed);
+            var recored = GetVerifyCodeByRedisDb(seed);
+            if (recored != null)
             {
-                int index = (int)(md5.Sum(x => x) % 16 + md5.Average(x => x)) % 16;
-                char c = md5[index];
-                Random random = new Random(c);
-                string result = c.ToString();
-                for (int i = 0; i < 3; i++)
-                {
-                    result += md5[random.Next() % 16].ToString();
-                }
-                var recode = redis.GetStringKey<VerfiyRecord>(seed.ToString());
-                if (recode != null) throw new Exception("生成验证码失败");
-                var isSaved = redis.SetStringKey<VerfiyRecord>(seed.ToString(), new VerfiyRecord
-                {
-                    Result = result,
-                    Seed = seed,
-                }, 5);
-                if (!isSaved) throw new Exception("生成验证码失败");
+                if(recored.IsUsed) throw new Exception("创建验证码错误！请重新获取");
                 return result;
             }
-            catch
+            if (SaveVerifyCodeToRedisDb(seed, result))
+                return result;
+            else throw new Exception("发生错误！");
+        }
+        public string Creat6ImgVerfiyCode(Guid seed)
+        {
+            var result = VerifyCodeHelper.CreatVeriyCode(6, seed);
+            var record = GetVerifyCodeByRedisDb(seed);
+            if(record != null)
             {
-                throw new Exception("生成验证码失败");
+                if (record.IsUsed) throw new Exception("创建验证码错误！请重新获取");
+                return result;
             }
+            if(SaveVerifyCodeToRedisDb(seed, result))
+                return result;
+            else throw new Exception("发生错误！");
         }
 
 
 
-        public bool Verify4Capt(Guid seed, string verifyCode)
+        /// <summary>
+        /// 验证四位图形验证码
+        /// </summary>
+        /// <param name="seed"></param>
+        /// <param name="verifyCode"></param>
+        /// <returns></returns>
+        /// <exception cref="ArgumentException"></exception>
+        public bool VerifyImgCode(Guid seed, string verifyCode)
         {
             if (verifyCode == null) throw new ArgumentException("parameter {verificationCode} is null!");
-            //var md5 = EncryptMD5(seed.ToString());
             try
             {
-                var recode = redis.GetStringKey<VerfiyRecord>(seed.ToString());
+                var recode = redis.GetStringKey<ImgVerfiyRecord>(seed.ToString());
                 if (recode.IsUsed) throw new Exception();
                 if (verifyCode.ToUpper() == recode.Result.ToUpper())
                 {
-                    var isSaved = redis.SetStringKey<VerfiyRecord>(seed.ToString(), new VerfiyRecord
+                    var isSaved = redis.SetStringKey(seed.ToString(), new ImgVerfiyRecord
                     {
                         Result = verifyCode,
                         Seed = seed,
@@ -77,16 +82,38 @@ namespace AdPang.FileManager.Common.Helper
         }
 
 
+        
 
 
-        private string EncryptMD5(string s)
+        /// <summary>
+        /// 获取验证码记录
+        /// </summary>
+        /// <param name="seed"></param>
+        /// <returns></returns>
+
+        private ImgVerfiyRecord GetVerifyCodeByRedisDb(Guid seed)
         {
-            MD5CryptoServiceProvider md5 = new MD5CryptoServiceProvider();
-            return BitConverter.ToString(md5.ComputeHash(Encoding.Default.GetBytes(s))).Replace("-", "");
+            return redis.GetStringKey<ImgVerfiyRecord>(seed.ToString());
         }
+        /// <summary>
+        /// 保存验证码到redis
+        /// </summary>
+        /// <returns></returns>
+        private bool SaveVerifyCodeToRedisDb(Guid seed,string result)
+        {
+            var isSaved = redis.SetStringKey(seed.ToString(), new ImgVerfiyRecord
+            {
+                Result = result,
+                Seed = seed
+            }, 5);
+            return isSaved;
+        }
+
+
+        
         public static byte[] CreateByteByImgVerifyCode(string verifyCode, int width, int height)
         {
-            Font font = new Font("Arial", 14, (FontStyle.Bold | FontStyle.Italic));
+            Font font = new Font("Arial", 14, FontStyle.Bold | FontStyle.Italic);
             Brush brush;
             Bitmap bitmap = new Bitmap(width, height);
             Graphics g = Graphics.FromImage(bitmap);
@@ -129,10 +156,12 @@ namespace AdPang.FileManager.Common.Helper
 
     }
 
-    public class VerfiyRecord
+    public class ImgVerfiyRecord
     {
         public string Result { get; set; }
         public Guid Seed { get; set; }
         public bool IsUsed { get; set; }
     }
+
+    
 }

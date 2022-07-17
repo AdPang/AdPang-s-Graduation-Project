@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Configuration;
 
-namespace AdPang.FileManager.Common.Helper
+namespace AdPang.FileManager.Common.Helper.Redis
 {
     public class RedisHelper
     {
