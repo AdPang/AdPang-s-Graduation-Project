@@ -4,21 +4,24 @@ using AdPang.FileManager.Models.LogEntities;
 using AdPang.FileManager.Shared;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Security.Claims;
 using System.Text;
 
 namespace AdPang.FileManager.WebAPI.Middleware
 {
+    /// <summary>
+    /// 异常处理中间件
+    /// </summary>
     public class ExceptionMiddleware
     {
         private readonly ILogger logger;
-        private readonly RequestInfoModel requestInfoModel;
+        //private RequestInfoModel requestInfoModel;
         private readonly LogDbContext logDbContext;
         private readonly RequestDelegate next;
 
-        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger,RequestInfoModel requestInfoModel,LogDbContext logDbContext)
+        public ExceptionMiddleware(RequestDelegate next, ILogger<ExceptionMiddleware> logger, LogDbContext logDbContext)
         {
             this.logger = logger;
-            this.requestInfoModel = requestInfoModel;
             this.logDbContext = logDbContext;
             this.next = next;
         }
@@ -37,6 +40,10 @@ namespace AdPang.FileManager.WebAPI.Middleware
 
         private async Task ExceptionHandlerAsync(HttpContext context, Exception e)
         {
+            Guid? currentOperaingUser = null;
+            var userClaims = context.User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.NameIdentifier));
+            if (userClaims != null)
+                currentOperaingUser = new Guid(userClaims.Value);
             context.Response.ContentType = "application/json";
 
             //获取请求路径
@@ -49,7 +56,7 @@ namespace AdPang.FileManager.WebAPI.Middleware
             logDbContext.ExceptionLog.Add(new ExceptionLog
             {
                 ExceptionMessage = e.Message,
-                OperaByUserId = requestInfoModel.CurrentOperaingUser,
+                OperaByUserId = currentOperaingUser,
                 RequsetUrl = url,
                 RequestIPAddress = ipAddress,
                 StackTrace = e.StackTrace,

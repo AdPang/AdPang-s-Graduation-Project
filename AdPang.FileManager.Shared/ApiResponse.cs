@@ -17,10 +17,25 @@ namespace AdPang.FileManager.Shared
             this.Message = message;
             this.Status = satus;
         }
-        public ApiResponse(bool status, object reuslt)
+        public ApiResponse(bool status, object result)
         {
             this.Status = status;
-            this.Result = reuslt;
+            if (status)
+            {
+                Message = "操作成功";
+            }
+            else
+            {
+                if(result!=null&&result.GetType() == typeof(string))
+                {
+                    Message = result.ToString();
+                }
+                else
+                {
+                    Message = "操作失败";
+                }
+            }
+            this.Result = result;
         }
         public string Message { get; set; }
         public bool Status { get; set; }

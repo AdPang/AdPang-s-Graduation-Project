@@ -5,8 +5,16 @@ using System.Reflection;
 
 namespace AdPang.FileManager.Extensions.ServiceExtensions
 {
+    /// <summary>
+    /// 静态swagger拓展类
+    /// </summary>
     public static class SwaggerServiceExtensions
     {
+        /// <summary>
+        /// Swagger配置服务拓展方法
+        /// </summary>
+        /// <param name="services"></param>
+        /// <returns></returns>
         public static IServiceCollection AddSwaggerAuthoritarian(this IServiceCollection services)
         {
             services.AddSwaggerGen(c =>
@@ -14,8 +22,11 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RBAC Management System API", Version = "v1" });
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
-                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                var basePath = AppContext.BaseDirectory;
+                var xmlPath = Path.Combine(basePath, xmlFile);
                 c.IncludeXmlComments(xmlPath);
+                xmlPath = Path.Combine(basePath, "AdPang.FileManager.WebAPI.xml");//这个就是刚刚配置的xml文件名
+                c.IncludeXmlComments(xmlPath, true);
 
                 c.OperationFilter<AddResponseHeadersFilter>();
                 c.OperationFilter<AppendAuthorizeToSummaryOperationFilter>();

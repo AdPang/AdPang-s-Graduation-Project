@@ -26,10 +26,27 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:AdPang.FileManager.Extensions.AutoMapper.SystemCommon.RoleProfile">
+            <summary>
+            
+            </summary>
+        </member>
         <member name="T:AdPang.FileManager.Extensions.ServiceExtensions.AutoMapperSetup">
             <summary>
             Automapper 启动服务
             </summary>
+        </member>
+        <member name="T:AdPang.FileManager.Extensions.ServiceExtensions.SwaggerServiceExtensions">
+            <summary>
+            静态swagger拓展类
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.Extensions.ServiceExtensions.SwaggerServiceExtensions.AddSwaggerAuthoritarian(Microsoft.Extensions.DependencyInjection.IServiceCollection)">
+            <summary>
+            Swagger配置服务拓展方法
+            </summary>
+            <param name="services"></param>
+            <returns></returns>
         </member>
     </members>
 </doc>

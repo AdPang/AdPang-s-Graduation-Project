@@ -13,7 +13,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.EntityTypeConfigs
     {
         public void Configure(EntityTypeBuilder<PrivateDiskInfo> builder)
         {
-            builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId)
+            builder.HasOne(x => x.User).WithMany(x => x.PrivateDiskInfos).HasForeignKey(x => x.UserId)
                 .OnDelete(DeleteBehavior.Restrict);
             builder.Property(x => x.DiskSN).IsRequired().HasColumnName("char").HasMaxLength(64);
             builder.Property(x => x.DiskName).IsRequired().IsUnicode(true).HasMaxLength(150);

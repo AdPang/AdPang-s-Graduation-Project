@@ -134,25 +134,34 @@ namespace AdPang.FileManager.Repositories.Base
             return entity;
         }
 
-        public Task<List<TEntity>> GetListAsync(CancellationToken cancellationToken = default)
+        public Task<List<TEntity>> GetListAsync(CancellationToken cancellationToken = default,bool IsTracking = false)
         {
+            if (!IsTracking)
+                return _context.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken); ;
             return _context.Set<TEntity>().ToListAsync(cancellationToken);
         }
 
-        public Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        public Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, bool IsTracking = false)
         {
+            if(!IsTracking)
+                return _context.Set<TEntity>().AsNoTracking().Where(predicate).ToListAsync(cancellationToken);
             return _context.Set<TEntity>().Where(predicate).ToListAsync(cancellationToken);
+
         }
 
-        public Task<List<TEntity>> GetPagedListAsync(/*int skipCount, int maxResultCount,*/ string sorting,
-            CancellationToken cancellationToken = default)
+        public Task<List<TEntity>> GetPagedListAsync(int skipCount, int maxResultCount, string sorting,
+            CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            return _context.Set<TEntity>().OrderBy(sorting)/*.Skip(skipCount).Take(maxResultCount)*/.ToListAsync(cancellationToken);
+            if(!IsTracking)
+                return _context.Set<TEntity>().AsNoTracking().OrderBy(sorting).Skip(skipCount).Take(maxResultCount).ToListAsync(cancellationToken);
+            return _context.Set<TEntity>().OrderBy(sorting).Skip(skipCount).Take(maxResultCount).ToListAsync(cancellationToken);
         }
 
-        public Task<List<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate/*, int skipCount, int maxResultCount*/, string sorting, CancellationToken cancellationToken = default)
+        public Task<List<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate, int skipCount, int maxResultCount, string sorting, CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            return _context.Set<TEntity>().Where(predicate).OrderBy(sorting)/*.Skip(skipCount).Take(maxResultCount)*/.ToListAsync(cancellationToken);
+            if (!IsTracking)
+                return _context.Set<TEntity>().AsNoTracking().Where(predicate).OrderBy(sorting).Skip(skipCount).Take(maxResultCount).ToListAsync(cancellationToken);
+            return _context.Set<TEntity>().Where(predicate).OrderBy(sorting).Skip(skipCount).Take(maxResultCount).ToListAsync(cancellationToken);
         }
 
         public Task<long> GetCountAsync(CancellationToken cancellationToken = default)

@@ -58,24 +58,24 @@ namespace AdPang.FileManager.Services.Base
             return await _baseRepository.GetAsync(predicate, cancellationToken);
         }
 
-        public async Task<List<TEntity>> GetListAsync(CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> GetListAsync(CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            return await _baseRepository.GetListAsync(cancellationToken);
+            return await _baseRepository.GetListAsync(cancellationToken, IsTracking);
         }
 
-        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            return await _baseRepository.GetListAsync(predicate, cancellationToken);
+            return await _baseRepository.GetListAsync(predicate, cancellationToken, IsTracking);
         }
 
-        public async Task<List<TEntity>> GetPagedListAsync(/*int skipCount, int maxResultCount,*/ string sorting,
-            CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> GetPagedListAsync(int skipCount, int maxResultCount, string sorting,
+            CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            return await _baseRepository.GetPagedListAsync(/*skipCount, maxResultCount,*/ sorting, cancellationToken);
+            return await _baseRepository.GetPagedListAsync(skipCount, maxResultCount, sorting, cancellationToken,IsTracking);
         }
-        public async Task<List<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate, /*int skipCount, int maxResultCount,*/ string sorting, CancellationToken cancellationToken = default)
+        public async Task<List<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate, int skipCount, int maxResultCount, string sorting, CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            return await _baseRepository.GetPagedListAsync(predicate, /*skipCount, maxResultCount,*/ sorting, cancellationToken);
+            return await _baseRepository.GetPagedListAsync(predicate, skipCount, maxResultCount, sorting, cancellationToken, IsTracking);
         }
         public async Task<long> GetCountAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default)
         {

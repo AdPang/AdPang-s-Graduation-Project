@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
-    <GenerateDocumentationFile>False</GenerateDocumentationFile>
-    <DocumentationFile></DocumentationFile>
+    <GenerateDocumentationFile>True</GenerateDocumentationFile>
+    <DocumentationFile>..\AdPang.FileManager.WebAPI\AdPang.FileManager.WebAPI.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
@@ -29,7 +29,6 @@
 
   <ItemGroup>
     <Folder Include="Controllers\CloudSaved\" />
-    <Folder Include="Controllers\LocalPrivate\" />
     <Folder Include="StaticResouce\" />
   </ItemGroup>
 

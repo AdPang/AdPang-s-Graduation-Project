@@ -1,4 +1,5 @@
-﻿using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
+﻿using AdPang.FileManager.Common.RequestInfoModel;
+using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
 using AdPang.FileManager.Models.IdentityEntities;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -14,12 +15,14 @@ namespace AdPang.FileManager.WebAPI.Controllers
         private readonly FileManagerDbContext fileManagerDbContext;
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
+        private readonly RequestInfoModel requestInfoModel;
 
-        public TestController(FileManagerDbContext fileManagerDbContext, UserManager<User> userManager, RoleManager<Role> roleManager)
+        public TestController(FileManagerDbContext fileManagerDbContext, UserManager<User> userManager, RoleManager<Role> roleManager, RequestInfoModel requestInfoModel)
         {
             this.fileManagerDbContext = fileManagerDbContext;
             this.userManager = userManager;
             this.roleManager = roleManager;
+            this.requestInfoModel = requestInfoModel;
         }
 
         [HttpPost]
@@ -90,9 +93,10 @@ namespace AdPang.FileManager.WebAPI.Controllers
 
 
         [HttpDelete]
+        [Authorize(Roles ="Admin")]
         public async Task<ActionResult> TestDelete()
         {
-            return Ok("TestDelete");
+            throw new Exception("TestDelete");
         }
         /*public async Task<ActionResult> Login(string username,string password)
         {

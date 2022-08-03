@@ -1,0 +1,246 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AdPang.FileManager.WebAPI</name>
+    </assembly>
+    <members>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController">
+            <summary>
+            私有硬盘控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.GetDiskListFromUserAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取当前用户下所有的硬盘列表
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.AddDiskAsync(AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk.PrivateDiskInfoDto)">
+            <summary>
+            添加硬盘
+            </summary>
+            <param name="privateDiskInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.EditDiskAsync(AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk.PrivateDiskInfoDto)">
+            <summary>
+            修改硬盘信息
+            </summary>
+            <param name="privateDiskInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.DeleteDiskAsync(System.Guid)">
+            <summary>
+            删除硬盘信息
+            </summary>
+            <param name="diskId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.DeleteDiskAsync(System.Guid,System.Guid)">
+            <summary>
+            删除硬盘信息（管理员）
+            </summary>
+            <param name="diskId"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.AddDiskAsync(System.Guid,AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk.PrivateDiskInfoDto)">
+            <summary>
+            添加硬盘信息（管理员）
+            </summary>
+            <param name="userId"></param>
+            <param name="diskInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.EditDiskAsync(System.Guid,AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk.PrivateDiskInfoDto)">
+            <summary>
+            修改硬盘信息（管理员）
+            </summary>
+            <param name="userId"></param>
+            <param name="diskInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.GetDiskListAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取所有硬盘信息，包括文件（管理员）
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.GetDiskDetail(System.Guid)">
+            <summary>
+            获取指定用户的所有硬盘，包括文件（管理员）
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController">
+            <summary>
+            私有文件控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.#ctor(AutoMapper.IMapper,AdPang.FileManager.IServices.LocalPrivate.IPrivateFileService,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel)">
+            <summary>
+            构造
+            </summary>
+            <param name="mapper"></param>
+            <param name="privateFileService"></param>
+            <param name="userManager"></param>
+            <param name="requestInfoModel"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.GetFileInfos(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取当前账号的文件详情列表
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.GetFileInfo(System.Guid)">
+            <summary>
+            根据文件id获取文件详情
+            </summary>
+            <param name="fileId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.EditFileInfo(AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateFile.PrivateFileInfoDto)">
+            <summary>
+            编辑文件
+            </summary>
+            <param name="privateFileInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.DeleteFileInfo(System.Guid)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="fileId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.AddFileInfo(AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateFile.PrivateFileInfoDto)">
+            <summary>
+            添加文件信息
+            </summary>
+            <param name="privateFileInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.AddFileInfos(System.Collections.Generic.IList{AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateFile.PrivateFileInfoDto})">
+            <summary>
+            批量添加
+            </summary>
+            <param name="privateFileInfoDtos"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.GetFileInfos(System.Guid,AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取指定用户的文件信息列表（管理员）
+            </summary>
+            <param name="userId"></param>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.GetAllFileInfos(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取全部的文件信息列表
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRoles(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取角色列表
+            </summary>
+            <param name="queryParameter">分页信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesByUserId(System.Guid)">
+            <summary>
+            根据userId获取对应的角色列表
+            </summary>
+            <param name="userId">用户Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesASync">
+            <summary>
+            获取当前请求人的角色
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.AddRoleAsync(AdPang.FileManager.Shared.Dtos.SystemCommon.RoleDto)">
+            <summary>
+            添加角色
+            </summary>
+            <param name="roleDto">角色信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.EditRoleAsync(AdPang.FileManager.Shared.Dtos.SystemCommon.RoleDto)">
+            <summary>
+            修改角色信息
+            </summary>
+            <param name="roleDto">角色信息</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.DeleteRoleAsync(System.Guid)">
+            <summary>
+            删除角色
+            </summary>
+            <param name="roleId">角色Id</param>
+            <returns></returns>
+        </member>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController">
+            <summary>
+            用户管理控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.GetUsers(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获得所有用户
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.GetUsersByRoleAsync(System.String)">
+            <summary>
+            根据角色名获取用户列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.AddUserToRoleAsync(System.Guid,System.String)">
+            <summary>
+            给用户添加角色
+            </summary>
+            <param name="userId">用户Id</param>
+            <param name="roleName">角色名</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.AddUsersToRoleAsync(System.Guid,System.Collections.Generic.IList{System.String})">
+            <summary>
+            给用户添加角色
+            </summary>
+            <param name="userId">用户Id</param>
+            <param name="roleNames">角色名列表</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.RemoveRoleFormUserAsync(System.Guid,System.String)">
+            <summary>
+            删除用户的角色
+            </summary>
+            <param name="userId">用户Id</param>
+            <param name="roleName">角色名</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.RemoveRolesFormUserAsync(System.Guid,System.Collections.Generic.IList{System.String})">
+            <summary>
+            删除用户的角色（多个角色）
+            </summary>
+            <param name="userId">用户Id</param>
+            <param name="roleNames">角色名列表</param>
+            <returns></returns>
+        </member>
+        <member name="T:AdPang.FileManager.WebAPI.Middleware.ExceptionMiddleware">
+            <summary>
+            异常处理中间件
+            </summary>
+        </member>
+    </members>
+</doc>

@@ -23,4 +23,8 @@
     <ProjectReference Include="..\AdPang.FileManager.Services\AdPang.FileManager.Services.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="AutoMapper\CloudSaved\" />
+  </ItemGroup>
+
 </Project>

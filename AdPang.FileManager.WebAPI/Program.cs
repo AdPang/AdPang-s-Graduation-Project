@@ -63,8 +63,6 @@ builder.Services
     .AddSwaggerAuthoritarian();
 
 
-
-
 #region dbConfig
 
 var connStr = builder.Configuration.GetSection("ConnectionStrings:DefaultConnection").Value;
@@ -87,7 +85,6 @@ builder.Services.AddIdentityCore<User>(options =>
     options.Password.RequireUppercase = false;
     options.Tokens.PasswordResetTokenProvider = TokenOptions.DefaultEmailProvider;
     options.Tokens.EmailConfirmationTokenProvider = TokenOptions.DefaultEmailProvider;
-    //Ìí¼ÓIdentityDbContext
 
 });
 

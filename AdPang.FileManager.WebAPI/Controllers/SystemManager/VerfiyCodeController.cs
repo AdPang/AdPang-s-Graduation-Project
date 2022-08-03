@@ -4,7 +4,7 @@ using AdPang.FileManager.Common.RequestInfoModel;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
-namespace AdPang.FileManager.WebAPI.Controllers
+namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -16,7 +16,7 @@ namespace AdPang.FileManager.WebAPI.Controllers
 
         public VerfiyCodeController(ImgVerifyCodeHelper imgCodeHelper, RequestInfoModel requestInfoModel, MailVerifyCodeHelper mailVerifyCodeHelper)
         {
-            this.imgVerifyCodeHelper = imgCodeHelper;
+            imgVerifyCodeHelper = imgCodeHelper;
             this.requestInfoModel = requestInfoModel;
             this.mailVerifyCodeHelper = mailVerifyCodeHelper;
         }
@@ -32,7 +32,7 @@ namespace AdPang.FileManager.WebAPI.Controllers
             }
             catch (Exception e)
             {
-                return BadRequest("生成验证码错误"+e.Message);
+                return BadRequest("生成验证码错误" + e.Message);
             }
 
         }
@@ -52,9 +52,6 @@ namespace AdPang.FileManager.WebAPI.Controllers
             }
 
         }
-
-
-
         [HttpGet]
         public ActionResult TestGetMethod()
         {

@@ -20,9 +20,9 @@ namespace AdPang.FileManager.WebAPI.Filter
         }
         public void OnAuthorization(AuthorizationFilterContext context)
         {
-            var temp = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.NameIdentifier));
-            if (temp != null)
-                requestInfoModel.CurrentOperaingUser = new Guid(temp.Value);
+            var userClaims = context.HttpContext.User.Claims.FirstOrDefault(x => x.Type.Equals(ClaimTypes.NameIdentifier));
+            if (userClaims != null)
+                requestInfoModel.CurrentOperaingUser = new Guid(userClaims.Value);
             CheckImgVerify(context.HttpContext.Request);
             CheckMailVerify(context.HttpContext.Request);
 

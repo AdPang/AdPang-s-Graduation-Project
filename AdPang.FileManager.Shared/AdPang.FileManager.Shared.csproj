@@ -9,7 +9,6 @@
   <ItemGroup>
     <Folder Include="Common\Extensions\" />
     <Folder Include="Dtos\CloudSavedDto\" />
-    <Folder Include="Dtos\LocalPrivateDto\" />
   </ItemGroup>
 
 </Project>

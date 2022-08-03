@@ -1,13 +1,14 @@
 ﻿using AdPang.FileManager.Common.Helper;
-using AdPang.FileManager.Shared.Dtos;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
 using AutoMapper;
 using AdPang.FileManager.Models.IdentityEntities;
+using AdPang.FileManager.Shared.Dtos.SystemCommon;
 
-namespace AdPang.FileManager.WebAPI.Controllers
+namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
+
 {
     [Route("api/[controller]/[action]")]
     [ApiController]
@@ -16,7 +17,7 @@ namespace AdPang.FileManager.WebAPI.Controllers
         private readonly ILogger<OauthController> _logger;
         private readonly IMapper _mapper;
 
-        private readonly UserManager<User> userManager; 
+        private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
         public OauthController(UserManager<User> userManager, RoleManager<Role> roleManager, ILogger<OauthController> logger, IMapper mapper)
         {
@@ -31,7 +32,7 @@ namespace AdPang.FileManager.WebAPI.Controllers
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
                 return BadRequest("用户名密码为空！");
-            var user =  await userManager.FindByNameAsync(username);
+            var user = await userManager.FindByNameAsync(username);
             if (user == null) return BadRequest("用户名不存在！");
             var checkUserResult = await userManager.CheckPasswordAsync(user, password);
             if (!checkUserResult) return BadRequest("用户名或密码错误！");
