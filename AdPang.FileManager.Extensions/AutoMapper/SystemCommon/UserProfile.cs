@@ -10,6 +10,7 @@ namespace AdPang.FileManager.Extensions.AutoMapper.SystemCommon
         {
             CreateMap<User, UserDto>().ReverseMap();
             CreateMap<User, UserInfoContainDiskInfoDto>().ReverseMap();
+            CreateMap<User, UserInfoContainDirInfoDto>().ReverseMap();
         }
     }
 }

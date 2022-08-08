@@ -11,6 +11,10 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
     public class DirInfo : BaseModel<Guid>
     {
         /// <summary>
+        /// 文件夹名
+        /// </summary>
+        public string DirName { get; set; } = string.Empty;
+        /// <summary>
         /// 用户Id外键
         /// </summary>
         public Guid UserId { get; set; }
@@ -22,11 +26,11 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
         /// 当前文件夹下的文件列表
         /// </summary>
 
-        public virtual ICollection<UserPrivateFileInfo> ChildrenFileInfo { get; set; }
+        public virtual ICollection<UserPrivateFileInfo> ChildrenFileInfo { get; set; } = new List<UserPrivateFileInfo>();
         /// <summary>
         /// 当前文件夹下的文件夹列表
         /// </summary>
-        public virtual ICollection<DirInfo> ChildrenDirInfo { get; set; }
+        public virtual ICollection<DirInfo> ChildrenDirInfo { get; set; } = new List<DirInfo>();
         public virtual DirInfo ParentDirInfo { get; set; }
         /// <summary>
         /// 所属用户

@@ -4,10 +4,94 @@
         <name>AdPang.FileManager.WebAPI</name>
     </assembly>
     <members>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController">
+            <summary>
+            个人云盘文件夹控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.#ctor(AutoMapper.IMapper,AdPang.FileManager.IServices.CloudSaved.IDirService,AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User})">
+            <summary>
+            构造
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetAllDirAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取当前账户的文件夹信息
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.AddDirAsync(AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo.DirInfoDto)">
+            <summary>
+            添加文件夹信息
+            </summary>
+            <param name="dirInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.DeleteDir(System.Guid)">
+            <summary>
+            删除文件夹
+            </summary>
+            <param name="dirId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.EditDir(AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo.DirInfoDto)">
+            <summary>
+            编辑
+            </summary>
+            <param name="dirInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetAllDirAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter,System.Guid)">
+            <summary>
+            获取指定用户的所有文件夹详情信息（包含层级关系）（管理员）
+            </summary>
+            <param name="queryParameter"></param>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetAllUserDirAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取所有用户的文件夹列表（管理员）
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetDeleteDirs(AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo,System.Collections.Generic.IList{AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo})">
+            <summary>
+            获取即将删除的文件夹所有文件夹信息
+            </summary>
+            <param name="parent"></param>
+            <param name="deleteDirs"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetDirInfosByUser(System.Guid,AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            根据userId查询
+            </summary>
+            <param name="userId"></param>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.Merge(AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo,System.Collections.Generic.IEnumerable{AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo})">
+            <summary>
+            合并
+            </summary>
+            <param name="parent"></param>
+            <param name="dirInfos"></param>
+        </member>
         <member name="T:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController">
             <summary>
             私有硬盘控制器
             </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.#ctor(AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,AutoMapper.IMapper,AdPang.FileManager.IServices.LocalPrivate.IPrivateDiskService,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User})">
+            <summary>
+            构造
+            </summary>
+            <param name="requestInfoModel"></param>
+            <param name="mapper"></param>
+            <param name="privateDiskService"></param>
+            <param name="userManager"></param>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.GetDiskListFromUserAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
             <summary>
@@ -75,6 +159,13 @@
             <param name="userId"></param>
             <returns></returns>
         </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController.GetDiskDetail(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取所有用户的所有硬盘，包括文件（管理员）
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
         <member name="T:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController">
             <summary>
             私有文件控制器
@@ -100,7 +191,7 @@
             <summary>
             根据文件id获取文件详情
             </summary>
-            <param name="fileId"></param>
+            <param name="fileId">文件ID</param>
             <returns></returns>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.EditFileInfo(AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateFile.PrivateFileInfoDto)">

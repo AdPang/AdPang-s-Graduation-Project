@@ -22,7 +22,7 @@
         </member>
         <member name="M:AdPang.FileManager.Extensions.AutoMapper.AutoMapperConfig.RegisterMappings">
             <summary>
-            
+            AutoMapper配置类
             </summary>
             <returns></returns>
         </member>

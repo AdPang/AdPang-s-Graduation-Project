@@ -15,7 +15,7 @@ namespace AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk
         /// </summary>
         public string DiskSN { get; set; }
 
-        public UserDto User { get; set; }
+        //public UserDto User { get; set; }
 
         public ICollection<PrivateFileInfoDto> PrivateFiles { get; set; } = new List<PrivateFileInfoDto>();
     }

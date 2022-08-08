@@ -9,10 +9,15 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
     /// </summary>
     public class UserPrivateFileInfo : BaseModel<Guid>
     {
+
         /// <summary>
         /// 用户Id
         /// </summary>
         public Guid UserId { get; set; }
+        /// <summary>
+        /// 真实文件信息外键Id
+        /// </summary>
+        public Guid RealFileInfoId { get; set; }
         /// <summary>
         /// 展示给指定用户的文件名
         /// </summary>
@@ -29,6 +34,10 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
         /// 所属用户信息
         /// </summary>
         public virtual User User { get; set; }
+        /// <summary>
+        /// 真实文件信息
+        /// </summary>
+        public virtual CloudFileInfo RealFileInfo { get; set; }
 
     }
 }

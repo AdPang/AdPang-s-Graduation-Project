@@ -1,4 +1,5 @@
-﻿using AdPang.FileManager.Models.FileManagerEntities.LocalPrivate;
+﻿using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
+using AdPang.FileManager.Models.FileManagerEntities.LocalPrivate;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -19,7 +20,6 @@ namespace AdPang.FileManager.IRepositories.Base
         Task<TEntity> UpdateAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default);
 
         Task UpdateManyAsync(IEnumerable<TEntity> entities, bool autoSave = false, CancellationToken cancellationToken = default);
-
         Task DeleteAsync(TEntity entity, bool autoSave = false, CancellationToken cancellationToken = default);
 
         Task DeleteAsync(Expression<Func<TEntity, bool>> predicate, bool autoSave = false, CancellationToken cancellationToken = default);

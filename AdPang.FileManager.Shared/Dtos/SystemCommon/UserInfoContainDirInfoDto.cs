@@ -1,5 +1,5 @@
 ﻿using AdPang.FileManager.Shared.Dtos.Base;
-using AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk;
+using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.SystemCommon
 {
-    public class UserInfoContainDiskInfoDto : BaseDto<Guid>
+    public class UserInfoContainDirInfoDto : BaseDto<Guid>
     {
         /// <summary>
         /// 用户名
@@ -18,10 +18,9 @@ namespace AdPang.FileManager.Shared.Dtos.SystemCommon
         /// 邮箱
         /// </summary>
         public string Email { get; set; }
-        ///// <summary>
-        ///// 电话
-        ///// </summary>
-        //public string PhoneNumber { get; set; }
-        public ICollection<DiskInfoContainFileInfoDto> PrivateDiskInfos { get; set; } = new List<DiskInfoContainFileInfoDto>();
+        /// <summary>
+        /// 文件夹信息
+        /// </summary>
+        public ICollection<DirInfoDetailDto> DirInfos { get; set; } = new List<DirInfoDetailDto>();
     }
 }

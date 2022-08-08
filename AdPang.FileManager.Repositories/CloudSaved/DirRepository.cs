@@ -15,5 +15,25 @@ namespace AdPang.FileManager.Repositories.CloudSaved
         public DirRepository(FileManagerDbContext context) : base(context)
         {
         }
+
+        //public async Task<DirInfo?> GetRootDirInfosAsync(Guid userId)
+        //{
+        //    var dbcontext = DbContext();
+        //    var root = dbcontext.DirInfos.Single(x => x.ParentDirInfoId == null && x.UserId == userId);
+        //    if (root == null) return null;
+        //}
+
+
+        //static void PrintChildren(int indentLevel, FileManagerDbContext ctx, DirInfo parent)
+        //{
+        //    var children = ctx.DirInfos.Where(o => o.ParentDirInfo == parent).ToList();
+        //    parent.ChildrenFileInfo = (ICollection<UserPrivateFileInfo>)children;
+        //    foreach (var child in children)
+        //    {
+        //        //Console.WriteLine(new String('\t', indentLevel) + child);
+
+        //        PrintChildren(indentLevel + 1, ctx, child);//递归调用,打印以当前节点的子节点
+        //    }
+        //}
     }
 }

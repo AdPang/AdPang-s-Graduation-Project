@@ -14,6 +14,7 @@ namespace AdPang.FileManager.Extensions.AutoMapper.LocalPrivate
         public PrivateDiskInfoProfile()
         {
             CreateMap<PrivateDiskInfo, PrivateDiskInfoDto>().ReverseMap();
+            CreateMap<PrivateDiskInfo, DiskInfoContainFileInfoDto>().ReverseMap();
         }
     }
 }

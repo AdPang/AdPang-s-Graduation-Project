@@ -15,6 +15,7 @@ using AdPang.FileManager.EntityFrameworkCore.LogDb;
 using AdPang.FileManager.Common.Helper.Mail;
 using AdPang.FileManager.Common.Helper.VerifyCode;
 using AdPang.FileManager.Common.Helper.Redis;
+using Microsoft.EntityFrameworkCore.Diagnostics;
 
 var builder = WebApplication.CreateBuilder(args);
 #region autoFac
@@ -70,6 +71,7 @@ var connStr = builder.Configuration.GetSection("ConnectionStrings:DefaultConnect
 builder.Services.AddDbContext<FileManagerDbContext>(options =>
 {
     options.UseSqlServer(connStr, oo => oo.MigrationsAssembly("AdPang.FileManager.EntityFrameworkCore"));
+    options.ConfigureWarnings(x => x.Ignore(RelationalEventId.MultipleCollectionIncludeWarning));
 });
 
 builder.Services.AddIdentityCore<User>(options =>
@@ -124,6 +126,7 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+//异常处理中间件
 app.UseMiddleware<ExceptionMiddleware>();
 
 // 先开启认证

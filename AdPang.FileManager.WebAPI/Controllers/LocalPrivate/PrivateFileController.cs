@@ -60,7 +60,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <summary>
         /// 根据文件id获取文件详情
         /// </summary>
-        /// <param name="fileId"></param>
+        /// <param name="fileId">文件ID</param>
         /// <returns></returns>
         [HttpGet("Get/{fileId}")]
         [Authorize(Roles ="Ordinary")]

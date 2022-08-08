@@ -15,5 +15,6 @@ namespace AdPang.FileManager.Models.IdentityEntities
     {
         public virtual ICollection<CloudFileInfo> CloudFileInfos { get; set; }
         public virtual ICollection<PrivateDiskInfo> PrivateDiskInfos { get; set; }
+        public virtual ICollection<DirInfo> DirInfos { get; set; }
     }
 }

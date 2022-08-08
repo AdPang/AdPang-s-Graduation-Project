@@ -1,4 +1,5 @@
-﻿using AdPang.FileManager.Extensions.AutoMapper.LocalPrivate;
+﻿using AdPang.FileManager.Extensions.AutoMapper.CloudSaved;
+using AdPang.FileManager.Extensions.AutoMapper.LocalPrivate;
 using AdPang.FileManager.Extensions.AutoMapper.SystemCommon;
 using AutoMapper;
 
@@ -10,7 +11,7 @@ namespace AdPang.FileManager.Extensions.AutoMapper
     public class AutoMapperConfig
     {
         /// <summary>
-        /// 
+        /// AutoMapper配置类
         /// </summary>
         /// <returns></returns>
         public static MapperConfiguration RegisterMappings()
@@ -23,7 +24,9 @@ namespace AdPang.FileManager.Extensions.AutoMapper
                     new RoleProfile(),
                     new PrivateDiskInfoProfile(),
                     new PrivateFileInfoProfile(),
-                    new DiskInfoContainFileProfile(),
+                    new CloudFileInfoProfile(),
+                    new DirInfoProfile(),
+                    new UserPrivateFileInfoProfile(),
                 };
 
 

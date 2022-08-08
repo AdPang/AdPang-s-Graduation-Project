@@ -10,5 +10,6 @@ namespace AdPang.FileManager.IRepositories.CloudSaved
 {
     public interface IDirRepository : IBaseRepository<DirInfo>
     {
+        //Task<DirInfo> GetRootDirInfosAsync(Guid userId);
     }
 }
