@@ -35,6 +35,10 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
         /// </summary>
         public Guid UserId { get; set; }
         /// <summary>
+        /// 用户数量
+        /// </summary>
+        public long UserCount { get; set; } = 0;
+        /// <summary>
         /// 上传用户
         /// </summary>
         public virtual User UploadBy { get; set; }

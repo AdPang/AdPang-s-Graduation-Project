@@ -13,8 +13,10 @@ namespace AdPang.FileManager.Models.IdentityEntities
 {
     public class User : IdentityUser<Guid>
     {
-        public virtual ICollection<CloudFileInfo> CloudFileInfos { get; set; }
+        public virtual ICollection<PrivateFileInfo> PrivateFileInfos { get; set; }
         public virtual ICollection<PrivateDiskInfo> PrivateDiskInfos { get; set; }
+        public virtual ICollection<CloudFileInfo> CloudFileInfos { get; set; }
         public virtual ICollection<DirInfo> DirInfos { get; set; }
+        public virtual ICollection<UserPrivateFileInfo> UserPrivateFileInfos { get; set; }
     }
 }

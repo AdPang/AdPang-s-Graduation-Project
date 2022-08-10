@@ -19,7 +19,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo
         /// <summary>
         /// 当前文件夹下的文件列表
         /// </summary>
-        public virtual ICollection<UserPrivateFileInfoDetailDto> ChildrenFileInfo { get; set; } = new List<UserPrivateFileInfoDetailDto>();
+        public virtual ICollection<UserPrivateFileInfoDto> ChildrenFileInfo { get; set; } = new List<UserPrivateFileInfoDto>();
         /// <summary>
         /// 当前文件夹下的文件夹列表
         /// </summary>

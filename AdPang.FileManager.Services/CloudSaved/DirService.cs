@@ -6,6 +6,7 @@ using AdPang.FileManager.Services.Base;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -18,6 +19,11 @@ namespace AdPang.FileManager.Services.CloudSaved
         public DirService(IDirRepository baseRepository) : base(baseRepository)
         {
             this.baseRepository = baseRepository;
+        }
+
+        public Task<IList<DirInfo>> GetDirDetailListAsync(Expression<Func<DirInfo, bool>> predicate)
+        {
+            return baseRepository.GetDirDetailListAsync(predicate);
         }
 
         //public Task<DirInfo> GetRootDirInfosAsync(Guid userId)

@@ -125,7 +125,7 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 //异常处理中间件
 app.UseMiddleware<ExceptionMiddleware>();
 

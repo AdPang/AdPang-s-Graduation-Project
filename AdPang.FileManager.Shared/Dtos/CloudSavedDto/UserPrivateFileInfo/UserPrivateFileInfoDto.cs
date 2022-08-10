@@ -14,6 +14,8 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo
         /// 展示给指定用户的文件名
         /// </summary>
         public string FileName { get; set; }
+        //public DateTime CreatTime { get; set; }
+        //public DateTime UpdateTime { get; set; }
         /// <summary>
         /// 真实文件信息
         /// </summary>

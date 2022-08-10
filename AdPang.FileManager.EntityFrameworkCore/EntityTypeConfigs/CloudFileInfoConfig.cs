@@ -18,6 +18,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.EntityTypeConfigs
             builder.Property(x => x.FileMD5Str).HasMaxLength(150).HasColumnName("char");
 
             builder.HasMany(x => x.Users).WithMany(x => x.CloudFileInfos).UsingEntity(x => x.ToTable("UserCloudSavedFileRealition"));
+            
         }
     }
 }

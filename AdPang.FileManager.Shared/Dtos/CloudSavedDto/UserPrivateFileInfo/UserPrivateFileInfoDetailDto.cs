@@ -27,6 +27,6 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo
         /// <summary>
         /// 真实文件信息
         /// </summary>
-        public virtual CloudFileInfoDetailDto RealFileInfo { get; set; }
+        public virtual CloudFileInfoDto RealFileInfo { get; set; }
     }
 }

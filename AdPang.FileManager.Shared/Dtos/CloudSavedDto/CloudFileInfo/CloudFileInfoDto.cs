@@ -10,10 +10,6 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo
     public class CloudFileInfoDto : BaseDto<Guid>
     {
         /// <summary>
-        /// 真实文件名（Guid打乱）
-        /// </summary>
-        public string FileName { get; set; }
-        /// <summary>
         /// 真实文件类型
         /// </summary>
         public string? FileType { get; set; }
@@ -21,10 +17,6 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo
         /// 文件大小
         /// </summary>
         public long FileLength { get; set; }
-        /// <summary>
-        /// 文件存储路径
-        /// </summary>
-        public string FilePath { get; set; }
         /// <summary>
         /// 文件MD5值
         /// </summary>

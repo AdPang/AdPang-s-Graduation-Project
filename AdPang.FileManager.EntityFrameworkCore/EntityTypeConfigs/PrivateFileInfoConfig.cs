@@ -8,7 +8,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.EntityTypeConfigs
     {
         public void Configure(EntityTypeBuilder<PrivateFileInfo> builder)
         {
-            builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.User).WithMany(x => x.PrivateFileInfos).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
 
             builder.HasOne(x => x.DiskInfo).WithMany(x => x.PrivateFiles)
                 .HasForeignKey(x => x.DiskId).OnDelete(DeleteBehavior.Restrict);

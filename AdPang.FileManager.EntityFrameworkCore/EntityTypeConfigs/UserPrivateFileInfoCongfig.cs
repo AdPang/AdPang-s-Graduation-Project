@@ -13,7 +13,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.EntityTypeConfigs
     {
         public void Configure(EntityTypeBuilder<UserPrivateFileInfo> builder)
         {
-            builder.HasOne(x => x.User).WithMany().HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
+            builder.HasOne(x => x.User).WithMany(x => x.UserPrivateFileInfos).HasForeignKey(x => x.UserId).OnDelete(DeleteBehavior.Restrict);
             builder.HasOne(x => x.CurrentDirectoryInfo).WithMany(x => x.ChildrenFileInfo).HasForeignKey(x => x.CurrentDirectoryInfoId).OnDelete(DeleteBehavior.Restrict);
         }
     }

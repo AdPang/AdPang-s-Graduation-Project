@@ -18,7 +18,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
     /// <summary>
     /// 个人云盘文件夹控制器
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
     public class DirInfoController : ControllerBase
@@ -154,7 +154,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         [Authorize(Roles ="Admin")]
         public async Task<ApiResponse<IPagedList<UserInfoContainDirInfoDto>>> GetAllUserDirAsync([FromQuery] QueryParameter queryParameter)
         {
-            var users = await userManager.Users.Where(x => queryParameter.Search == null || queryParameter.Search.Contains(x.UserName) || x.UserName.Contains(queryParameter.Search)).Take(queryParameter.PageSize).Skip(queryParameter.PageSize * queryParameter.PageIndex).Include(x => x.DirInfos).ToListAsync();
+            var users = await userManager.Users.Where(x => queryParameter.Search == null || queryParameter.Search.Contains(x.UserName) || x.UserName.Contains(queryParameter.Search)).Take(queryParameter.PageSize).Skip(queryParameter.PageSize * queryParameter.PageIndex).Include(x => x.DirInfos).ThenInclude(x=>x.ChildrenFileInfo).ToListAsync();
             foreach (var user in users)
             {
                 var roots = user.DirInfos.Where(x => x.ParentDirInfoId == null).ToList();
@@ -191,7 +191,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <returns></returns>
         private async Task<IPagedList<DirInfoDetailDto>> GetDirInfosByUser(Guid userId, QueryParameter queryParameter)
         {
-            var dirInfos = await dirService.GetListAsync(x => x.UserId.Equals(userId));
+            var dirInfos = await dirService.GetDirDetailListAsync(x => x.UserId.Equals(userId));
             var roots = dirInfos.Where(x => x.ParentDirInfoId == null).Skip(queryParameter.PageIndex * queryParameter.PageSize).Take(queryParameter.PageSize).ToList();
             foreach (var root in roots)
             {

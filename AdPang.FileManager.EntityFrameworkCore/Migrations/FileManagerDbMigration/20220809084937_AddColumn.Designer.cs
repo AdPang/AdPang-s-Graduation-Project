@@ -4,6 +4,7 @@ using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigration
 {
     [DbContext(typeof(FileManagerDbContext))]
-    partial class FileManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220809084937_AddColumn")]
+    partial class AddColumn
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -470,7 +472,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                         .IsRequired();
 
                     b.HasOne("AdPang.FileManager.Models.IdentityEntities.User", "User")
-                        .WithMany("UserPrivateFileInfos")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -502,7 +504,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                         .IsRequired();
 
                     b.HasOne("AdPang.FileManager.Models.IdentityEntities.User", "User")
-                        .WithMany("PrivateFileInfos")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
@@ -595,10 +597,6 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.Navigation("DirInfos");
 
                     b.Navigation("PrivateDiskInfos");
-
-                    b.Navigation("PrivateFileInfos");
-
-                    b.Navigation("UserPrivateFileInfos");
                 });
 #pragma warning restore 612, 618
         }

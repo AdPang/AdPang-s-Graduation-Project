@@ -79,6 +79,75 @@
             <param name="parent"></param>
             <param name="dirInfos"></param>
         </member>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController">
+            <summary>
+            文件管理控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.#ctor(AutoMapper.IMapper,AdPang.FileManager.IServices.CloudSaved.ICloudFileService,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,AdPang.FileManager.IServices.CloudSaved.IUserPrivateFileService,AdPang.FileManager.IServices.CloudSaved.IDirService)">
+            <summary>
+            构造
+            </summary>
+            <param name="mapper"></param>
+            <param name="cloudFileService"></param>
+            <param name="userManager"></param>
+            <param name="requestInfoModel"></param>
+            <param name="hostingEnvironment"></param>
+            <param name="userPrivateFileService"></param>
+            <param name="dirService"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.UploadFile(System.Collections.Generic.IList{Microsoft.AspNetCore.Http.IFormFile})">
+            <summary>
+            文件上传
+            </summary>
+            <param name="files"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.AddFileToCloud(System.Guid,System.Guid,AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo.UserPrivateFileInfoDto)">
+            <summary>
+            添加文件到云
+            </summary>
+            <param name="fileId"></param>
+            <param name="dirId"></param>
+            <param name="userPrivateFileInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.EditFileInfo(System.Guid,AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo.UserPrivateFileInfoDto)">
+            <summary>
+            修改文件（文件名、文件所在文件夹）
+            </summary>
+            <param name="dirId"></param>
+            <param name="userPrivateFileInfoDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.DeleteFileInfo(System.Guid)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="fileId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.GetUserFileInfos(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取所有用户（包含用户文件信息）
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.GetCloudFileInfos(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取所有已保存到云的文件
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.GetFileExt(System.String)">
+            <summary>
+            获取文件后缀名
+            </summary>
+            <param name="fileName"></param>
+            <returns></returns>
+        </member>
         <member name="T:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController">
             <summary>
             私有硬盘控制器
