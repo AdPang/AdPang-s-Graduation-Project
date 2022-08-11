@@ -16,6 +16,7 @@ using AdPang.FileManager.Common.Helper.Mail;
 using AdPang.FileManager.Common.Helper.VerifyCode;
 using AdPang.FileManager.Common.Helper.Redis;
 using Microsoft.EntityFrameworkCore.Diagnostics;
+using IGeekFan.AspNetCore.Knife4jUI;
 
 var builder = WebApplication.CreateBuilder(args);
 #region autoFac
@@ -121,20 +122,38 @@ var app = builder.Build();
 
 if (app.Environment.IsDevelopment())
 {
+    //访问地址
     app.UseSwagger();
     app.UseSwaggerUI();
+    //Swagger使用自定义UI
+    app.UseKnife4UI(c =>
+    {
+        c.RoutePrefix = string.Empty; // serve the UI at root
+        c.SwaggerEndpoint("/v1/admin-filemanager-api-docs", "V1 FileManagerDocs");
+    });
+
+    //app.UseEndpoints(endpoints =>
+    //{
+    //    endpoints.MapControllers();
+    //    endpoints.MapSwagger("{documentName}/api-docs");
+    //});
 }
 
 //app.UseHttpsRedirection();
 //异常处理中间件
 app.UseMiddleware<ExceptionMiddleware>();
 
+app.UseRouting(); // 路由中间件一定要添加
 // 先开启认证
 app.UseAuthentication();
 // 然后是授权中间件
 app.UseAuthorization();
 
-
+app.UseEndpoints(endpoints =>
+{
+    endpoints.MapControllers();
+    endpoints.MapSwagger("{documentName}/admin-filemanager-api-docs");
+});
 app.MapControllers();
 
 app.Run();

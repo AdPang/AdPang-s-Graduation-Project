@@ -4,22 +4,12 @@
     "AdPang.FileManager.WebAPI": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "swagger",
+      "launchUrl": "",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
       "applicationUrl": "http://192.168.1.5:5006",
       "dotnetRunMessages": true
-    },
-    "WSL": {
-      "commandName": "WSL2",
-      "launchBrowser": true,
-      "launchUrl": "http://192.168.1.5:5006/swagger",
-      "environmentVariables": {
-        "ASPNETCORE_ENVIRONMENT": "Development",
-        "ASPNETCORE_URLS": "http://192.168.1.5:5006"
-      },
-      "distributionName": ""
     }
   }
 }

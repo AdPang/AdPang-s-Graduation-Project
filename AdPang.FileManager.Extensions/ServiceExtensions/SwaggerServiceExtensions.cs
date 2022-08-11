@@ -2,6 +2,8 @@
 using Swashbuckle.AspNetCore.Filters;
 using Microsoft.OpenApi.Models;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using Microsoft.OpenApi.Interfaces;
 
 namespace AdPang.FileManager.Extensions.ServiceExtensions
 {
@@ -19,7 +21,23 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "RBAC Management System API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Admin FileManagent System API", Version = "v1" });
+
+                //c.AddServer(new OpenApiServer()
+                //{
+                //    Url = "",
+                //    Description = "vvv"
+                //});
+                c.CustomOperationIds(apiDesc =>
+                {
+                    var controllerAction = apiDesc.ActionDescriptor as ControllerActionDescriptor;
+                    return controllerAction.ControllerName + "-" + controllerAction.ActionName;
+                });
+                //var filePath = Path.Combine(AppContext.BaseDirectory, "LT.PropertyManage.WebApi.xml");
+                //c.IncludeXmlComments(filePath, true);
+
+
+
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var basePath = AppContext.BaseDirectory;
@@ -36,7 +54,6 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
 
                 c.AddSecurityDefinition("oauth2", new OpenApiSecurityScheme
                 {
-
                     Description = "JWT授权(数据将在请求头中进行传输) 直接在下框中输入Bearer {token}（注意两者之间是一个空格）\"",
                     Name = "Authorization",//jwt默认的参数名称
                     In = ParameterLocation.Header,//jwt默认存放Authorization信息的位置(请求头中)

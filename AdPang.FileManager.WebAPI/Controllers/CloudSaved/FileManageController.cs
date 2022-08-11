@@ -1,4 +1,5 @@
-﻿using AdPang.FileManager.Common.RequestInfoModel;
+﻿using AdPang.FileManager.Common.Helper;
+using AdPang.FileManager.Common.RequestInfoModel;
 using AdPang.FileManager.IServices.CloudSaved;
 using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Models.IdentityEntities;
@@ -175,10 +176,36 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             var fileInfo = await userPrivateFileService.FindAsync(x => x.Id.Equals(fileId) && userId.Equals(x.UserId));
             if (fileInfo == null) return new ApiResponse(false, "文件不存在！");
             var cloudFile = await cloudFileService.FindAsync(x => x.Id.Equals(fileInfo.RealFileInfoId));
-            cloudFile.UserCount -= 1;
+            cloudFile.UserCount--;
+            cloudFile.UpdateTime = DateTime.Now;
             await userPrivateFileService.DeleteAsync(fileInfo,true);
             await cloudFileService.UpdateAsync(cloudFile);  
             return new ApiResponse(true, "删除成功！");
+        }
+
+        /// <summary>
+        /// 下载云盘文件
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
+        [HttpGet("file/{fileId}")]
+        [Authorize(Roles = "Ordinary")]
+        public async Task<ActionResult> DownloadFile(Guid fileId)
+        {
+            var userId = requestInfoModel.CurrentOperaingUser;
+            if (userId == null) return BadRequest("发生错误!");
+
+            var privateFile = await userPrivateFileService.FindAsync(x => x.Id.Equals(fileId) && x.UserId.Equals(userId));
+            if (privateFile == null) return NotFound("未找到该文件！");
+            var realFileInfo = await cloudFileService.FindAsync(x => x.Id.Equals(privateFile.RealFileInfoId));
+
+            var stream = System.IO.File.OpenRead(realFileInfo.FilePath);  //创建文件流
+            
+            //FileStreamResult fileStreamResult = new FileStreamResult()
+            //需要调用的时候
+            string contentType = MimeMapping.GetMimeMapping(realFileInfo.FileName);
+            //Console。WriteLine("{0}'s MIME TYPE: {1}", file, contentType);
+            return File(stream, contentType, privateFile.FileName);
         }
 
         /// <summary>
@@ -210,6 +237,31 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             var cloudFileInfoDetailDtos = mapper.Map<IList<CloudFileInfoDetailDto>>(cloudFileInfos);
             return new ApiResponse<IPagedList<CloudFileInfoDetailDto>>(true, new PagedList<CloudFileInfoDetailDto>(cloudFileInfoDetailDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
         }
+
+
+        /// <summary>
+        /// 删除文件（管理员）
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
+        [HttpGet("Delete/{userId}/{fileId}/Admin")]
+        [Authorize(Roles="Admin")]
+        public async Task<ApiResponse> DeleteFileInfo(Guid userId,Guid fileId)
+        {
+            var fileInfo = await userPrivateFileService.FindAsync(x => x.UserId.Equals(userId) && x.Id.Equals(fileId));
+            if (fileInfo == null) return new ApiResponse(false, "文件不存在！");
+            var cloudFile = await cloudFileService.GetAsync(x => x.Id.Equals(fileInfo.RealFileInfoId));
+            cloudFile.UserCount--;
+            cloudFile.UpdateTime = DateTime.Now;
+            await cloudFileService.UpdateAsync(cloudFile, true);
+            await userPrivateFileService.DeleteAsync(fileInfo);
+            return new ApiResponse(true, "删除成功！");
+        }
+
+        
+
+
 
         /// <summary>
         /// 获取文件后缀名

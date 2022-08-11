@@ -41,6 +41,10 @@ namespace AdPang.FileManager.WebAPI.Filter
             {
                 response = "EmptyResult";
             }
+            else if (result.GetType().Name.Equals("FileStreamResult"))
+            {
+                response = "DownloadFile";
+            }
             else
             {
                 response = JsonConvert.SerializeObject(resultContext.Result);

@@ -3,6 +3,9 @@
 ##
 ## Get latest from https://github.com/github/gitignore/blob/master/VisualStudio.gitignore
 
+/AdPang.FileManager.WebAPI/upload/
+/AdPang.FileManager.WebAPI/upload/*
+
 # User-specific files
 *.rsuser
 *.suo
