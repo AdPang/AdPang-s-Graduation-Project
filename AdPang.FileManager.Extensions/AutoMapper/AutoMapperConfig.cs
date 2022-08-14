@@ -27,9 +27,8 @@ namespace AdPang.FileManager.Extensions.AutoMapper
                     new CloudFileInfoProfile(),
                     new DirInfoProfile(),
                     new UserPrivateFileInfoProfile(),
+                    new SharedFileInfoProfile()
                 };
-
-
                 cfg.AddProfiles(proList);
             });
         }

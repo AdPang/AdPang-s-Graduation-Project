@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace AdPang.FileManager.IRepositories.CloudSaved
 {
-    public interface IDirRepository : IBaseRepository<DirInfo>
+    public interface IDirInfoRepository : IBaseRepository<DirInfo>
     {
         //Task<DirInfo> GetRootDirInfosAsync(Guid userId);
         Task<IList<DirInfo>> GetDirDetailListAsync(Expression<Func<DirInfo, bool>> predicate);

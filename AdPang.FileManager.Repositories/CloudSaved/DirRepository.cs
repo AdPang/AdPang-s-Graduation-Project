@@ -12,7 +12,7 @@ using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Repositories.CloudSaved
 {
-    public class DirRepository : BaseRepository<DirInfo>, IDirRepository
+    public class DirRepository : BaseRepository<DirInfo>, IDirInfoRepository
     {
         public DirRepository(FileManagerDbContext context) : base(context)
         {

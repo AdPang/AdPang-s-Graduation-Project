@@ -177,7 +177,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         [HttpGet("GetAll/admin")]
         public async Task<ApiResponse<IPagedList<DiskInfoContainFileInfoDto>>> GetDiskListAsync([FromQuery] QueryParameter queryParameter)
         {
-            var disks = await privateDiskService.GetDiskInfoContainFileInfoPagedListAsync(x => queryParameter.Search == null ? true : queryParameter.Search.Contains(x.DiskSN) || x.DiskSN.Contains(queryParameter.Search) || x.DiskName.Contains(queryParameter.Search) || queryParameter.Search.Contains(x.DiskName), queryParameter.PageIndex * queryParameter.PageSize, queryParameter.PageSize, "CreatTime");
+            var disks = await privateDiskService.GetDiskInfoContainFileInfoPagedListAsync(x => queryParameter.Search == null || queryParameter.Search.Contains(x.DiskSN) || x.DiskSN.Contains(queryParameter.Search) || x.DiskName.Contains(queryParameter.Search) || queryParameter.Search.Contains(x.DiskName), queryParameter.PageIndex * queryParameter.PageSize, queryParameter.PageSize, "CreatTime");
 
             var diskDtos = mapper.Map<List<DiskInfoContainFileInfoDto>>(disks);
             return new ApiResponse<IPagedList<DiskInfoContainFileInfoDto>>(true, new PagedList<DiskInfoContainFileInfoDto>(diskDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
@@ -206,7 +206,6 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         [HttpGet("GetAllDiskDetail/admin")]
         public async Task<ApiResponse<IPagedList<UserInfoContainDiskInfoDto>>> GetDiskDetail([FromQuery]QueryParameter  queryParameter)
         {
-            //var user = userManager.Users.Include(x => x.PrivateDiskInfos).ThenInclude(x => x.PrivateFiles).Where(x => x.Id.Equals(userId)).FirstOrDefault();
             var users = await userManager.Users.Include(x => x.PrivateDiskInfos).ThenInclude(x => x.PrivateFiles).Where(x => queryParameter.Search == null || x.UserName.Contains(queryParameter.Search) || queryParameter.Search.Contains(x.UserName)).OrderBy(x => x.UserName).Take(queryParameter.PageSize).Skip(queryParameter.PageSize * queryParameter.PageIndex).ToListAsync();
             if (users == null || users.Count <= 0) return new ApiResponse<IPagedList<UserInfoContainDiskInfoDto>>(false, "发生错误");
             var userDto = mapper.Map<IList<UserInfoContainDiskInfoDto>>(users);

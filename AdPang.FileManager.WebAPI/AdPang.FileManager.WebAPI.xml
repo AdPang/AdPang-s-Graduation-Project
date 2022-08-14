@@ -13,6 +13,10 @@
             <summary>
             构造
             </summary>
+            <param name="mapper"></param>
+            <param name="dirService"></param>
+            <param name="requestInfoModel"></param>
+            <param name="userManager"></param>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetAllDirAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
             <summary>
@@ -161,6 +165,63 @@
             获取文件后缀名
             </summary>
             <param name="fileName"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController">
+            <summary>
+            文件分享控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.#ctor(AutoMapper.IMapper,AdPang.FileManager.IServices.CloudSaved.ISharedFileInfoService,AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},AdPang.FileManager.IServices.CloudSaved.IDirService,AdPang.FileManager.IServices.CloudSaved.IUserPrivateFileService)">
+            <summary>
+            构造
+            </summary>
+            <param name="mapper"></param>
+            <param name="sharedFileInfoService"></param>
+            <param name="requestInfoModel"></param>
+            <param name="userManager"></param>
+            <param name="dirService"></param>
+            <param name="userPrivateFileService"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.AddFileShared(System.Guid,System.Boolean,System.String,System.String,System.Boolean,System.Int32)">
+            <summary>
+            创建分享
+            </summary>
+            <param name="beSharedInfoId">分享Id</param>
+            <param name="isSingleFile">是否是单个文件分享</param>
+            <param name="sharedPassword">分享密码</param>
+            <param name="sharedDesc">文件分享描述</param>
+            <param name="hasExpired">是否有过期时间</param>
+            <param name="expiredTime">过期时间(天数)</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.DeleteSharedInfo(System.Guid)">
+            <summary>
+            删除分享信息
+            </summary>
+            <param name="sharedId">分享信息Id</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.GetFileShared(System.Guid,System.String)">
+            <summary>
+            获取文件信息
+            </summary>
+            <param name="sharedId">分享信息Id</param>
+            <param name="password">分享信息密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.DeleteSharedInfoAdmin(System.Guid)">
+            <summary>
+            删除分享信息（管理员）
+            </summary>
+            <param name="sharedId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.GetSharedInfos(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取分享信息列表（管理员）
+            </summary>
+            <param name="queryParameter">查询条件</param>
             <returns></returns>
         </member>
         <member name="T:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateDiskController">
@@ -321,6 +382,39 @@
             <param name="queryParameter"></param>
             <returns></returns>
         </member>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController">
+            <summary>
+            验证控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.Auth(AdPang.FileManager.Shared.Dtos.SystemCommon.UserDto)">
+            <summary>
+            用户登录 （用户名密码登录）
+            </summary>
+            <param name="userDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.Register(AdPang.FileManager.Shared.Dtos.SystemCommon.UserDto)">
+            <summary>
+            用户注册
+            </summary>
+            <param name="userDto"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController">
+            <summary>
+            角色控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.#ctor(Microsoft.AspNetCore.Identity.RoleManager{AdPang.FileManager.Models.IdentityEntities.Role},AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,AutoMapper.IMapper,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User})">
+            <summary>
+            构造
+            </summary>
+            <param name="roleManager"></param>
+            <param name="requestInfoModel"></param>
+            <param name="mapper"></param>
+            <param name="userManager"></param>
+        </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRoles(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
             <summary>
             获取角色列表
@@ -367,9 +461,24 @@
             用户管理控制器
             </summary>
         </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.#ctor(AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},Microsoft.AspNetCore.Identity.RoleManager{AdPang.FileManager.Models.IdentityEntities.Role},AutoMapper.IMapper)">
+            <summary>
+            构造
+            </summary>
+            <param name="requestInfoModel"></param>
+            <param name="userManager"></param>
+            <param name="roleManager"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.GetUserId">
+            <summary>
+            获取当前用户Id
+            </summary>
+            <returns></returns>
+        </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.GetUsers(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
             <summary>
-            获得所有用户
+            获得用户列表
             </summary>
             <param name="queryParameter"></param>
             <returns></returns>
@@ -410,6 +519,34 @@
             </summary>
             <param name="userId">用户Id</param>
             <param name="roleNames">角色名列表</param>
+            <returns></returns>
+        </member>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.SystemManager.VerfiyCodeController">
+            <summary>
+            验证码控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.VerfiyCodeController.#ctor(AdPang.FileManager.Common.Helper.VerifyCode.ImgVerifyCodeHelper,AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,AdPang.FileManager.Common.Helper.VerifyCode.MailVerifyCodeHelper)">
+            <summary>
+            构造
+            </summary>
+            <param name="imgCodeHelper"></param>
+            <param name="requestInfoModel"></param>
+            <param name="mailVerifyCodeHelper"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.VerfiyCodeController.GetGraphic4VerfiyCode(System.Guid)">
+            <summary>
+            获取图片验证码
+            </summary>
+            <param name="seed"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.VerfiyCodeController.GetMailVerfiyCode(System.String,AdPang.FileManager.Common.Helper.Mail.MailMsgOperaType)">
+            <summary>
+            获取邮箱验证码
+            </summary>
+            <param name="email">邮箱账号</param>
+            <param name="operaType">操作类型</param>
             <returns></returns>
         </member>
         <member name="T:AdPang.FileManager.WebAPI.Middleware.ExceptionMiddleware">

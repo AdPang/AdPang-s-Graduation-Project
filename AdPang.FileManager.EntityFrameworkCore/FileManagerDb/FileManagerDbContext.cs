@@ -19,6 +19,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.FileManagerDb
         public virtual DbSet<CloudFileInfo> CloudFileInfos { get; set; }
         public virtual DbSet<DirInfo> DirInfos { get; set; }
         public virtual DbSet<UserPrivateFileInfo> UserPrivateFileInfos { get; set; }
+        public virtual DbSet<SharedFileInfo> SharedFileInfos { get; set; }
 
 
 

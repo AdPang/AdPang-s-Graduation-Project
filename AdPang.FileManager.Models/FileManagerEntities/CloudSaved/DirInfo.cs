@@ -31,6 +31,9 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
         /// 当前文件夹下的文件夹列表
         /// </summary>
         public virtual ICollection<DirInfo> ChildrenDirInfo { get; set; } = new List<DirInfo>();
+        /// <summary>
+        /// 父文件夹信息
+        /// </summary>
         public virtual DirInfo ParentDirInfo { get; set; }
         /// <summary>
         /// 所属用户

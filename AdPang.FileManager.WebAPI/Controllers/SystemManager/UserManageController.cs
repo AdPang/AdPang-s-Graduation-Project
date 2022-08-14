@@ -13,7 +13,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
     /// <summary>
     /// 用户管理控制器
     /// </summary>
-    [Route("api/[controller]")]
+    [Route("api/[controller]/[action]")]
     [ApiController]
     [Authorize]
     public class UserManageController : ControllerBase
@@ -23,7 +23,13 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         private readonly RoleManager<Role> roleManager;
         private readonly IMapper mapper;
 
-
+        /// <summary>
+        /// 构造
+        /// </summary>
+        /// <param name="requestInfoModel"></param>
+        /// <param name="userManager"></param>
+        /// <param name="roleManager"></param>
+        /// <param name="mapper"></param>
         public UserManageController(RequestInfoModel requestInfoModel, UserManager<User> userManager, RoleManager<Role> roleManager, IMapper mapper)
         {
             this.requestInfoModel = requestInfoModel;
@@ -31,16 +37,19 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             this.roleManager = roleManager;
             this.mapper = mapper;
         }
-
-        [Authorize]
+        /// <summary>
+        /// 获取当前用户Id
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
+        [Authorize(Roles = "Ordinary")]
         public string GetUserId()
         {
-            return requestInfoModel.CurrentOperaingUser.ToString() ?? "没有用户";
+            return requestInfoModel.CurrentOperaingUser.ToString() ?? "发生错误！";
         }
 
         /// <summary>
-        /// 获得所有用户
+        /// 获得用户列表
         /// </summary>
         /// <param name="queryParameter"></param>
         /// <returns></returns>

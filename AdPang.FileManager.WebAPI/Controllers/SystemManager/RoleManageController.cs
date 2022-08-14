@@ -11,6 +11,9 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
 {
+    /// <summary>
+    /// 角色控制器
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class RoleManageController : ControllerBase
@@ -19,7 +22,13 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         private readonly UserManager<User> userManager;
         private readonly RequestInfoModel requestInfoModel;
         private readonly IMapper mapper;
-
+        /// <summary>
+        /// 构造
+        /// </summary>
+        /// <param name="roleManager"></param>
+        /// <param name="requestInfoModel"></param>
+        /// <param name="mapper"></param>
+        /// <param name="userManager"></param>
         public RoleManageController(RoleManager<Role> roleManager, RequestInfoModel requestInfoModel, IMapper mapper, UserManager<User> userManager)
         {
             this.roleManager = roleManager;
@@ -51,7 +60,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns></returns>
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetRoles/{userId}/admin")]
         public async Task<ApiResponse<IList<string>>> GetRolesByUserId(Guid userId)
         {
@@ -71,7 +80,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         {
             var user = userManager.Users.Where(x => x.Id.Equals(requestInfoModel.CurrentOperaingUser)).FirstOrDefault();
             if (user == null) return new ApiResponse<IList<string>>(false, "用户不存在");
-            var role = await  userManager.GetRolesAsync(user);
+            var role = await userManager.GetRolesAsync(user);
             return new ApiResponse<IList<string>>(true, role);
         }
 
@@ -80,7 +89,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// </summary>
         /// <param name="roleDto">角色信息</param>
         /// <returns></returns>
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost("add/admin")]
         public async Task<ApiResponse<string>> AddRoleAsync(RoleDto roleDto)
         {
@@ -88,7 +97,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             var result = await roleManager.CreateAsync(role);
             if (result.Succeeded)
             {
-                return new ApiResponse<string>(true,result: "添加成功");
+                return new ApiResponse<string>(true, result: "添加成功");
             }
             else
             {
@@ -97,7 +106,6 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
                 return new ApiResponse<string>(false, msg);
             }
         }
-
 
         /// <summary>
         /// 修改角色信息
@@ -112,7 +120,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             var role = roleManager.Roles.Where(x => x.Id.Equals(roleDto.Id)).FirstOrDefault();
             if (role == null) return new ApiResponse(false, "修改失败") { Message = "角色不存在" };
             role.Name = roleDto.Name;
-            
+
             var result = await roleManager.UpdateAsync(role);
             if (result.Succeeded)
             {

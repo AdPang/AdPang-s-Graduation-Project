@@ -32,6 +32,10 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <summary>
         /// 构造
         /// </summary>
+        /// <param name="mapper"></param>
+        /// <param name="dirService"></param>
+        /// <param name="requestInfoModel"></param>
+        /// <param name="userManager"></param>
         public DirInfoController(IMapper mapper, IDirService dirService, RequestInfoModel requestInfoModel, UserManager<User> userManager)
         {
             this.mapper = mapper;

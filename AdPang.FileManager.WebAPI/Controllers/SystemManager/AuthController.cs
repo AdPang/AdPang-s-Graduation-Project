@@ -6,10 +6,13 @@ using System.Security.Claims;
 using AutoMapper;
 using AdPang.FileManager.Models.IdentityEntities;
 using AdPang.FileManager.Shared.Dtos.SystemCommon;
+using AdPang.FileManager.Shared;
 
 namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
-
 {
+    /// <summary>
+    /// 验证控制器
+    /// </summary>
     [Route("api/[controller]/[action]")]
     [ApiController]
     public class OauthController : ControllerBase
@@ -27,17 +30,22 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// 用户登录 （用户名密码登录）
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
         [HttpGet]
-        public async Task<ActionResult> Auth(string username, string password)
+        public async Task<ApiResponse> Auth(UserDto userDto)
         {
-            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
-                return BadRequest("用户名密码为空！");
-            var user = await userManager.FindByNameAsync(username);
-            if (user == null) return BadRequest("用户名不存在！");
-            var checkUserResult = await userManager.CheckPasswordAsync(user, password);
-            if (!checkUserResult) return BadRequest("用户名或密码错误！");
+            if (string.IsNullOrWhiteSpace(userDto.UserName) || string.IsNullOrWhiteSpace(userDto.Password))
+                return new ApiResponse(false, "用户名密码为空！");
+            var user = await userManager.FindByNameAsync(userDto.UserName);
+            if (user == null) return new ApiResponse(false, "用户名不存在！");
+            var checkUserResult = await userManager.CheckPasswordAsync(user, userDto.Password);
+            if (!checkUserResult) return new ApiResponse(false, "用户名或密码错误！");
 
-            if (await userManager.IsLockedOutAsync(user)) return BadRequest($"用户已被锁定！解锁时间为：{user.LockoutEnd}");
+            if (await userManager.IsLockedOutAsync(user)) return new ApiResponse(false, $"用户已被锁定！解锁时间为：{user.LockoutEnd}");
 
             var claims = new List<Claim>(new Claim[]
             {
@@ -49,11 +57,16 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-            return Ok(JwtHelper.IssueJwt(claims));
+            return new ApiResponse(true, JwtHelper.IssueJwt(claims));
         }
 
+        /// <summary>
+        /// 用户注册
+        /// </summary>
+        /// <param name="userDto"></param>
+        /// <returns></returns>
         [HttpPost]
-        public async Task<ActionResult> Register(UserDto userDto)
+        public async Task<ApiResponse> Register(UserDto userDto)
         {
             var mapperUser = _mapper.Map<User>(userDto);
             if (await roleManager.RoleExistsAsync("Ordinary") == false)
@@ -61,7 +74,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
                 Role role = new() { Name = "Ordinary" };
                 var result = await roleManager.CreateAsync(role);
                 if (!result.Succeeded)
-                    return BadRequest("创建角色'Ordinary'发生错误！");
+                    return new ApiResponse(false,"创建角色'Ordinary'发生错误！");
             }
             User user = await userManager.FindByNameAsync(mapperUser.UserName);
             if (user is null)
@@ -70,21 +83,21 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
 
                 var result = userDto.Password is null ? await userManager.CreateAsync(user) : await userManager.CreateAsync(user, userDto.Password);
                 if (!result.Succeeded)
-                    return BadRequest("注册出错！");
+                    return new ApiResponse(false, "注册出错！");
             }
             else
             {
-                return BadRequest("账号存在！");
+                return new ApiResponse(false, "账号存在！");
             }
             if (!await userManager.IsInRoleAsync(user, "Ordinary"))
             {
                 var result = await userManager.AddToRoleAsync(user, "Ordinary");
                 if (!result.Succeeded)
                 {
-                    return BadRequest("添加角色出错！");
+                    return new ApiResponse(false, "添加角色出错！");
                 }
             }
-            return Ok("注册成功！");
+            return new ApiResponse(true, "注册成功！");
         }
     }
 }

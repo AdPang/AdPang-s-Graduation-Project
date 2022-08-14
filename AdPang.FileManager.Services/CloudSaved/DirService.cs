@@ -14,9 +14,9 @@ namespace AdPang.FileManager.Services.CloudSaved
 {
     public class DirService : BaseService<DirInfo>, IDirService
     {
-        private readonly IDirRepository baseRepository;
+        private readonly IDirInfoRepository baseRepository;
 
-        public DirService(IDirRepository baseRepository) : base(baseRepository)
+        public DirService(IDirInfoRepository baseRepository) : base(baseRepository)
         {
             this.baseRepository = baseRepository;
         }

@@ -6,6 +6,7 @@ using AdPang.FileManager.Models.IdentityEntities;
 using AdPang.FileManager.Shared;
 using AdPang.FileManager.Shared.Common.Helper;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo;
+using AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;
 using AdPang.FileManager.Shared.Dtos.SystemCommon;
 using AdPang.FileManager.Shared.Paremeters;
@@ -207,6 +208,21 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             //Console。WriteLine("{0}'s MIME TYPE: {1}", file, contentType);
             return File(stream, contentType, privateFile.FileName);
         }
+
+        //[HttpGet("shared/{fileId}")]
+        //[Authorize(Roles = "Ordinary")]
+        //public async Task<ApiResponse> SharedFileInfo(SharedFileInfoDto sharedFileInfoDto)
+        //{
+        //    var userId = requestInfoModel.CurrentOperaingUser;
+        //    if (userId == null) return new ApiResponse(false, "发生错误");
+
+        //    var fileInfo = await userPrivateFileService.FindAsync(x => x.Id.Equals(sharedFileInfoDto.FileId) && x.UserId.Equals(userId));
+        //    if (fileInfo == null) return new ApiResponse(false, "文件不存在！");
+
+        //    return new ApiResponse(true, "");
+
+        //}
+
 
         /// <summary>
         /// 获取所有用户（包含用户文件信息）

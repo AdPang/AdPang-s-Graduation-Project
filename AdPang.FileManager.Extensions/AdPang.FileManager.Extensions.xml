@@ -48,5 +48,17 @@
             <param name="services"></param>
             <returns></returns>
         </member>
+        <member name="T:AdPang.FileManager.Common.Extensions.ListExtensions">
+            <summary>
+            List拓展
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.Common.Extensions.ListExtensions.Merge(System.Collections.Generic.IEnumerable{AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo},AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo)">
+            <summary>
+            合并
+            </summary>
+            <param name="parent"></param>
+            <param name="dirInfos"></param>
+        </member>
     </members>
 </doc>
