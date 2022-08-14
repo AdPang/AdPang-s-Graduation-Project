@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdPang.FileManager.Application_WPF
+namespace AdPang.FileManager.Application_WPF.Views.Notify
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// ProgressView.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class ProgressView : UserControl
     {
-        public MainWindow()
+        public ProgressView()
         {
             InitializeComponent();
         }
