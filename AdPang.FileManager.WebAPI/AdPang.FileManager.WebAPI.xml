@@ -25,21 +25,28 @@
             <param name="queryParameter"></param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.AddDirAsync(AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo.DirInfoDto)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetAsync(System.Guid)">
+            <summary>
+            获取指定文件夹详情
+            </summary>
+            <param name="dirId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.AddDirAsync(AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo.DirInfoDetailDto)">
             <summary>
             添加文件夹信息
             </summary>
             <param name="dirInfoDto"></param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.DeleteDir(System.Guid)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.DeleteDirAsync(System.Guid)">
             <summary>
             删除文件夹
             </summary>
             <param name="dirId"></param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.EditDir(AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo.DirInfoDto)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.EditDirAsync(AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo.DirInfoDetailDto)">
             <summary>
             编辑
             </summary>
@@ -68,20 +75,13 @@
             <param name="parent"></param>
             <param name="deleteDirs"></param>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetDirInfosByUser(System.Guid,AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetDirInfosByUserAsync(System.Guid,AdPang.FileManager.Shared.Paremeters.QueryParameter)">
             <summary>
             根据userId查询
             </summary>
             <param name="userId"></param>
             <param name="queryParameter"></param>
             <returns></returns>
-        </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.Merge(AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo,System.Collections.Generic.IEnumerable{AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo})">
-            <summary>
-            合并
-            </summary>
-            <param name="parent"></param>
-            <param name="dirInfos"></param>
         </member>
         <member name="T:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController">
             <summary>
@@ -99,6 +99,13 @@
             <param name="hostingEnvironment"></param>
             <param name="userPrivateFileService"></param>
             <param name="dirService"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.DeleteFileInfo(System.Guid)">
+            <summary>
+            删除文件
+            </summary>
+            <param name="fileId"></param>
+            <returns></returns>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.UploadFile(System.Collections.Generic.IList{Microsoft.AspNetCore.Http.IFormFile})">
             <summary>
@@ -122,13 +129,6 @@
             </summary>
             <param name="dirId"></param>
             <param name="userPrivateFileInfoDto"></param>
-            <returns></returns>
-        </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.DeleteFileInfo(System.Guid)">
-            <summary>
-            删除文件
-            </summary>
-            <param name="fileId"></param>
             <returns></returns>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.DownloadFile(System.Guid)">
@@ -183,18 +183,6 @@
             <param name="dirService"></param>
             <param name="userPrivateFileService"></param>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.AddFileShared(System.Guid,System.Boolean,System.String,System.String,System.Boolean,System.Int32)">
-            <summary>
-            创建分享
-            </summary>
-            <param name="beSharedInfoId">分享Id</param>
-            <param name="isSingleFile">是否是单个文件分享</param>
-            <param name="sharedPassword">分享密码</param>
-            <param name="sharedDesc">文件分享描述</param>
-            <param name="hasExpired">是否有过期时间</param>
-            <param name="expiredTime">过期时间(天数)</param>
-            <returns></returns>
-        </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.DeleteSharedInfo(System.Guid)">
             <summary>
             删除分享信息
@@ -208,6 +196,18 @@
             </summary>
             <param name="sharedId">分享信息Id</param>
             <param name="password">分享信息密码</param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.AddFileShared(System.Guid,System.Boolean,System.String,System.String,System.Boolean,System.Int32)">
+            <summary>
+            创建分享
+            </summary>
+            <param name="beSharedInfoId">分享Id</param>
+            <param name="isSingleFile">是否是单个文件分享</param>
+            <param name="sharedPassword">分享密码</param>
+            <param name="sharedDesc">文件分享描述</param>
+            <param name="hasExpired">是否有过期时间</param>
+            <param name="expiredTime">过期时间(天数)</param>
             <returns></returns>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.DeleteSharedInfoAdmin(System.Guid)">
@@ -387,11 +387,21 @@
             验证控制器
             </summary>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.Auth(AdPang.FileManager.Shared.Dtos.SystemCommon.UserDto)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.#ctor(Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},Microsoft.AspNetCore.Identity.RoleManager{AdPang.FileManager.Models.IdentityEntities.Role},Microsoft.Extensions.Logging.ILogger{AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController},AutoMapper.IMapper)">
+            <summary>
+            构造
+            </summary>
+            <param name="userManager"></param>
+            <param name="roleManager"></param>
+            <param name="logger"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.Auth(System.String,System.String)">
             <summary>
             用户登录 （用户名密码登录）
             </summary>
-            <param name="userDto"></param>
+            <param name="username"></param>
+            <param name="password"></param>
             <returns></returns>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.Register(AdPang.FileManager.Shared.Dtos.SystemCommon.UserDto)">

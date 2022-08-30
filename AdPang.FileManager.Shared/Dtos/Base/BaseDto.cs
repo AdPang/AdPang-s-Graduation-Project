@@ -3,7 +3,7 @@ using System.Runtime.CompilerServices;
 
 namespace AdPang.FileManager.Shared.Dtos.Base
 {
-    public class BaseDto<Tkey> where Tkey : struct
+    public class BaseDto<Tkey> : INotifyPropertyChanged where Tkey : struct
     {
         public Tkey? Id { get; set; }
 

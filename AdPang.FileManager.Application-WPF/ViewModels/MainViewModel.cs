@@ -13,43 +13,44 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
     public class MainViewModel : BindableBase, IConfigureService
     {
 
-        #region 构造
         /// <summary>
-        /// 
+        /// 构造
         /// </summary>
         /// <param name="containerProvider"></param>
         /// <param name="regionManager"></param>
-        public MainViewModel(IContainerProvider containerProvider,
-            IRegionManager regionManager)
+        public MainViewModel(IRegionManager regionManager, IContainerProvider containerProvider)
         {
+            this.regionManager = regionManager;
+            this.containerProvider = containerProvider;
             MenuBars = new ObservableCollection<MenuBar>();
             NavigateCommand = new DelegateCommand<MenuBar>(Navigate);
+            LoginOutCommand = new DelegateCommand(() =>
+            {
+                App.LoginOut(containerProvider);
+            });
             GoBackCommand = new DelegateCommand(() =>
             {
-                if (_journal != null && _journal.CanGoBack)
-                    _journal.GoBack();
+                if (journal != null && journal.CanGoBack)
+                    journal.GoBack();
             });
             GoForwardCommand = new DelegateCommand(() =>
             {
-                if (_journal != null && _journal.CanGoForward)
-                    _journal.GoForward();
+                if (journal != null && journal.CanGoForward)
+                    journal.GoForward();
             });
-
-            _containerProvider = containerProvider;
-            _regionManager = regionManager;
         }
-        #endregion
 
         #region 字段
-        private readonly IContainerProvider _containerProvider;
-        private readonly IRegionManager _regionManager;
-        private IRegionNavigationJournal _journal;
+        private readonly IContainerProvider containerProvider;
+        private readonly IRegionManager regionManager;
+        private IRegionNavigationJournal journal;
         #endregion
 
         #region 操作属性
         public DelegateCommand<MenuBar> NavigateCommand { get; private set; }
         public DelegateCommand GoBackCommand { get; private set; }
         public DelegateCommand GoForwardCommand { get; private set; }
+        public DelegateCommand LoginOutCommand { get; set; }
         #endregion
 
         #region 绑定属性
@@ -63,10 +64,8 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         void CreateMenuBar()
         {
             MenuBars.Add(new MenuBar() { Icon = "Home", Title = "首页", NameSpace = "IndexView" });
-            MenuBars.Add(new MenuBar() { Icon = "NotebookPlus", Title = "硬盘管理", NameSpace = "DiskManagerView" });
-            MenuBars.Add(new MenuBar() { Icon = "NotebookOutline", Title = "文件管理-本地", NameSpace = "FileManagerView" });
-            MenuBars.Add(new MenuBar() { Icon = "NotebookPlus", Title = "爬虫模式", NameSpace = "CrawlerView" });
-            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "文件管理-数据库", NameSpace = "FileInfoDbView" });
+            MenuBars.Add(new MenuBar() { Icon = "Home", Title = "网盘", NameSpace = "CloudFileManagerView" });
+            MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "文件传输列表", NameSpace = "FileTransferListView" });
             MenuBars.Add(new MenuBar() { Icon = "Cog", Title = "设置", NameSpace = "SettingsView" });
         }
 
@@ -75,15 +74,16 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             if (obj == null || string.IsNullOrWhiteSpace(obj.NameSpace))
                 return;
 
-            _regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate(obj.NameSpace, back =>
+            regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate(obj.NameSpace, back =>
             {
-                _journal = back.Context.NavigationService.Journal;
+                journal = back.Context.NavigationService.Journal;
             });
         }
 
         public void Configure()
         {
             CreateMenuBar();
+            //regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("FileTransferListView");
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿using AdPang.FileManager.Common.RequestInfoModel;
+﻿using System.Collections.ObjectModel;
+using AdPang.FileManager.Common.Extensions;
+using AdPang.FileManager.Common.RequestInfoModel;
 using AdPang.FileManager.IServices.CloudSaved;
 using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Models.IdentityEntities;
@@ -8,7 +10,6 @@ using AdPang.FileManager.Shared.Dtos.SystemCommon;
 using AdPang.FileManager.Shared.Paremeters;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -18,7 +19,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
     /// <summary>
     /// 个人云盘文件夹控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class DirInfoController : ControllerBase
@@ -44,7 +45,6 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             this.userManager = userManager;
         }
 
-
         /// <summary>
         /// 获取当前账户的文件夹信息
         /// </summary>
@@ -52,16 +52,39 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <returns></returns>
         [HttpGet("Get")]
         [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse<IPagedList<DirInfoDetailDto>>> GetAllDirAsync([FromQuery]QueryParameter queryParameter)
+        public async Task<ApiResponse<DirInfoDetailDto>> GetAllDirAsync([FromQuery]QueryParameter queryParameter)
         { 
             var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse<IPagedList<DirInfoDetailDto>>(false, "发生错误!");
-            
-            return new ApiResponse<IPagedList<DirInfoDetailDto>>(true, await GetDirInfosByUser((Guid)userId, queryParameter));
+            if (userId == null) return new ApiResponse<DirInfoDetailDto>(false, "发生错误!");
+            var dirDtos = await GetDirInfosByUserAsync((Guid)userId, queryParameter);
+            var dirResult = new DirInfoDetailDto { Id = Guid.NewGuid(), ChildrenDirInfo = new ObservableCollection<DirInfoDetailDto>(), DirName = "云盘文件", ParentDirInfoId = null };
+            foreach (var item in dirDtos.Items)
+            {
+                item.ParentDirInfoId = dirResult.Id;
+                dirResult.ChildrenDirInfo.Add(item);
+            }
+            return new ApiResponse<DirInfoDetailDto>(true, dirResult);
 
         }
 
-        
+        /// <summary>
+        /// 获取指定文件夹详情
+        /// </summary>
+        /// <param name="dirId"></param>
+        /// <returns></returns>
+        [HttpGet("Get/{dirId}")]
+        [Authorize(Roles = "Ordinary")]
+        public async Task<ApiResponse<DirInfoDetailDto>> GetAsync(Guid dirId)
+        {
+            var userId = requestInfoModel.CurrentOperaingUser;
+            if (userId == null) return new ApiResponse<DirInfoDetailDto>(false, "发生错误！");
+            var dirInfos = await dirService.GetDirDetailListAsync(x => x.UserId.Equals(userId));
+            var root = dirInfos.Where(x => x.Id == dirId).FirstOrDefault();
+            if (root == null) return new ApiResponse<DirInfoDetailDto>(false, "未找到该文件夹！");
+            dirInfos.Merge(root);
+            var disInfoDto = mapper.Map<DirInfoDetailDto>(root);
+            return new ApiResponse<DirInfoDetailDto>(true, disInfoDto);
+        }
 
         /// <summary>
         /// 添加文件夹信息
@@ -70,15 +93,15 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <returns></returns>
         [HttpPost("Add")]
         [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse> AddDirAsync(DirInfoDto dirInfoDto)
+        public async Task<ApiResponse<DirInfoDetailDto>> AddDirAsync(DirInfoDetailDto dirInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse(false, "发生错误！");
+            if (userId == null) return new ApiResponse<DirInfoDetailDto>(false, "发生错误！");
             var dirInfo = mapper.Map<DirInfo>(dirInfoDto);
             dirInfo.UserId = (Guid)userId;
             dirInfo.UpdateTime = DateTime.Now;
-            await dirService.InsertAsync(dirInfo,true);
-            return new ApiResponse(true, "添加成功！");
+            var dir = await dirService.InsertAsync(dirInfo,true);
+            return new ApiResponse<DirInfoDetailDto>(true, mapper.Map<DirInfoDetailDto>(dir));
         }
 
         
@@ -89,14 +112,14 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <returns></returns>
         [HttpDelete("Delete/{dirId}")]
         [Authorize(Roles ="Ordinary")]
-        public async Task<ApiResponse> DeleteDir(Guid dirId)
+        public async Task<ApiResponse> DeleteDirAsync(Guid dirId)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             if (userId == null) return new ApiResponse(false, "发生错误!");
             var dirInfos = await dirService.GetListAsync(x => x.UserId == userId);
             var dir = dirInfos.Where(x => x.Id.Equals(dirId)).FirstOrDefault();
             if (dir == null) return new ApiResponse(false, "文件夹不存在！");
-            Merge(dir, dirInfos);
+            dirInfos.Merge(dir);
             try
             {
                 var deleteDirs = new List<DirInfo>();
@@ -117,25 +140,25 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <returns></returns>
         [HttpPut("Edit")]
         [Authorize(Roles ="Ordinary")]
-        public async Task<ApiResponse> EditDir(DirInfoDto dirInfoDto)
+        public async Task<ApiResponse<DirInfoDetailDto>> EditDirAsync(DirInfoDetailDto dirInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse(false, "发生错误");
+            if (userId == null) return new ApiResponse<DirInfoDetailDto>(false, "发生错误");
 
             var dirInfo = await dirService.FindAsync(x => x.Id.Equals(dirInfoDto.Id) && x.UserId.Equals(userId));
-            if (dirInfo == null) return new ApiResponse(false, "未找到");
+            if (dirInfo == null) return new ApiResponse<DirInfoDetailDto>(false, "未找到");
             dirInfo.ParentDirInfoId = dirInfoDto.ParentDirInfoId;
             if(dirInfoDto.ParentDirInfoId != null)
             {
                 var parentDir = await dirService.FindAsync(x => x.Id.Equals(dirInfoDto.ParentDirInfoId) && x.UserId.Equals(userId));
-                if (parentDir == null) return new ApiResponse(false, "父文件夹不存在！");
+                if (parentDir == null) return new ApiResponse<DirInfoDetailDto>(false, "父文件夹不存在！");
                 dirInfo.ParentDirInfo = parentDir;
                 dirInfo.ParentDirInfoId = parentDir.Id;
             }
             dirInfo.DirName = dirInfoDto.DirName;
             dirInfo.UpdateTime = DateTime.Now;
-            await dirService.UpdateAsync(dirInfo, true);
-            return new ApiResponse(true, "更新成功");
+            var dir = await dirService.UpdateAsync(dirInfo, true);
+            return new ApiResponse<DirInfoDetailDto>(true, mapper.Map<DirInfoDetailDto>(dir));
         }
 
         /// <summary>
@@ -147,7 +170,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         [HttpGet("Get/{userId}/Admin")]
         [Authorize(Roles ="Admin")]
         public async Task<ApiResponse<IPagedList<DirInfoDetailDto>>> GetAllDirAsync([FromQuery] QueryParameter queryParameter, Guid userId) =>
-             new ApiResponse<IPagedList<DirInfoDetailDto>>(true, await GetDirInfosByUser(userId, queryParameter));
+             new ApiResponse<IPagedList<DirInfoDetailDto>>(true, await GetDirInfosByUserAsync(userId, queryParameter));
 
         /// <summary>
         /// 获取所有用户的文件夹列表（管理员）
@@ -164,7 +187,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
                 var roots = user.DirInfos.Where(x => x.ParentDirInfoId == null).ToList();
                 foreach (var root in roots)
                 {
-                    Merge(root, user.DirInfos);
+                    user.DirInfos.Merge(root);
                 }
                 user.DirInfos = roots;
             }
@@ -193,32 +216,19 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <param name="userId"></param>
         /// <param name="queryParameter"></param>
         /// <returns></returns>
-        private async Task<IPagedList<DirInfoDetailDto>> GetDirInfosByUser(Guid userId, QueryParameter queryParameter)
+        private async Task<IPagedList<DirInfoDetailDto>> GetDirInfosByUserAsync(Guid userId, QueryParameter queryParameter)
         {
             var dirInfos = await dirService.GetDirDetailListAsync(x => x.UserId.Equals(userId));
             var roots = dirInfos.Where(x => x.ParentDirInfoId == null).Skip(queryParameter.PageIndex * queryParameter.PageSize).Take(queryParameter.PageSize).ToList();
             foreach (var root in roots)
             {
-                Merge(root, dirInfos);
+                roots.Merge(root);
             }
+
             var disInfoDtos = mapper.Map<List<DirInfoDetailDto>>(roots);
             return new PagedList<DirInfoDetailDto>(disInfoDtos, queryParameter.PageIndex, queryParameter.PageSize, default);
         }
 
-        /// <summary>
-        /// 合并
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="dirInfos"></param>
-        private static void Merge(DirInfo parent, IEnumerable<DirInfo> dirInfos)
-        {
-            var children = dirInfos.Where(x => x.ParentDirInfoId == parent.Id);
-            foreach (var child in children)
-            {
-                parent.ChildrenDirInfo.Add(child);
-                Merge(child, dirInfos);
-            }
-        }
 
     }
 }

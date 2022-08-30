@@ -6,6 +6,7 @@
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:prism="http://prismlibrary.com/"
+        xmlns:ext="clr-namespace:AdPang.FileManager.Application_WPF.Extensions"
         Title="MainWindow"
         Width="1280"
         Height="768"
@@ -152,8 +153,8 @@
                     </DockPanel>
                 </materialDesign:ColorZone>
 
-                <!--<ContentControl Grid.Row="1"
-                                prism:RegionManager.RegionName="{x:Static ext:PrismManager.MainViewRegionName}" />-->
+                <ContentControl Grid.Row="1"
+                                prism:RegionManager.RegionName="{x:Static ext:PrismManager.MainViewRegionName}" />
             </Grid>
         </materialDesign:DrawerHost>
     </materialDesign:DialogHost>

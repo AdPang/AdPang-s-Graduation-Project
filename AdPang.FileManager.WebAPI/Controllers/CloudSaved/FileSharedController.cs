@@ -17,7 +17,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
     /// <summary>
     /// 文件分享控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class FileSharedController : ControllerBase
     {
@@ -27,7 +27,6 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         private readonly UserManager<User> userManager;
         private readonly IDirService dirService;
         private readonly IUserPrivateFileService userPrivateFileService;
-
 
         /// <summary>
         /// 构造
@@ -48,51 +47,6 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             this.userPrivateFileService = userPrivateFileService;
         }
 
-        /// <summary>
-        /// 创建分享
-        /// </summary>
-        /// <param name="beSharedInfoId">分享Id</param>
-        /// <param name="isSingleFile">是否是单个文件分享</param>
-        /// <param name="sharedPassword">分享密码</param>
-        /// <param name="sharedDesc">文件分享描述</param>
-        /// <param name="hasExpired">是否有过期时间</param>
-        /// <param name="expiredTime">过期时间(天数)</param>
-        /// <returns></returns>
-        [HttpPost("Add")]
-        [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse<SharedFileInfoDto>> AddFileShared(Guid beSharedInfoId, bool isSingleFile, string? sharedPassword, string? sharedDesc, bool hasExpired, int expiredTime = 0)
-        {
-            var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse<SharedFileInfoDto>(false, "发生错误！");
-            var sharedInfo = new SharedFileInfo
-            {
-                SharedDesc = sharedDesc,
-                HasExpired = hasExpired,
-                ExpiredTime = DateTime.Now.AddDays(expiredTime),
-                CreatTime = DateTime.Now,
-                ShardByUserId = (Guid)userId,
-                SharedPassword = sharedPassword,
-                IsSingleFile = isSingleFile,
-                UpdateTime = DateTime.Now,
-            };
-            if (isSingleFile)
-            {
-                var fileInfo = await userPrivateFileService.FindAsync(x => x.Id.Equals(beSharedInfoId) && userId.Equals(x.UserId));
-                if (fileInfo == null) return new ApiResponse<SharedFileInfoDto>(false, "文件不存在！");
-                sharedInfo.SingleFileInfo = fileInfo;
-                sharedInfo.SingleFileId = fileInfo.Id;
-            }
-            else
-            {
-                var dirInfo = await dirService.FindAsync(x => x.Id.Equals(beSharedInfoId) && userId.Equals(x.UserId));
-                if (dirInfo == null) return new ApiResponse<SharedFileInfoDto>(false, "文件不存在！");
-                sharedInfo.DirInfo = dirInfo;
-                sharedInfo.DirId = dirInfo.Id;
-            }
-            await sharedFileInfoService.InsertAsync(sharedInfo, true);
-            var sharedInfoDto = mapper.Map<SharedFileInfoDto>(sharedInfo);
-            return new ApiResponse<SharedFileInfoDto>(true, sharedInfoDto);
-        }
         /// <summary>
         /// 删除分享信息
         /// </summary>
@@ -148,6 +102,55 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             var dirInfoDto = mapper.Map<DirInfoDetailDto>(dirInfo);
             return new ApiResponse<DirInfoDetailDto>(true, dirInfoDto);
         }
+
+        
+
+        /// <summary>
+        /// 创建分享
+        /// </summary>
+        /// <param name="beSharedInfoId">分享Id</param>
+        /// <param name="isSingleFile">是否是单个文件分享</param>
+        /// <param name="sharedPassword">分享密码</param>
+        /// <param name="sharedDesc">文件分享描述</param>
+        /// <param name="hasExpired">是否有过期时间</param>
+        /// <param name="expiredTime">过期时间(天数)</param>
+        /// <returns></returns>
+        [HttpPost("Add")]
+        [Authorize(Roles = "Ordinary")]
+        public async Task<ApiResponse<SharedFileInfoDto>> AddFileShared(Guid beSharedInfoId, bool isSingleFile, string? sharedPassword, string? sharedDesc, bool hasExpired = true, int expiredTime = 7)
+        {
+            var userId = requestInfoModel.CurrentOperaingUser;
+            if (userId == null) return new ApiResponse<SharedFileInfoDto>(false, "发生错误！");
+            var sharedInfo = new SharedFileInfo
+            {
+                SharedDesc = sharedDesc,
+                HasExpired = hasExpired,
+                ExpiredTime = DateTime.Now.AddDays(expiredTime),
+                CreatTime = DateTime.Now,
+                ShardByUserId = (Guid)userId,
+                SharedPassword = sharedPassword,
+                IsSingleFile = isSingleFile,
+                UpdateTime = DateTime.Now,
+            };
+            if (isSingleFile)
+            {
+                var fileInfo = await userPrivateFileService.FindAsync(x => x.Id.Equals(beSharedInfoId) && userId.Equals(x.UserId));
+                if (fileInfo == null) return new ApiResponse<SharedFileInfoDto>(false, "文件不存在！");
+                sharedInfo.SingleFileInfo = fileInfo;
+                sharedInfo.SingleFileId = fileInfo.Id;
+            }
+            else
+            {
+                var dirInfo = await dirService.FindAsync(x => x.Id.Equals(beSharedInfoId) && userId.Equals(x.UserId));
+                if (dirInfo == null) return new ApiResponse<SharedFileInfoDto>(false, "文件不存在！");
+                sharedInfo.DirInfo = dirInfo;
+                sharedInfo.DirId = dirInfo.Id;
+            }
+            await sharedFileInfoService.InsertAsync(sharedInfo, true);
+            var sharedInfoDto = mapper.Map<SharedFileInfoDto>(sharedInfo);
+            return new ApiResponse<SharedFileInfoDto>(true, sharedInfoDto);
+        }
+
 
         /// <summary>
         /// 删除分享信息（管理员）

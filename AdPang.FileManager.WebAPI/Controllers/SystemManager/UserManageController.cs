@@ -13,7 +13,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
     /// <summary>
     /// 用户管理控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class UserManageController : ControllerBase

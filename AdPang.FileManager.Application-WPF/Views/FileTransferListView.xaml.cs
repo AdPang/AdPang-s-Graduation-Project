@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace AdPang.FileManager.Application_WPF.Views.Notify
+namespace AdPang.FileManager.Application_WPF.Views
 {
     /// <summary>
-    /// ProgressView.xaml 的交互逻辑
+    /// FileTransferListView.xaml 的交互逻辑
     /// </summary>
-    public partial class ProgressView : UserControl
+    public partial class FileTransferListView : UserControl
     {
-        public ProgressView()
+        public FileTransferListView()
         {
             InitializeComponent();
         }

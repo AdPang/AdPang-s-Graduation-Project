@@ -17,8 +17,21 @@ using AdPang.FileManager.Common.Helper.VerifyCode;
 using AdPang.FileManager.Common.Helper.Redis;
 using Microsoft.EntityFrameworkCore.Diagnostics;
 using IGeekFan.AspNetCore.Knife4jUI;
+using Autofac.Core;
+using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 var builder = WebApplication.CreateBuilder(args);
+builder.Services.Configure<FormOptions>(options =>
+{
+    options.ValueLengthLimit = int.MaxValue;
+    options.MultipartBodyLengthLimit = int.MaxValue; // In case of multipart
+});
+builder.Services.Configure<KestrelServerOptions>(options =>
+{
+    options.Limits.MaxRequestBodySize = 1024 * 1024 * 1024;
+    
+});
 #region autoFac
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());
 builder.Host.ConfigureContainer<ContainerBuilder>(builder =>

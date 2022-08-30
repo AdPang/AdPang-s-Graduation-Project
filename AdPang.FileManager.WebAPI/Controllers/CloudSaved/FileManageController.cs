@@ -22,7 +22,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
     /// <summary>
     /// 文件管理控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class FileManageController : ControllerBase
     {
@@ -56,17 +56,39 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         }
 
         /// <summary>
+        /// 删除文件
+        /// </summary>
+        /// <param name="fileId"></param>
+        /// <returns></returns>
+        [HttpDelete("Delete/{fileId}")]
+        [Authorize(Roles = "Ordinary")]
+        public async Task<ApiResponse> DeleteFileInfo(Guid fileId)
+        {
+            var userId = requestInfoModel.CurrentOperaingUser;
+            if (userId == null) return new ApiResponse(false, "发生错误！");
+            var fileInfo = await userPrivateFileService.FindAsync(x => x.Id.Equals(fileId) && userId.Equals(x.UserId));
+            if (fileInfo == null) return new ApiResponse(false, "文件不存在！");
+            var cloudFile = await cloudFileService.FindAsync(x => x.Id.Equals(fileInfo.RealFileInfoId));
+            cloudFile.UserCount--;
+            cloudFile.UpdateTime = DateTime.Now;
+            await userPrivateFileService.DeleteAsync(fileInfo, true);
+            await cloudFileService.UpdateAsync(cloudFile);
+            return new ApiResponse(true, "删除成功！");
+        }
+
+        /// <summary>
         /// 文件上传
         /// </summary>
         /// <param name="files"></param>
         /// <returns></returns>
         [Authorize(Roles = "Ordinary")]
+        [RequestSizeLimit(1073741824)]
         [HttpPost("FileUpload")]
         public async Task<ApiResponse<IEnumerable<KeyValuePair<string, string>>>> UploadFile(IList<IFormFile> files)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             if (userId == null) return new ApiResponse<IEnumerable<KeyValuePair<string, string>>>(false, "发生错误");
-            var keyValue = new List<KeyValuePair<string, string>>();
+            var keyValues = new List<KeyValuePair<string, string>>();
             long size = files.Sum(f => f.Length);
             string webRootPath = hostingEnvironment.WebRootPath;
             string contentRootPath = hostingEnvironment.ContentRootPath;
@@ -77,10 +99,9 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
                 {
                     string fileExt = GetFileExt(formFile.FileName); //文件扩展名，不含“.”
                     long fileSize = formFile.Length; //获得文件大小，以字节为单位
-                    string newFileName = System.Guid.NewGuid().ToString() + "." + fileExt; //随机生成新的文件名
+                    string newFileName = string.IsNullOrEmpty(fileExt) ? System.Guid.NewGuid().ToString() : System.Guid.NewGuid().ToString() + "." + fileExt; //随机生成新的文件名
                     var filePath = contentRootPath + "/upload/" + newFileName;
                     string md5 = string.Empty;
-                    keyValue.Add(new KeyValuePair<string, string>(formFile.FileName, newFileName));
 
                     using (FileStream? stream = new(filePath, FileMode.OpenOrCreate))
                     {
@@ -104,7 +125,11 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
                 }
             }
             await cloudFileService.InsertManyAsync(fileInfoList, true);
-            return new ApiResponse<IEnumerable<KeyValuePair<string,string>>>(true, keyValue);
+            for (int i = 0; i < files.Count; i++)
+            {
+                keyValues.Add(new KeyValuePair<string, string>(fileInfoList[i].Id.ToString(), files[i].FileName));
+            }
+            return new ApiResponse<IEnumerable<KeyValuePair<string,string>>>(true, keyValues);
         }
 
         /// <summary>
@@ -116,16 +141,16 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <returns></returns>
         [Authorize(Roles = "Ordinary")]
         [HttpPost("Add/{fileId}/{dirId}")]
-        public async Task<ApiResponse> AddFileToCloud(Guid fileId,Guid dirId, UserPrivateFileInfoDto  userPrivateFileInfoDto)
+        public async Task<ApiResponse<CloudFileInfoDto>> AddFileToCloud(Guid fileId,Guid dirId, UserPrivateFileInfoDto  userPrivateFileInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse(false, "发生错误！");
+            if (userId == null) return new ApiResponse<CloudFileInfoDto>(false, "发生错误！");
             //查找云盘是否存在文件
             var cloudFile = await cloudFileService.FindAsync(x => x.Id.Equals(fileId));
-            if (cloudFile == null) return new ApiResponse(false, "文件不存在！");
+            if (cloudFile == null) return new ApiResponse<CloudFileInfoDto>(false, "文件不存在！");
             //查找用户是否含有该文件夹！
             var dirInfo = await dirService.FindAsync(x => x.Id.Equals(dirId) && userId.Equals(x.UserId));
-            if (dirInfo == null) return new ApiResponse(false, "文件夹不存在！");
+            if (dirInfo == null) return new ApiResponse<CloudFileInfoDto>(false, "文件夹不存在！");
             var userPrivateFileInfo = mapper.Map<UserPrivateFileInfo>(userPrivateFileInfoDto);
             userPrivateFileInfo.UpdateTime = DateTime.Now;
             //将文件添加到指定目录
@@ -136,7 +161,8 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             //将用户保存文件数量+1
             cloudFile.UserCount++;
             await cloudFileService.UpdateAsync(cloudFile);
-            return new ApiResponse(true, "添加成功！");
+
+            return new ApiResponse<CloudFileInfoDto>(true, mapper.Map<CloudFileInfoDto>(cloudFile));
 
         }
 
@@ -163,26 +189,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             return new ApiResponse(true, "修改完成！");
         }
 
-        /// <summary>
-        /// 删除文件
-        /// </summary>
-        /// <param name="fileId"></param>
-        /// <returns></returns>
-        [HttpDelete("Delete/{fileId}")]
-        [Authorize(Roles= "Ordinary")]
-        public async Task<ApiResponse> DeleteFileInfo(Guid fileId)
-        {
-            var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse(false, "发生错误！");
-            var fileInfo = await userPrivateFileService.FindAsync(x => x.Id.Equals(fileId) && userId.Equals(x.UserId));
-            if (fileInfo == null) return new ApiResponse(false, "文件不存在！");
-            var cloudFile = await cloudFileService.FindAsync(x => x.Id.Equals(fileInfo.RealFileInfoId));
-            cloudFile.UserCount--;
-            cloudFile.UpdateTime = DateTime.Now;
-            await userPrivateFileService.DeleteAsync(fileInfo,true);
-            await cloudFileService.UpdateAsync(cloudFile);  
-            return new ApiResponse(true, "删除成功！");
-        }
+        
 
         /// <summary>
         /// 下载云盘文件
@@ -208,21 +215,6 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             //Console。WriteLine("{0}'s MIME TYPE: {1}", file, contentType);
             return File(stream, contentType, privateFile.FileName);
         }
-
-        //[HttpGet("shared/{fileId}")]
-        //[Authorize(Roles = "Ordinary")]
-        //public async Task<ApiResponse> SharedFileInfo(SharedFileInfoDto sharedFileInfoDto)
-        //{
-        //    var userId = requestInfoModel.CurrentOperaingUser;
-        //    if (userId == null) return new ApiResponse(false, "发生错误");
-
-        //    var fileInfo = await userPrivateFileService.FindAsync(x => x.Id.Equals(sharedFileInfoDto.FileId) && x.UserId.Equals(userId));
-        //    if (fileInfo == null) return new ApiResponse(false, "文件不存在！");
-
-        //    return new ApiResponse(true, "");
-
-        //}
-
 
         /// <summary>
         /// 获取所有用户（包含用户文件信息）
@@ -254,7 +246,6 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             return new ApiResponse<IPagedList<CloudFileInfoDetailDto>>(true, new PagedList<CloudFileInfoDetailDto>(cloudFileInfoDetailDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
         }
 
-
         /// <summary>
         /// 删除文件（管理员）
         /// </summary>
@@ -276,9 +267,6 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         }
 
         
-
-
-
         /// <summary>
         /// 获取文件后缀名
         /// </summary>
@@ -291,7 +279,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
                 var ext = fileName.Split('.');
                 return ext[^1];
             }
-            return fileName;
+            return string.Empty;
         }
     }
 }

@@ -16,7 +16,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
     /// <summary>
     /// 私有文件控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class PrivateFileController : ControllerBase
@@ -81,20 +81,20 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [HttpPut("Edit")]
         [Authorize(Roles="Ordinary")]
-        public async Task<ApiResponse> EditFileInfo(PrivateFileInfoDto privateFileInfoDto)
+        public async Task<ApiResponse<PrivateFileInfoDto>> EditFileInfo(PrivateFileInfoDto privateFileInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse(false, "发生错误");
+            if (userId == null) return new ApiResponse<PrivateFileInfoDto>(false, "发生错误");
             var oldFileInfo = await privateFileService.FindAsync(x => x.UserId.Equals(userId) && x.Id.Equals(privateFileInfoDto.Id));
-            if (oldFileInfo == null) return new ApiResponse(false, "未找到文件信息");
+            if (oldFileInfo == null) return new ApiResponse<PrivateFileInfoDto>(false, "未找到文件信息");
             oldFileInfo.FileLength = privateFileInfoDto.FileLength;
             oldFileInfo.FileName = privateFileInfoDto.FileName;
             oldFileInfo.FilePath = privateFileInfoDto.FilePath;
             oldFileInfo.FileMD5Str = privateFileInfoDto.FileMD5Str;
             oldFileInfo.UpdateTime = DateTime.Now;
             oldFileInfo.FileType = privateFileInfoDto.FileType;
-            await privateFileService.UpdateAsync(oldFileInfo, true);
-            return new ApiResponse(true, "修改完成");
+            var result = await privateFileService.UpdateAsync(oldFileInfo, true);
+            return new ApiResponse<PrivateFileInfoDto>(true, mapper.Map<PrivateFileInfoDto>(result));
         }
 
         /// <summary>
@@ -121,16 +121,16 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [HttpPost("Add")]
         [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse> AddFileInfo(PrivateFileInfoDto privateFileInfoDto)
+        public async Task<ApiResponse<PrivateFileInfoDto>> AddFileInfo(PrivateFileInfoDto privateFileInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             var user = userManager.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();
-            if (userId == null || user == null) return new ApiResponse(false, "发生错误");
+            if (userId == null || user == null) return new ApiResponse<PrivateFileInfoDto>(false, "发生错误");
             var fileInfo = mapper.Map<PrivateFileInfo>(privateFileInfoDto);
             fileInfo.UserId = user.Id;
             fileInfo.UpdateTime = DateTime.Now;
-            await privateFileService.InsertAsync(fileInfo, true);
-            return new ApiResponse(true, "添加成功");
+            var result = await privateFileService.InsertAsync(fileInfo, true);
+            return new ApiResponse<PrivateFileInfoDto>(true, mapper.Map<PrivateFileInfoDto>(result));
         }
 
         /// <summary>
@@ -138,13 +138,13 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// </summary>
         /// <param name="privateFileInfoDtos"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("Adds")]
         [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse> AddFileInfos (IList<PrivateFileInfoDto> privateFileInfoDtos)
+        public async Task<ApiResponse<IList<PrivateFileInfoDto>>> AddFileInfos (IList<PrivateFileInfoDto> privateFileInfoDtos)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             var user = userManager.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();
-            if (userId == null || user == null) return new ApiResponse(false, "发生错误");
+            if (userId == null || user == null) return new ApiResponse<IList<PrivateFileInfoDto>>(false, "发生错误");
             var fileInfos = mapper.Map<List<PrivateFileInfo>>(privateFileInfoDtos);
             fileInfos.ForEach(x =>
             {
@@ -152,7 +152,8 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
                 x.UpdateTime = DateTime.Now;
             });
             await privateFileService.InsertManyAsync(fileInfos, true);
-            return new ApiResponse(true, "添加成功");
+            var results = mapper.Map<IList<PrivateFileInfoDto>>(fileInfos);
+            return new ApiResponse<IList<PrivateFileInfoDto>>(true, results);
         }
 
 

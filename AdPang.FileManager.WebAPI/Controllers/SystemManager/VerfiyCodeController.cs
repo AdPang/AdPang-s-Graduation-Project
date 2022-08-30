@@ -10,7 +10,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
     /// <summary>
     /// 验证码控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class VerfiyCodeController : ControllerBase
     {
@@ -34,7 +34,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// </summary>
         /// <param name="seed"></param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("GetImgVerfiyCode")]
         public ActionResult GetGraphic4VerfiyCode(Guid seed)
         {
             try
@@ -57,7 +57,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <param name="email">邮箱账号</param>
         /// <param name="operaType">操作类型</param>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("GetEmailVerfiyCode")]
         public async Task<ApiResponse> GetMailVerfiyCode(string email, MailMsgOperaType operaType)
         {
             try

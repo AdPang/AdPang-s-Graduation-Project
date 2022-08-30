@@ -14,7 +14,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
     /// <summary>
     /// 角色控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class RoleManageController : ControllerBase
     {

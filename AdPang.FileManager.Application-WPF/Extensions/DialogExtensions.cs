@@ -58,7 +58,7 @@ namespace AdPang.FileManager.Application_WPF.Extensions
         /// <param name="aggregator"></param>
         /// <param name="action"></param>
         public static void ResgiterMessage(this IEventAggregator aggregator,
-            Action<MessageModel> action, string filterName = "Main")
+            Action<MessageModel> action, string filterName = "Main") 
         {
             aggregator.GetEvent<MessageEvent>().Subscribe(action,
                 ThreadOption.PublisherThread, true, (m) =>

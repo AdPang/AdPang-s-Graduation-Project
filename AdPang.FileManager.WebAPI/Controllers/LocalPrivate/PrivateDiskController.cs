@@ -19,7 +19,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
     /// <summary>
     /// 私有硬盘控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     [Authorize]
     public class PrivateDiskController : ControllerBase
@@ -59,6 +59,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
             var diskDtos = mapper.Map<List<PrivateDiskInfoDto>>(diskList);
             return new ApiResponse<PagedList<PrivateDiskInfoDto>>(true, new PagedList<PrivateDiskInfoDto>(diskDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
         }
+
         /// <summary>
         /// 添加硬盘
         /// </summary>
@@ -66,17 +67,18 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [HttpPost("Add")]
         [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse> AddDiskAsync(PrivateDiskInfoDto privateDiskInfoDto)
+        public async Task<ApiResponse<PrivateDiskInfoDto>> AddDiskAsync(PrivateDiskInfoDto privateDiskInfoDto)
         {
             var disk = mapper.Map<PrivateDiskInfo>(privateDiskInfoDto);
             var user = userManager.Users.Where(x => x.Id.Equals(requestInfoModel.CurrentOperaingUser)).FirstOrDefault();
-            if (user == null) return new ApiResponse(false, "发生错误");
+            if (user == null) return new ApiResponse<PrivateDiskInfoDto>(false, "发生错误");
             disk.User = user;
             disk.UserId = user.Id;
             disk.UpdateTime = DateTime.Now;
             var result = await privateDiskService.InsertAsync(disk,true);
-            return new ApiResponse(true, "添加成功");
+            return new ApiResponse<PrivateDiskInfoDto>(true, mapper.Map<PrivateDiskInfoDto>(result));
         }
+
         /// <summary>
         /// 修改硬盘信息
         /// </summary>
@@ -84,18 +86,19 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [HttpPut("Edit")]
         [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse> EditDiskAsync(PrivateDiskInfoDto privateDiskInfoDto)
+        public async Task<ApiResponse<PrivateDiskInfoDto>> EditDiskAsync(PrivateDiskInfoDto privateDiskInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse(false, "发生错误");
+            if (userId == null) return new ApiResponse<PrivateDiskInfoDto>(false, "发生错误");
             var oldDisk = await privateDiskService.FindAsync(x => x.Id.Equals(privateDiskInfoDto.Id) && x.UserId.Equals(userId));
-            if (oldDisk == null) return new ApiResponse(false, "硬盘不存在！");
+            if (oldDisk == null) return new ApiResponse<PrivateDiskInfoDto>(false, "硬盘不存在！");
             oldDisk.UpdateTime = DateTime.Now;
             oldDisk.DiskName = privateDiskInfoDto.DiskName;
             oldDisk.DiskSN = privateDiskInfoDto.DiskSN;
             var result = await privateDiskService.UpdateAsync(oldDisk,true);
-            return new ApiResponse(true, "修改成功");
+            return new ApiResponse<PrivateDiskInfoDto>(true, mapper.Map<PrivateDiskInfoDto>(result));
         }
+
         /// <summary>
         /// 删除硬盘信息
         /// </summary>
@@ -112,6 +115,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
             await privateDiskService.DeleteAsync(disk,true);
             return new ApiResponse(true, "删除成功！");
         }
+
         /// <summary>
         /// 删除硬盘信息（管理员）
         /// </summary>

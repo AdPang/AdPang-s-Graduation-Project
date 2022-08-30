@@ -1,0 +1,18 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+	<ItemGroup>
+		<PackageReference Include="Microsoft.AspNet.WebApi.Client" Version="5.2.9" />
+		<PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
+		<PackageReference Include="RestSharp" Version="106.12.0" />
+	</ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\AdPang.FileManager.Shared\AdPang.FileManager.Shared.csproj" />
+		<ProjectReference Include="..\AdPang.FileManager.WpfSharedServices\AdPang.FileManager.WpfSharedServices.csproj" />
+	</ItemGroup>
+
+</Project>

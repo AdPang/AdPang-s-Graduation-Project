@@ -13,7 +13,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
     /// <summary>
     /// 验证控制器
     /// </summary>
-    [Route("api/[controller]/[action]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class OauthController : ControllerBase
     {
@@ -22,6 +22,13 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
 
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
+        /// <summary>
+        /// 构造
+        /// </summary>
+        /// <param name="userManager"></param>
+        /// <param name="roleManager"></param>
+        /// <param name="logger"></param>
+        /// <param name="mapper"></param>
         public OauthController(UserManager<User> userManager, RoleManager<Role> roleManager, ILogger<OauthController> logger, IMapper mapper)
         {
             this.userManager = userManager;
@@ -33,19 +40,20 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <summary>
         /// 用户登录 （用户名密码登录）
         /// </summary>
-        /// <param name="userDto"></param>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
         /// <returns></returns>
-        [HttpGet]
-        public async Task<ApiResponse> Auth(UserDto userDto)
+        [HttpGet("Login")]
+        public async Task<ApiResponse<AuthDto>> Auth(string username,string password)
         {
-            if (string.IsNullOrWhiteSpace(userDto.UserName) || string.IsNullOrWhiteSpace(userDto.Password))
-                return new ApiResponse(false, "用户名密码为空！");
-            var user = await userManager.FindByNameAsync(userDto.UserName);
-            if (user == null) return new ApiResponse(false, "用户名不存在！");
-            var checkUserResult = await userManager.CheckPasswordAsync(user, userDto.Password);
-            if (!checkUserResult) return new ApiResponse(false, "用户名或密码错误！");
+            if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
+                return new ApiResponse<AuthDto>(false, "用户名密码为空！");
+            var user = await userManager.FindByNameAsync(username);
+            if (user == null) return new ApiResponse<AuthDto>(false, "用户名不存在！");
+            var checkUserResult = await userManager.CheckPasswordAsync(user, password);
+            if (!checkUserResult) return new ApiResponse<AuthDto>(false, "用户名或密码错误！");
 
-            if (await userManager.IsLockedOutAsync(user)) return new ApiResponse(false, $"用户已被锁定！解锁时间为：{user.LockoutEnd}");
+            if (await userManager.IsLockedOutAsync(user)) return new ApiResponse<AuthDto>(false, $"用户已被锁定！解锁时间为：{user.LockoutEnd}");
 
             var claims = new List<Claim>(new Claim[]
             {
@@ -57,7 +65,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             {
                 claims.Add(new Claim(ClaimTypes.Role, role));
             }
-            return new ApiResponse(true, JwtHelper.IssueJwt(claims));
+            return new ApiResponse<AuthDto>(true, new AuthDto { IsSuccess = true, JwtStr = JwtHelper.IssueJwt(claims), UserName = username });
         }
 
         /// <summary>
@@ -65,7 +73,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// </summary>
         /// <param name="userDto"></param>
         /// <returns></returns>
-        [HttpPost]
+        [HttpPost("Register")]
         public async Task<ApiResponse> Register(UserDto userDto)
         {
             var mapperUser = _mapper.Map<User>(userDto);

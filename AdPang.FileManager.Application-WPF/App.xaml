@@ -10,8 +10,8 @@
                                              PrimaryColor="Teal"
                                              SecondaryColor="Lime" />
                 <ResourceDictionary Source="pack://application:,,,/MaterialDesignThemes.Wpf;component/Themes/MaterialDesignTheme.Defaults.xaml" />
-            </ResourceDictionary.MergedDictionaries>
 
+            </ResourceDictionary.MergedDictionaries>
             <Style x:Key="MyListBoxItemStyle"
                    TargetType="ListBoxItem">
                 <Setter Property="MinHeight"
@@ -57,6 +57,8 @@
                     </Setter.Value>
                 </Setter>
             </Style>
+            
         </ResourceDictionary>
     </Application.Resources>
+
 </prism:PrismApplication>

@@ -17,17 +17,21 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.EntityFr
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.Models", "AdPang.FileManager.Models\AdPang.FileManager.Models.csproj", "{ED3E5619-A3FA-4D26-A1C2-A36F2753B0C5}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Common", "AdPang.FileManager.Common\AdPang.FileManager.Common.csproj", "{67ED874A-58D0-457B-B543-A2BC8390CC00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.Common", "AdPang.FileManager.Common\AdPang.FileManager.Common.csproj", "{67ED874A-58D0-457B-B543-A2BC8390CC00}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Extensions", "AdPang.FileManager.Extensions\AdPang.FileManager.Extensions.csproj", "{98719C4B-0265-46A0-97B0-5652A22D178C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.Extensions", "AdPang.FileManager.Extensions\AdPang.FileManager.Extensions.csproj", "{98719C4B-0265-46A0-97B0-5652A22D178C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Repositories", "AdPang.FileManager.Repositories\AdPang.FileManager.Repositories.csproj", "{FDCD9C20-F13A-4268-B445-CF69367C7441}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.Repositories", "AdPang.FileManager.Repositories\AdPang.FileManager.Repositories.csproj", "{FDCD9C20-F13A-4268-B445-CF69367C7441}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.IRepositories", "AdPang.FileManager.IRepositories\AdPang.FileManager.IRepositories.csproj", "{BFA2F31B-5463-431E-AAB2-CF55AD4143E0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.IRepositories", "AdPang.FileManager.IRepositories\AdPang.FileManager.IRepositories.csproj", "{BFA2F31B-5463-431E-AAB2-CF55AD4143E0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.Services", "AdPang.FileManager.Services\AdPang.FileManager.Services.csproj", "{2C69C3E9-A4EC-435C-9381-0B335625B49C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.Services", "AdPang.FileManager.Services\AdPang.FileManager.Services.csproj", "{2C69C3E9-A4EC-435C-9381-0B335625B49C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AdPang.FileManager.IServices", "AdPang.FileManager.IServices\AdPang.FileManager.IServices.csproj", "{3BB392E0-10C6-406C-955C-E82196D40A24}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.IServices", "AdPang.FileManager.IServices\AdPang.FileManager.IServices.csproj", "{3BB392E0-10C6-406C-955C-E82196D40A24}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HttpRequestClient", "HttpRequestClient\HttpRequestClient.csproj", "{4FD324EE-439A-4E0D-BEC1-3C783D602022}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AdPang.FileManager.WpfSharedServices", "AdPang.FileManager.WpfSharedServices\AdPang.FileManager.WpfSharedServices.csproj", "{2888817D-BFAE-4CDF-92A1-457F9DF53106}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -79,6 +83,14 @@ Global
 		{3BB392E0-10C6-406C-955C-E82196D40A24}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3BB392E0-10C6-406C-955C-E82196D40A24}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3BB392E0-10C6-406C-955C-E82196D40A24}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4FD324EE-439A-4E0D-BEC1-3C783D602022}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4FD324EE-439A-4E0D-BEC1-3C783D602022}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4FD324EE-439A-4E0D-BEC1-3C783D602022}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4FD324EE-439A-4E0D-BEC1-3C783D602022}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2888817D-BFAE-4CDF-92A1-457F9DF53106}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2888817D-BFAE-4CDF-92A1-457F9DF53106}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2888817D-BFAE-4CDF-92A1-457F9DF53106}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2888817D-BFAE-4CDF-92A1-457F9DF53106}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -94,6 +106,8 @@ Global
 		{BFA2F31B-5463-431E-AAB2-CF55AD4143E0} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
 		{2C69C3E9-A4EC-435C-9381-0B335625B49C} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
 		{3BB392E0-10C6-406C-955C-E82196D40A24} = {CA911BB0-A059-41C2-BF27-C4A3F1BC795F}
+		{4FD324EE-439A-4E0D-BEC1-3C783D602022} = {866C21B9-EDD5-43D7-8AF3-C1C060103A3F}
+		{2888817D-BFAE-4CDF-92A1-457F9DF53106} = {866C21B9-EDD5-43D7-8AF3-C1C060103A3F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {CD3EA5D5-7245-468B-83F9-E0C56C3E27A7}

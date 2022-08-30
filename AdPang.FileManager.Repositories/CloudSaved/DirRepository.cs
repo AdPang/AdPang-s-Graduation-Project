@@ -20,7 +20,7 @@ namespace AdPang.FileManager.Repositories.CloudSaved
 
         public async Task<IList<DirInfo>> GetDirDetailListAsync(Expression<Func<DirInfo, bool>> predicate)
         {
-            return await DbContext().DirInfos.Where(predicate).Include(x => x.ChildrenFileInfo)/*.ThenInclude(x => x.RealFileInfo)*/.ToListAsync();
+            return await DbContext().DirInfos.Where(predicate).Include(x => x.ChildrenFileInfo).ThenInclude(x => x.RealFileInfo).ToListAsync();
             
         }
 
