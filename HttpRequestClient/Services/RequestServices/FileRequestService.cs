@@ -24,10 +24,12 @@ namespace HttpRequestClient.Services.RequestServices
 
         public async Task<ApiResponse<CloudFileInfoDto>> AddFileToCloud(Guid fileId, Guid dirId, UserPrivateFileInfoDto userPrivateFileInfoDto)
         {
-            BaseRequest request = new();
-            request.Method = RestSharp.Method.POST;
-            request.Route = $"api/{serviceName}/add/{fileId}/{dirId}";
-            request.Parameter = userPrivateFileInfoDto;
+            BaseRequest request = new()
+            {
+                Method = RestSharp.Method.POST,
+                Route = $"api/{serviceName}/add/{fileId}/{dirId}",
+                Parameter = userPrivateFileInfoDto
+            };
             return await client.ExecuteAsync<CloudFileInfoDto>(request);
 
         }
@@ -90,6 +92,17 @@ namespace HttpRequestClient.Services.RequestServices
                 return new ApiResponse<IEnumerable<KeyValuePair<string, string>>>(false, e.Message);
             }
 
+        }
+
+        public async Task<ApiResponse<UserPrivateFileInfoDto>> UpdateFileInfo(Guid dirId, UserPrivateFileInfoDto userPrivateFileInfoDetailDto)
+        {
+            BaseRequest request = new()
+            {
+                Method = RestSharp.Method.PUT,
+                Route = $"api/{serviceName}/Edit/{dirId}",
+                Parameter = userPrivateFileInfoDetailDto
+            };
+            return await client.ExecuteAsync<UserPrivateFileInfoDto>(request);
         }
 
     }

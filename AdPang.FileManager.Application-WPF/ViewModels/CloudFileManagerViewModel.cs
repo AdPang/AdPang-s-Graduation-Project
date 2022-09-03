@@ -31,6 +31,8 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
     {
         private readonly IUserCloudDirInfoRequestService userCloudDirInfoRequestService;
         private readonly IDialogHostService dialogHostService;
+        private readonly IFileRequestService fileRequestService;
+        private readonly IRegionManager regionManager;
 
         #region 指令
         public DelegateCommand<string> CommandExecute { get; set; }
@@ -51,12 +53,12 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         public int SelectedDirIndex
         {
             get { return selectedDirIndex; }
-            set { selectedDirIndex = value;RaisePropertyChanged(); }
+            set { selectedDirIndex = value; RaisePropertyChanged(); }
         }
         public int SelectedFileIndex
         {
             get { return selectedFileIndex; }
-            set { selectedFileIndex = value;RaisePropertyChanged(); }
+            set { selectedFileIndex = value; RaisePropertyChanged(); }
         }
 
         public DirInfoDetailDto NavSelectedItem
@@ -105,19 +107,22 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         #endregion
 
 
-        public CloudFileManagerViewModel(IContainerProvider containerProvider, IUserCloudDirInfoRequestService userCloudDirInfoRequestService, IDialogHostService dialogHostService, FileTransferListViewModel fileTransferListViewModel) : base(containerProvider)
+        public CloudFileManagerViewModel(IContainerProvider containerProvider, IUserCloudDirInfoRequestService userCloudDirInfoRequestService, IDialogHostService dialogHostService, IFileRequestService fileRequestService, IRegionManager regionManager) : base(containerProvider)
         {
             //ViewModelLocationProvider.Register<FileTransferListView, FileTransferListViewModel>();
 
             this.userCloudDirInfoRequestService = userCloudDirInfoRequestService;
             this.dialogHostService = dialogHostService;
+            this.fileRequestService = fileRequestService;
+            this.regionManager = regionManager;
             //regionManager.RegisterViewWithRegion("FileTransferListView", typeof(FileTransferListView));
             //var a = regionManager.RegisterViewWithRegion<FileTransferListView>("");
             CommandExecute = new DelegateCommand<string>(Execute);
             SelectedItemChangedCommand = new DelegateCommand<DirInfoDetailDto>(ChangeHandler);
             NavClickCommand = new DelegateCommand(NavClickMethod);
-            
+
             GetDirInfo();
+
 
         }
 
@@ -133,7 +138,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 CurrentSelectedItem = dirTree;
         }
 
-        private void Execute(string para)
+        private async void Execute(string para)
         {
             switch (para)
             {
@@ -141,7 +146,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                     AddFile();
                     break;
                 case "EditFile"://编辑文件
-                    EditFile();
+                    await EditFile();
                     break;
                 case "DeleteFile"://删除文件
                     DeleteFile();
@@ -161,19 +166,78 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 case "DownloadFile":
                     DownloadFile();
                     break;
+                case "Refresh":
+                    RefreshModel();
+                    break;
+                case "GotoTransferView":
+                    GotoTransferView();
+                    break;
                 default:
                     break;
             }
         }
 
+        private void GotoTransferView()
+        {
+            regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("FileTransferListView");
+        }
+
+        private Guid? lastDirId = null;
+        /// <summary>
+        /// 刷新
+        /// </summary>
+        private void RefreshModel()
+        {
+            lastDirId = CurrentSelectedItem.Id;
+            if (lastDirId == null) return;
+            GetDirInfo();
+        }
+        /// <summary>
+        /// 下载文件
+        /// </summary>
         private void DownloadFile()
         {
+            var file = CurrentSelectedItem.ChildrenFileInfo[SelectedFileIndex];
+            if (file == null || file.Id == null)
+            {
+                _aggregator.SendMessage("发生错误，请刷新后再试试！", "DirView");
+                return;
+            }
             _aggregator.SendPersonMessage(new Common.Events.FileTransferMessage
             {
                 UserPrivateFileInfo = CurrentSelectedItem.ChildrenFileInfo[SelectedFileIndex]
-            }, "Download") ;
+            }, "Download");
         }
+        /// <summary>
+        /// 删除文件
+        /// </summary>
+        private async void DeleteFile()
+        {
+            try
+            {
+                var dialogResult = await dialogHostService.Question("温馨提示", "确认删除文件?");
+                if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
+                UpdateLoading(true);
+                if (SelectedFileIndex == -1) { _aggregator.SendMessage("未选中文件夹", "DirView"); return; }
+                var deleteFile = CurrentSelectedItem.ChildrenFileInfo[SelectedFileIndex];
+                var result = await fileRequestService.DeleteAsync((Guid)deleteFile.Id);
+                if (!result.Status) { _aggregator.SendMessage(result.Message, "DirView"); return; }
+                else
+                {
+                    var parentDir = FindChildren(DirInfoDetailDtos.FirstOrDefault(), (Guid)CurrentSelectedItem.Id);
+                    parentDir.ChildrenFileInfo.Remove(deleteFile);
+                }
+            }
+            catch (Exception e)
+            {
 
+                _aggregator.SendMessage("发生错误：" + e.Message);
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
+        }
         /// <summary>
         /// 删除文件夹
         /// </summary>
@@ -184,7 +248,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 var dialogResult = await dialogHostService.Question("温馨提示", "确认删除文件夹?");
                 if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
                 UpdateLoading(true);
-                if (SelectedDirIndex == -1 ) { _aggregator.SendMessage("未选中文件夹", "DirView"); return; }
+                if (SelectedDirIndex == -1) { _aggregator.SendMessage("未选中文件夹", "DirView"); return; }
                 var deleteDir = CurrentSelectedItem.ChildrenDirInfo[SelectedDirIndex];
                 var result = await userCloudDirInfoRequestService.DeleteAsync((Guid)deleteDir.Id);
                 if (!result.Status) { _aggregator.SendMessage(result.Message, "DirView"); return; }
@@ -202,7 +266,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             {
                 UpdateLoading(false);
             }
-            
+
         }
         /// <summary>
         /// 重命名文件夹
@@ -223,8 +287,8 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 param.Add("Value", dir);
             }
             else
-            { 
-                _aggregator.SendMessage("请选择文件夹", "DirView"); 
+            {
+                _aggregator.SendMessage("请选择文件夹", "DirView");
                 return;
             }
             var dialogResult = await dialogHostService.ShowDialog("OperaDirInfoView", param);
@@ -233,7 +297,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 if (dialogResult.Result == ButtonResult.OK)
                 {
                     var editDir = dialogResult.Parameters.GetValue<DirInfoDetailDto>("Value");
-                    if(editDir !=null && editDir.Id != null)
+                    if (editDir != null && editDir.Id != null)
                     {
                         var updateResult = await userCloudDirInfoRequestService.UpdateAsync(editDir);
                         if (!updateResult.Status)
@@ -302,32 +366,77 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 _aggregator.SendMessage("发生错误：" + ex.Message, "DirView");
             }
         }
-
+        /// <summary>
+        /// 添加文件
+        /// </summary>
         private void AddFile()
         {
+            if (CurrentSelectedItem.ParentDirInfoId == null)
+            {
+                _aggregator.SendMessage("无法在根目录下添加文件！", "DirView");
+                return;
+            }
             var filePath = DirSelectorDialogHelper.GetPathByFileBrowserDialog();
             if (string.IsNullOrEmpty(filePath)) return;
 
-            if(CurrentSelectedItem.ParentDirInfoId == null)
-            {
-                _aggregator.SendMessage("无法再根目录下添加文件！", "DirView");
-            }
+
 
             _aggregator.SendPersonMessage(new FileTransferMessage
             {
                 CurrentDirId = (Guid)CurrentSelectedItem.Id,
                 FilePath = filePath
-
             }, "Upload");
+            var file = new System.IO.FileInfo(filePath);
+            CurrentSelectedItem.ChildrenFileInfo.Add(new UserPrivateFileInfoDto
+            {
+                FileName = file.Name,
+                RealFileInfo = new Shared.Dtos.CloudSavedDto.CloudFileInfo.CloudFileInfoDto
+                {
+                    FileType = file.Extension,
+                    FileLength = file.Length,
+                    UpdateTime = DateTime.Now,
+                }
+            });
+        }
+        /// <summary>
+        /// 编辑文件
+        /// </summary>
+        private async Task EditFile()
+        {
+            if (CurrentSelectedItem.ParentDirInfoId == null || CurrentSelectedItem.Id == null) return;
+            var file = CurrentSelectedItem.ChildrenFileInfo[SelectedFileIndex];
+            if (file == null || file.Id == null)
+            {
+                _aggregator.SendMessage("请等待文件上传完毕后刷新后刷新！", "DirView");
+                return;
+            }
+
+            DialogParameters param = new();
+            param.Add("Value", file);
+            var dialogResult = await dialogHostService.ShowDialog("OperaFileInfoView", param);
+            try
+            {
+                if (dialogResult.Result == ButtonResult.OK)
+                {
+                    var editFile = dialogResult.Parameters.GetValue<UserPrivateFileInfoDto>("Value");
+
+                    var updateResult = await fileRequestService.UpdateFileInfo((Guid)CurrentSelectedItem.Id, editFile);
+                    if (!updateResult.Status)
+                    {
+                        _aggregator.SendMessage("更新失败：" + updateResult.Message, "DirView");
+                        return;
+                    }
+                    CurrentSelectedItem.ChildrenFileInfo[SelectedFileIndex].FileName = updateResult.Result.FileName;
+                }
+            }
+            catch (Exception e)
+            {
+                _aggregator.SendMessage("发生错误：" + e.Message, "DirView");
+            }
+
         }
 
-        private void EditFile()
-        {
-        }
 
-        private void DeleteFile()
-        {
-        }
 
         private void GotoUpDir()
         {
@@ -336,7 +445,8 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 var parentDir = FindChildren(DirInfoDetailDtos.FirstOrDefault(), (Guid)CurrentSelectedItem.ParentDirInfoId);
                 if (parentDir == null)
                 {
-                    _aggregator.SendMessage("发生错误请刷新页面", "DirView");
+                    _aggregator.SendMessage("请等待上传完毕后在操作！", "DirView");
+                    RefreshModel();
                     return;
                 }
                 CurrentSelectedItem = parentDir;
@@ -372,7 +482,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             return null;
         }
 
-        
+
 
         private async void GetDirInfo()
         {
@@ -390,7 +500,18 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             {
                 DirInfoDetailDtos.Clear();
                 DirInfoDetailDtos.Add(requsetResult.Result);
-                CurrentSelectedItem = DirInfoDetailDtos.FirstOrDefault();
+                if (lastDirId != null)
+                {
+                    var lastDir = FindChildren(DirInfoDetailDtos.FirstOrDefault(), (Guid)lastDirId);
+                    if (lastDir != null)
+                        CurrentSelectedItem = lastDir;
+                    else
+                        CurrentSelectedItem = DirInfoDetailDtos.FirstOrDefault();
+                }
+                else
+                {
+                    CurrentSelectedItem = DirInfoDetailDtos.FirstOrDefault();
+                }
                 UpdateNavDirInfo();
                 OperaVisibility = Visibility.Visible;
             }

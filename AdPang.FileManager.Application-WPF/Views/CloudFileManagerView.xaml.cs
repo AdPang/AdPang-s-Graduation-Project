@@ -32,5 +32,22 @@ namespace AdPang.FileManager.Application_WPF.Views
                 DirViewSnackBar.MessageQueue.Enqueue(arg.Message);
             }, "DirView");
         }
+
+        private void ScrollViewer_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+            var eventArg = new MouseWheelEventArgs(e.MouseDevice, e.Timestamp, e.Delta);
+            eventArg.RoutedEvent = UIElement.MouseWheelEvent;
+            eventArg.Source = e.Source;
+
+            ScrollViewer scv = (ScrollViewer)sender;
+            scv.RaiseEvent(eventArg);
+            e.Handled = true;
+        }
+
+        private void ListView_PreviewMouseWheel(object sender, MouseWheelEventArgs e)
+        {
+
+            ScrollViewer_PreviewMouseWheel(scrollViewer, e);
+        }
     }
 }

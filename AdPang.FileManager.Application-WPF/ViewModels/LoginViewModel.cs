@@ -38,11 +38,11 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 
         public void OnDialogOpened(IDialogParameters parameters)
         {
-            
+
         }
         #region LogicBusiness
 
-        public LoginViewModel(IAuthModel authModel,IAuthRequestService authRequestService, IEventAggregator eventAggregator)
+        public LoginViewModel(IAuthModel authModel, IAuthRequestService authRequestService, IEventAggregator eventAggregator)
         {
             ExecuteCommand = new DelegateCommand<string>(Execute);
             this.authModel = authModel;

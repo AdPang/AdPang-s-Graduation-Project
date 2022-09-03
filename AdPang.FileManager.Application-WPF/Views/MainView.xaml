@@ -20,6 +20,7 @@
         TextOptions.TextFormattingMode="Ideal"
         TextOptions.TextRenderingMode="Auto"
         WindowStartupLocation="CenterScreen"
+        Closing="Window_Closing"
         WindowStyle="None"
         mc:Ignorable="d">
     <materialDesign:DialogHost DialogTheme="Inherit"

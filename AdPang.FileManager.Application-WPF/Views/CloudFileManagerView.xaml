@@ -9,6 +9,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:domain="clr-namespace:AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;assembly=AdPang.FileManager.Shared"
              xmlns:cv="clr-namespace:AdPang.FileManager.Application_WPF.Common.Converters.CloudFileManagerViewConverters"
+             xmlns:commonCv="clr-namespace:AdPang.FileManager.Application_WPF.Common.Converters"
              xmlns:viewmodels="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels"
              d:DataContext="{d:DesignInstance Type=viewmodels:CloudFileManagerViewModel}"
              mc:Ignorable="d"
@@ -17,6 +18,9 @@
              d:DesignWidth="800">
     <UserControl.Resources>
         <cv:SelectedDirInfoToVisibilityConverter x:Key="SelectedDirInfoToVisibility" />
+        <cv:SelectedDirElementToVisibilityConverter x:Key="SelectedDirElementToVisibility" />
+        <commonCv:IntByteLengthToOtherLengthConvert x:Key="IntByteLengthToOtherLength" />
+        <commonCv:DataTimeToStringConvert x:Key="DataTimeToString" />
     </UserControl.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
@@ -34,6 +38,29 @@
                      MessageQueue="{md:MessageQueue}"
                      Grid.ColumnSpan="2"
                      Grid.Row="0" />
+
+        <Border Grid.Row="0"
+                Grid.ColumnSpan="2"
+                Margin="10"
+                CornerRadius="20"
+                BorderBrush="{DynamicResource  MaterialDesignLightSeparatorBackground}"
+                BorderThickness="1,1,1,1">
+            <Border.Background>
+                <SolidColorBrush Opacity="0.18"
+                                 Color="{DynamicResource MaterialDesignShadow}"></SolidColorBrush>
+            </Border.Background>
+        </Border>
+
+        <Border Grid.Row="1"
+                Margin="10,0,0,10"
+                BorderBrush="{DynamicResource  MaterialDesignLightSeparatorBackground}"
+                CornerRadius="15"
+                BorderThickness="1,1,1,1">
+            <Border.Background>
+                <SolidColorBrush Opacity="0.18"
+                                 Color="{DynamicResource MaterialDesignShadow}"></SolidColorBrush>
+            </Border.Background>
+        </Border>
 
         <!--操作栏-->
         <StackPanel Grid.Column="0"
@@ -82,8 +109,15 @@
             <StackPanel Grid.Row="1"
                         Margin="0,100"
                         VerticalAlignment="Center"
-                        HorizontalAlignment="Center"
-                        Visibility="{Binding CurrentSelectedItem,Converter={StaticResource SelectedDirInfoToVisibility}}">
+                        HorizontalAlignment="Center">
+                <!--Visibility="{Binding CurrentSelectedItem.ChildrenDirInfo.Count,Mode=TwoWay,Converter={StaticResource SelectedDirInfoToVisibility}}"-->
+
+                <StackPanel.Visibility>
+                    <MultiBinding Converter="{StaticResource SelectedDirElementToVisibility}">
+                        <Binding Path="CurrentSelectedItem.ChildrenDirInfo.Count" />
+                        <Binding Path="CurrentSelectedItem.ChildrenFileInfo.Count" />
+                    </MultiBinding>
+                </StackPanel.Visibility>
                 <Image Source="/Images/wind.png"
                        Width="120"
                        Height="120" />
@@ -93,97 +127,148 @@
                            FontSize="18" />
             </StackPanel>
 
-            <!--文件夹列表-->
-            <ListView ItemsSource="{Binding CurrentSelectedItem.ChildrenDirInfo}"
-                      Margin="5,0,5,0"
-                      Width="auto"
-                      Name="DirListView"
-                      SelectedIndex="{Binding SelectedDirIndex}">
-                <ListView.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="重命名"
-                                  Command="{Binding CommandExecute}"
-                                  CommandParameter="EditDir" />
-                        <MenuItem Header="删除文件夹"
-                                  Command="{Binding CommandExecute}"
-                                  CommandParameter="DeleteDir" />
-                    </ContextMenu>
-                </ListView.ContextMenu>
-                <i:Interaction.Triggers>
-                    <i:EventTrigger EventName="MouseDoubleClick">
-                        <i:InvokeCommandAction Command="{Binding Path=SelectedItemChangedCommand}"
-                                               CommandParameter="{Binding ElementName=DirListView, Path=SelectedItem}" />
-                    </i:EventTrigger>
-                </i:Interaction.Triggers>
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <TextBlock  Margin="5,10,5,5"
-                                    Height="23"
-                                    Grid.Column="0"
-                                    Text="{Binding DirName}" />
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
-            </ListView>
-            <!--文件列表-->
-            <ListView ItemsSource="{Binding CurrentSelectedItem.ChildrenFileInfo}"
-                      Margin="5,0,5,0"
-                      Width="auto"
-                      SelectedIndex="{Binding SelectedFileIndex}">
-                
-                <ListBox.ItemTemplate>
-                    <DataTemplate>
-                        <Border BorderThickness="0,0,0,1"
-                                BorderBrush="#FFB4A1A1"
-                                Width="700">
-                            <Grid Name="grid1">
-                                <Grid.ColumnDefinitions>
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                    <ColumnDefinition Width="1*" />
-                                </Grid.ColumnDefinitions>
-                                <TextBlock  Margin="5,10,5,5"
-                                            Height="23"
-                                            Grid.Column="0"
-                                            Text="{Binding FileName}" />
-                                <TextBlock  Margin="5,10,5,5"
-                                            Height="23"
-                                            Grid.Column="1"
-                                            Text="{Binding RealFileInfo.FileLength}" />
-                                <TextBlock  Margin="5,10,5,5"
-                                            Height="23"
-                                            Grid.Column="2"
-                                            Text="{Binding RealFileInfo.FileType}" />
-                                <TextBlock  Margin="5,10,5,5"
-                                            Height="23"
-                                            Grid.Column="3"
-                                            Text="{Binding RealFileInfo.UpdateTime}" />
-                            </Grid>
-                        </Border>
-                    </DataTemplate>
-                </ListBox.ItemTemplate>
+            <ScrollViewer VerticalScrollBarVisibility="Auto"
+                          HorizontalScrollBarVisibility="Auto"
+                          PreviewMouseWheel="ScrollViewer_PreviewMouseWheel"
+                          MaxHeight="600"
+                          x:Name="scrollViewer">
+                <ScrollViewer.Content>
+                    <StackPanel Orientation="Vertical">
+                        <!--文件夹列表-->
+                        <ListView ItemsSource="{Binding CurrentSelectedItem.ChildrenDirInfo}"
+                                  Margin="5,0,5,0"
+                                  Width="auto"
+                                  PreviewMouseWheel="ListView_PreviewMouseWheel"
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                  Name="DirListView"
+                                  SelectedIndex="{Binding SelectedDirIndex}">
+                            <ListView.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="重命名"
+                                              Command="{Binding CommandExecute}"
+                                              CommandParameter="EditDir" />
+                                    <MenuItem Header="删除文件夹"
+                                              Command="{Binding CommandExecute}"
+                                              CommandParameter="DeleteDir" />
+                                </ContextMenu>
+                            </ListView.ContextMenu>
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseDoubleClick">
+                                    <i:InvokeCommandAction Command="{Binding Path=SelectedItemChangedCommand}"
+                                                           CommandParameter="{Binding ElementName=DirListView, Path=SelectedItem}" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="30" />
+                                            <ColumnDefinition />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBlock VerticalAlignment="Center"
+                                                   Grid.Column="0">
+                                <materialDesign:PackIcon Kind="Folder" />
+                                        </TextBlock>
 
-                <ListBox.ContextMenu>
-                    <ContextMenu>
-                        <MenuItem Header="下载文件"
-                                  Command="{Binding CommandExecute}"
-                                  CommandParameter="DownloadFile" />
-                        <MenuItem Header="重命名"
-                                  Command="{Binding CommandExecute}"
-                                  CommandParameter="EditFile" />
-                        <MenuItem Header="删除文件"
-                                  Command="{Binding CommandExecute}"
-                                  CommandParameter="DeleteFile" />
-                    </ContextMenu>
-                </ListBox.ContextMenu>
-            </ListView>
-            
+                                        <DockPanel LastChildFill="False"
+                                                   Grid.Column="1">
+                                            <TextBlock  Margin="5,10,5,5"
+                                                        Height="23"
+                                                        Grid.Column="1"
+                                                        Text="{Binding DirName}"
+                                                        MinWidth="450"
+                                                        FontWeight="Bold"
+                                                        DockPanel.Dock="Left" />
+                                            <TextBlock Text="文件夹"
+                                                       VerticalAlignment="Center"
+                                                       HorizontalAlignment="Center"
+                                                       Grid.Column="2"
+                                                       FontSize="12"
+                                                       DockPanel.Dock="Right" />
+
+                                        </DockPanel>
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListView>
+                        <!--文件列表-->
+                        <ListView ItemsSource="{Binding CurrentSelectedItem.ChildrenFileInfo}"
+                                  Margin="5,0,5,0"
+                                  Width="auto"
+                                  PreviewMouseWheel="ListView_PreviewMouseWheel"
+                                  ScrollViewer.VerticalScrollBarVisibility="Disabled"
+                                  SelectedIndex="{Binding SelectedFileIndex}">
+
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Border BorderThickness="0,0,0,1"
+                                            BorderBrush="#FFB4A1A1"
+                                            Width="900">
+                                        <Grid>
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="30" />
+                                                <ColumnDefinition />
+                                            </Grid.ColumnDefinitions>
+
+                                            <TextBlock VerticalAlignment="Center"
+                                                       Grid.Column="0">
+                                        <materialDesign:PackIcon Kind="File" />
+                                            </TextBlock>
+
+                                            <Grid Name="grid1"
+                                                  Grid.Column="1">
+                                                <Grid.ColumnDefinitions>
+                                                    <ColumnDefinition Width="3*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1*" />
+                                                    <ColumnDefinition Width="1.5*" />
+                                                </Grid.ColumnDefinitions>
+                                                <TextBlock  Margin="5,10,5,5"
+                                                            Height="23"
+                                                            Grid.Column="0"
+                                                            Text="{Binding FileName}" />
+                                                <TextBlock  Margin="5,10,5,5"
+                                                            Height="23"
+                                                            Grid.Column="1"
+                                                            Text="{Binding RealFileInfo.FileLength,Converter={StaticResource IntByteLengthToOtherLength},ConverterParameter=MB}" />
+                                                <TextBlock  Margin="5,10,5,5"
+                                                            Height="23"
+                                                            Grid.Column="2"
+                                                            Text="{Binding RealFileInfo.FileType}" />
+                                                <TextBlock  Margin="5,10,5,5"
+                                                            Height="23"
+                                                            Grid.Column="3"
+                                                            Text="{Binding RealFileInfo.UpdateTime,Converter={StaticResource DataTimeToString}}" />
+                                            </Grid>
+                                        </Grid>
+
+                                    </Border>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+
+                            <ListBox.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="下载文件"
+                                              Command="{Binding CommandExecute}"
+                                              CommandParameter="DownloadFile" />
+                                    <MenuItem Header="重命名"
+                                              Command="{Binding CommandExecute}"
+                                              CommandParameter="EditFile" />
+                                    <MenuItem Header="删除文件"
+                                              Command="{Binding CommandExecute}"
+                                              CommandParameter="DeleteFile" />
+                                </ContextMenu>
+                            </ListBox.ContextMenu>
+                        </ListView>
+                    </StackPanel>
+                </ScrollViewer.Content>
+            </ScrollViewer>
+
         </StackPanel>
         <!--目录树-->
         <Grid MinWidth="220"
-              Grid.Row="1">
+              Grid.Row="1" Margin="5">
             <Grid.RowDefinitions>
-                <RowDefinition Height="*" />
                 <RowDefinition Height="Auto" />
             </Grid.RowDefinitions>
 
@@ -195,7 +280,7 @@
                                                CommandParameter="{Binding ElementName=DirTree, Path=SelectedItem}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
-                
+
                 <TreeView.Resources>
                     <HierarchicalDataTemplate DataType="{x:Type domain:DirInfoDetailDto}"
                                               ItemsSource="{Binding ChildrenDirInfo,Mode=TwoWay,UpdateSourceTrigger=PropertyChanged}">
@@ -209,37 +294,73 @@
             </TreeView>
         </Grid>
         <!--导航栏-->
-        <ListView Grid.Row="0"
-                  Name="NavListView"
-                  ItemsSource="{Binding NavDirInfos}"
-                  Grid.Column="1"
-                  HorizontalAlignment="Left"
-                  VerticalAlignment="Center"
-                  FontSize="14"
-                  Margin="5"
-                  Padding="0"
-                  SelectedItem="{Binding NavSelectedItem}">
-            <i:Interaction.Triggers>
-                <i:EventTrigger EventName="SelectionChanged">
-                    <i:InvokeCommandAction Command="{Binding NavClickCommand}" />
-                </i:EventTrigger>
-            </i:Interaction.Triggers>
-            <ListView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <WrapPanel />
-                </ItemsPanelTemplate>
-            </ListView.ItemsPanel>
-            <ListView.ItemTemplate>
+        <Grid Grid.Row="0"
+              Grid.Column="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition />
+                <ColumnDefinition Width="100" />
+            </Grid.ColumnDefinitions>
 
-                <DataTemplate>
-                    <WrapPanel Orientation="Horizontal">
-                        <TextBlock Text="{Binding DirName}" />
-                        <TextBlock>
-                            <materialDesign:PackIcon Kind="ChevronRight" />
-                        </TextBlock>
-                    </WrapPanel>
-                </DataTemplate>
-            </ListView.ItemTemplate>
-        </ListView>
+            <ListView Grid.Column="0"
+                      Name="NavListView"
+                      ItemsSource="{Binding NavDirInfos}"
+                      HorizontalAlignment="Left"
+                      VerticalAlignment="Center"
+                      FontSize="14"
+                      Margin="5"
+                      Padding="0"
+                      SelectedItem="{Binding NavSelectedItem}">
+                <i:Interaction.Triggers>
+                    <i:EventTrigger EventName="SelectionChanged">
+                        <i:InvokeCommandAction Command="{Binding NavClickCommand}" />
+                    </i:EventTrigger>
+                </i:Interaction.Triggers>
+
+                <ListView.ItemsPanel>
+                    <ItemsPanelTemplate>
+                        <WrapPanel VerticalAlignment="Center"
+                                   HorizontalAlignment="Center" />
+                    </ItemsPanelTemplate>
+                </ListView.ItemsPanel>
+
+                <ListView.ItemTemplate>
+                    <DataTemplate>
+                        <WrapPanel Orientation="Horizontal"
+                                   VerticalAlignment="Center"
+                                   HorizontalAlignment="Center">
+                            <TextBlock Text="{Binding DirName}" />
+                            <TextBlock>
+                                <materialDesign:PackIcon Kind="ChevronRight" />
+                            </TextBlock>
+                        </WrapPanel>
+                    </DataTemplate>
+                </ListView.ItemTemplate>
+            </ListView>
+
+            <StackPanel Grid.Column="1"
+                        Orientation="Horizontal">
+                <Button Margin="5"
+                        Width="30"
+                        Height="30"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        Command="{Binding CommandExecute}"
+                        CommandParameter="Refresh"
+                        ToolTip="刷新">
+                    <materialDesign:PackIcon Kind="Refresh" />
+                </Button>
+                <Button Margin="5"
+                        Width="30"
+                        Height="30"
+                        Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        Command="{Binding CommandExecute}"
+                        CommandParameter="GotoTransferView"
+                        ToolTip="下载中心">
+                    <materialDesign:PackIcon Kind="FileArrowUpDownOutline" />
+
+                </Button>
+            </StackPanel>
+
+        </Grid>
+
     </Grid>
 </UserControl>

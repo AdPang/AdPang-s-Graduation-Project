@@ -15,6 +15,9 @@ using AdPang.FileManager.Application_WPF.ViewModels;
 using AdPang.FileManager.Application_WPF.Views.Dialogs;
 using AdPang.FileManager.Application_WPF.ViewModels.Dialogs;
 using Prism.Mvvm;
+using AdPang.FileManager.Application_WPF.ViewModels.Settings;
+using AdPang.FileManager.Application_WPF.Views.Settings;
+using AdPang.FileManager.Application_WPF.Common.Models;
 
 namespace AdPang.FileManager.Application_WPF
 {
@@ -87,10 +90,19 @@ namespace AdPang.FileManager.Application_WPF
             containerRegistry.RegisterSingleton<FileTransferListViewModel>();
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
             containerRegistry.RegisterForNavigation<CloudFileManagerView, CloudFileManagerViewModel>();
+            containerRegistry.RegisterForNavigation<OperaFileInfoView, OperaFileInfoViewModel>();
             containerRegistry.RegisterForNavigation<OperaDirInfoView, OperaDirInfoViewModel>();
+            containerRegistry.RegisterForNavigation<DeleteFileDialogView, DeleteFileDialogViewModel>();
+            
+
 
             containerRegistry.RegisterForNavigation<FileTransferListView, FileTransferListViewModel>();
 
+
+            containerRegistry.RegisterForNavigation<SkinView, SkinViewModel>();
+            containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
+            containerRegistry.RegisterForNavigation<SystemSettingsView, SystemSettingsViewModel>();
+            containerRegistry.RegisterForNavigation<AboutView>();
         }
     }
 }

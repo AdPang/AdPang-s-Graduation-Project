@@ -9,12 +9,14 @@
             个人云盘文件夹控制器
             </summary>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.#ctor(AutoMapper.IMapper,AdPang.FileManager.IServices.CloudSaved.IDirService,AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User})">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.#ctor(AutoMapper.IMapper,AdPang.FileManager.IServices.CloudSaved.IDirService,AdPang.FileManager.IServices.CloudSaved.IUserPrivateFileService,AdPang.FileManager.IServices.CloudSaved.ISharedFileInfoService,AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User})">
             <summary>
             构造
             </summary>
             <param name="mapper"></param>
             <param name="dirService"></param>
+            <param name="userPrivateFileService"></param>
+            <param name="sharedFileInfoService"></param>
             <param name="requestInfoModel"></param>
             <param name="userManager"></param>
         </member>
@@ -68,12 +70,13 @@
             <param name="queryParameter"></param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetDeleteDirs(AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo,System.Collections.Generic.IList{AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo})">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetDeleteDirs(AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo,System.Collections.Generic.IList{AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo},System.Collections.Generic.List{AdPang.FileManager.Models.FileManagerEntities.CloudSaved.UserPrivateFileInfo})">
             <summary>
             获取即将删除的文件夹所有文件夹信息
             </summary>
             <param name="parent"></param>
             <param name="deleteDirs"></param>
+            <param name="fileInfos"></param>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetDirInfosByUserAsync(System.Guid,AdPang.FileManager.Shared.Paremeters.QueryParameter)">
             <summary>

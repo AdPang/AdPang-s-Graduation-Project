@@ -31,7 +31,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         private readonly IDirService dirService;
         private readonly IMapper mapper;
         private readonly ICloudFileService cloudFileService;
-        
+
         private readonly UserManager<User> userManager;
         private readonly RequestInfoModel requestInfoModel;
         /// <summary>
@@ -129,7 +129,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             {
                 keyValues.Add(new KeyValuePair<string, string>(fileInfoList[i].Id.ToString(), files[i].FileName));
             }
-            return new ApiResponse<IEnumerable<KeyValuePair<string,string>>>(true, keyValues);
+            return new ApiResponse<IEnumerable<KeyValuePair<string, string>>>(true, keyValues);
         }
 
         /// <summary>
@@ -141,7 +141,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <returns></returns>
         [Authorize(Roles = "Ordinary")]
         [HttpPost("Add/{fileId}/{dirId}")]
-        public async Task<ApiResponse<CloudFileInfoDto>> AddFileToCloud(Guid fileId,Guid dirId, UserPrivateFileInfoDto  userPrivateFileInfoDto)
+        public async Task<ApiResponse<CloudFileInfoDto>> AddFileToCloud(Guid fileId, Guid dirId, UserPrivateFileInfoDto userPrivateFileInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             if (userId == null) return new ApiResponse<CloudFileInfoDto>(false, "发生错误！");
@@ -173,23 +173,23 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <param name="userPrivateFileInfoDto"></param>
         /// <returns></returns>
         [HttpPut("Edit/{dirId}")]
-        [Authorize(Roles= "Ordinary")]
-        public async Task<ApiResponse> EditFileInfo(Guid dirId,UserPrivateFileInfoDto userPrivateFileInfoDto)
+        [Authorize(Roles = "Ordinary")]
+        public async Task<ApiResponse<UserPrivateFileInfoDto>> EditFileInfo(Guid dirId, UserPrivateFileInfoDto userPrivateFileInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
-            if (userId == null) return new ApiResponse(false, "发生错误");
+            if (userId == null) return new ApiResponse<UserPrivateFileInfoDto>(false, "发生错误");
             var dirInfo = await dirService.FindAsync(x => x.Id.Equals(dirId) && x.UserId.Equals(userId));
-            if (dirInfo == null) return new ApiResponse(false, "文件夹不存在！");
+            if (dirInfo == null) return new ApiResponse<UserPrivateFileInfoDto>(false, "文件夹不存在！");
             var fileInfo = await userPrivateFileService.FindAsync(x => x.Id.Equals(userPrivateFileInfoDto.Id) && x.UserId.Equals(userId));
-            if (fileInfo == null) return new ApiResponse(false, "文件不存在！");
+            if (fileInfo == null) return new ApiResponse<UserPrivateFileInfoDto>(false, "文件不存在！");
             fileInfo.CurrentDirectoryInfoId = dirInfo.Id;
             fileInfo.FileName = userPrivateFileInfoDto.FileName;
             fileInfo.UpdateTime = DateTime.Now;
-            await userPrivateFileService.UpdateAsync(fileInfo,true);
-            return new ApiResponse(true, "修改完成！");
+            await userPrivateFileService.UpdateAsync(fileInfo, true);
+            return new ApiResponse<UserPrivateFileInfoDto>(true, mapper.Map<UserPrivateFileInfoDto>(fileInfo));
         }
 
-        
+
 
         /// <summary>
         /// 下载云盘文件
@@ -208,7 +208,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             var realFileInfo = await cloudFileService.FindAsync(x => x.Id.Equals(privateFile.RealFileInfoId));
 
             var stream = System.IO.File.OpenRead(realFileInfo.FilePath);  //创建文件流
-            
+
             //FileStreamResult fileStreamResult = new FileStreamResult()
             //需要调用的时候
             string contentType = MimeMapping.GetMimeMapping(realFileInfo.FileName);
@@ -221,11 +221,11 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// </summary>
         /// <param name="queryParameter"></param>
         /// <returns></returns>
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetUsers/Admin")]
         public async Task<ApiResponse<IPagedList<UserInfoContainCloudFileInfoDto>>> GetUserFileInfos([FromQuery] QueryParameter queryParameter)
         {
-            var users = await userManager.Users.Where(x => queryParameter.Search == null || queryParameter.Search.Contains(x.UserName) || x.UserName.Contains(queryParameter.Search)).Include(x => x.UserPrivateFileInfos).ThenInclude(x=>x.RealFileInfo).OrderBy(x => x.UserName).Take(queryParameter.PageSize).Skip(queryParameter.PageSize * queryParameter.PageIndex).ToListAsync();
+            var users = await userManager.Users.Where(x => queryParameter.Search == null || queryParameter.Search.Contains(x.UserName) || x.UserName.Contains(queryParameter.Search)).Include(x => x.UserPrivateFileInfos).ThenInclude(x => x.RealFileInfo).OrderBy(x => x.UserName).Take(queryParameter.PageSize).Skip(queryParameter.PageSize * queryParameter.PageIndex).ToListAsync();
             var userDtos = mapper.Map<IList<UserInfoContainCloudFileInfoDto>>(users);
             return new ApiResponse<IPagedList<UserInfoContainCloudFileInfoDto>>(true, new PagedList<UserInfoContainCloudFileInfoDto>(userDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
         }
@@ -253,8 +253,8 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <param name="fileId"></param>
         /// <returns></returns>
         [HttpGet("Delete/{userId}/{fileId}/Admin")]
-        [Authorize(Roles="Admin")]
-        public async Task<ApiResponse> DeleteFileInfo(Guid userId,Guid fileId)
+        [Authorize(Roles = "Admin")]
+        public async Task<ApiResponse> DeleteFileInfo(Guid userId, Guid fileId)
         {
             var fileInfo = await userPrivateFileService.FindAsync(x => x.UserId.Equals(userId) && x.Id.Equals(fileId));
             if (fileInfo == null) return new ApiResponse(false, "文件不存在！");
@@ -266,7 +266,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             return new ApiResponse(true, "删除成功！");
         }
 
-        
+
         /// <summary>
         /// 获取文件后缀名
         /// </summary>

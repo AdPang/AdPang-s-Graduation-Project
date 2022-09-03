@@ -1,4 +1,5 @@
 ﻿using AdPang.FileManager.Application_WPF.Common;
+using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;
 using MaterialDesignThemes.Wpf;
 using Prism.Commands;
@@ -18,16 +19,29 @@ namespace AdPang.FileManager.Application_WPF.ViewModels.Dialogs
         public DelegateCommand SaveCommand { get; set; }
         public DelegateCommand CancelCommand { get; set; }
 
-        public void OnDialogOpend(IDialogParameters parameters)
-        {
+        private string title = "编辑文件";
 
+        public string Title
+        {
+            get { return title; }
+            set { title = value; RaisePropertyChanged(); }
         }
 
-        private UserPrivateFileInfoDetailDto model;
+        public void OnDialogOpend(IDialogParameters parameters)
+        {
+            if (parameters.ContainsKey("Value"))
+            {
+                Model = parameters.GetValue<UserPrivateFileInfoDto>("Value");
+            }
+            else
+                Model = new UserPrivateFileInfoDto();
+        }
+
+        private UserPrivateFileInfoDto model;
         /// <summary>
         /// 新增或编辑的实体
         /// </summary>
-        public UserPrivateFileInfoDetailDto Model
+        public UserPrivateFileInfoDto Model
         {
             get { return model; }
             set { model = value; RaisePropertyChanged(); }

@@ -9,10 +9,13 @@ namespace AdPang.FileManager.Application_WPF.Common.Helper
 {
     public class DirSelectorDialogHelper
     {
-        public static string GetPathByFolderBrowserDialog()
+        public static string GetPathByFolderBrowserDialog(string path = "")
         {
+
             Winform.FolderBrowserDialog dialog = new()
             {
+                ShowNewFolderButton = true,
+                InitialDirectory = path,
                 Description = "请选择文件夹路径"
             };
             dialog.ShowDialog();
@@ -23,7 +26,7 @@ namespace AdPang.FileManager.Application_WPF.Common.Helper
         {
             Winform.OpenFileDialog openFileDialog = new();
             string path = string.Empty;
-            if(openFileDialog.ShowDialog() == Winform.DialogResult.OK)
+            if (openFileDialog.ShowDialog() == Winform.DialogResult.OK)
             {
                 path = openFileDialog.FileName;
             }

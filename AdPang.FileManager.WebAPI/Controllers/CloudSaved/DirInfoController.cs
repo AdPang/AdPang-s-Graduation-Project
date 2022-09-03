@@ -1,9 +1,11 @@
 ﻿using System.Collections.ObjectModel;
+using System.Linq;
 using AdPang.FileManager.Common.Extensions;
 using AdPang.FileManager.Common.RequestInfoModel;
 using AdPang.FileManager.IServices.CloudSaved;
 using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Models.IdentityEntities;
+using AdPang.FileManager.Services.CloudSaved;
 using AdPang.FileManager.Shared;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
 using AdPang.FileManager.Shared.Dtos.SystemCommon;
@@ -26,6 +28,8 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
     {
         private readonly IMapper mapper;
         private readonly IDirService dirService;
+        private readonly IUserPrivateFileService userPrivateFileService;
+        private readonly ISharedFileInfoService sharedFileInfoService;
         private readonly RequestInfoModel requestInfoModel;
         private readonly UserManager<User> userManager;
 
@@ -35,12 +39,16 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// </summary>
         /// <param name="mapper"></param>
         /// <param name="dirService"></param>
+        /// <param name="userPrivateFileService"></param>
+        /// <param name="sharedFileInfoService"></param>
         /// <param name="requestInfoModel"></param>
         /// <param name="userManager"></param>
-        public DirInfoController(IMapper mapper, IDirService dirService, RequestInfoModel requestInfoModel, UserManager<User> userManager)
+        public DirInfoController(IMapper mapper, IDirService dirService,IUserPrivateFileService userPrivateFileService,ISharedFileInfoService sharedFileInfoService,RequestInfoModel requestInfoModel, UserManager<User> userManager)
         {
             this.mapper = mapper;
             this.dirService = dirService;
+            this.userPrivateFileService = userPrivateFileService;
+            this.sharedFileInfoService = sharedFileInfoService;
             this.requestInfoModel = requestInfoModel;
             this.userManager = userManager;
         }
@@ -116,14 +124,23 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             if (userId == null) return new ApiResponse(false, "发生错误!");
-            var dirInfos = await dirService.GetListAsync(x => x.UserId == userId);
+            var dirInfos = await dirService.GetDirDetailListAsync(x => x.UserId == userId);
             var dir = dirInfos.Where(x => x.Id.Equals(dirId)).FirstOrDefault();
             if (dir == null) return new ApiResponse(false, "文件夹不存在！");
             dirInfos.Merge(dir);
             try
             {
                 var deleteDirs = new List<DirInfo>();
-                GetDeleteDirs(dir, deleteDirs);
+                var deleteFiles = new List<UserPrivateFileInfo>();
+                GetDeleteDirs(dir, deleteDirs, deleteFiles);
+
+                var dirIds = deleteDirs.Select(x => x.Id).ToList();
+                var fileIds = deleteFiles.Select(x => x.Id).ToList();
+
+                var deleteShareList = await sharedFileInfoService.GetListAsync(x => (x.DirId != null && dirIds.Contains((Guid)x.DirId)) || (x.SingleFileId != null && fileIds.Contains((Guid)x.SingleFileId)));
+
+                await sharedFileInfoService.DeleteManyAsync(deleteShareList, true);
+                await userPrivateFileService.DeleteManyAsync(deleteFiles, true);
                 await dirService.DeleteManyAsync(deleteDirs,true);
                 return new ApiResponse(true, "删除成功");
             }
@@ -200,12 +217,14 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// </summary>
         /// <param name="parent"></param>
         /// <param name="deleteDirs"></param>
-        private void GetDeleteDirs(DirInfo parent, IList<DirInfo> deleteDirs)
+        /// <param name="fileInfos"></param>
+        private void GetDeleteDirs(DirInfo parent, IList<DirInfo> deleteDirs,List<UserPrivateFileInfo> fileInfos)
         {
+            fileInfos.AddRange(parent.ChildrenFileInfo);
             foreach (var child in parent.ChildrenDirInfo)
             {
                 if (child == null) continue;
-                GetDeleteDirs(child, deleteDirs);
+                GetDeleteDirs(child, deleteDirs, fileInfos);
             }
             deleteDirs.Add(parent);
         }

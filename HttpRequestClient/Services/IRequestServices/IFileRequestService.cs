@@ -18,5 +18,7 @@ namespace HttpRequestClient.Services.IRequestServices
         Task<ApiResponse<IEnumerable<KeyValuePair<string, string>>>> UploadFile(FileInfo file, EventHandler<HttpProgressEventArgs> httpProgressEventHandler);
 
         Task<ApiResponse<CloudFileInfoDto>> AddFileToCloud(Guid fileId, Guid dirId, UserPrivateFileInfoDto userPrivateFileInfoDto);
+
+        Task<ApiResponse<UserPrivateFileInfoDto>> UpdateFileInfo(Guid dirId, UserPrivateFileInfoDto userPrivateFileInfoDetailDto);
     }
 }

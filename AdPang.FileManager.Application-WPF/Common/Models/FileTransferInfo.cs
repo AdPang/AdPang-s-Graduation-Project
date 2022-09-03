@@ -68,6 +68,14 @@ namespace AdPang.FileManager.Application_WPF.Common.Models
             set { fileName = value; RaisePropertyChanged(); }
         }
 
+        private long fileLength;
+
+        public long FileLength
+        {
+            get { return fileLength; }
+            set { fileLength = value;RaisePropertyChanged(); }
+        }
+
 
         private double uploadProgress = 0;
         public double UploadProgress
