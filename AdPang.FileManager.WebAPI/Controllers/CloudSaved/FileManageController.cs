@@ -3,6 +3,7 @@ using AdPang.FileManager.Common.RequestInfoModel;
 using AdPang.FileManager.IServices.CloudSaved;
 using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Models.IdentityEntities;
+using AdPang.FileManager.Services.CloudSaved;
 using AdPang.FileManager.Shared;
 using AdPang.FileManager.Shared.Common.Helper;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo;
@@ -29,6 +30,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         private readonly IWebHostEnvironment hostingEnvironment;
         private readonly IUserPrivateFileService userPrivateFileService;
         private readonly IDirService dirService;
+        private readonly ISharedFileInfoService sharedFileInfoService;
         private readonly IMapper mapper;
         private readonly ICloudFileService cloudFileService;
 
@@ -44,7 +46,8 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <param name="hostingEnvironment"></param>
         /// <param name="userPrivateFileService"></param>
         /// <param name="dirService"></param>
-        public FileManageController(IMapper mapper, ICloudFileService cloudFileService, UserManager<User> userManager, RequestInfoModel requestInfoModel, IWebHostEnvironment hostingEnvironment, IUserPrivateFileService userPrivateFileService, IDirService dirService)
+        /// <param name="sharedFileInfoService"></param>
+        public FileManageController(IMapper mapper, ICloudFileService cloudFileService, UserManager<User> userManager, RequestInfoModel requestInfoModel, IWebHostEnvironment hostingEnvironment, IUserPrivateFileService userPrivateFileService, IDirService dirService,ISharedFileInfoService sharedFileInfoService)
         {
             this.mapper = mapper;
             this.cloudFileService = cloudFileService;
@@ -53,6 +56,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             this.hostingEnvironment = hostingEnvironment;
             this.userPrivateFileService = userPrivateFileService;
             this.dirService = dirService;
+            this.sharedFileInfoService = sharedFileInfoService;
         }
 
         /// <summary>
@@ -71,8 +75,10 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             var cloudFile = await cloudFileService.FindAsync(x => x.Id.Equals(fileInfo.RealFileInfoId));
             cloudFile.UserCount--;
             cloudFile.UpdateTime = DateTime.Now;
+            var deleteShareList = await sharedFileInfoService.GetListAsync(x => x.SingleFileId.Equals(fileInfo.Id) && x.ShardByUserId.Equals(userId));
+            await sharedFileInfoService.DeleteManyAsync(deleteShareList, true);
             await userPrivateFileService.DeleteAsync(fileInfo, true);
-            await cloudFileService.UpdateAsync(cloudFile);
+            await cloudFileService.UpdateAsync(cloudFile, true);
             return new ApiResponse(true, "删除成功！");
         }
 

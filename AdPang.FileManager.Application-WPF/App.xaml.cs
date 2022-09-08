@@ -80,6 +80,11 @@ namespace AdPang.FileManager.Application_WPF
             containerRegistry.Register<IUserCloudDirInfoRequestService, UserCloudDirInfoRequestService>();
             containerRegistry.Register<IAuthRequestService, AuthRequestService>();
             containerRegistry.Register<IFileRequestService, FileRequestService>();
+            containerRegistry.Register<ISharedInfoRequestService, SharedInfoRequestService>();
+            containerRegistry.Register<IPrivateDiskRequestService, PrivateDiskRequestService>();
+            
+
+
             containerRegistry.RegisterSingleton<IAuthModel, AuthModel>();
 
             #endregion
@@ -88,15 +93,23 @@ namespace AdPang.FileManager.Application_WPF
 
             containerRegistry.Register<IDialogHostService, DialogHostService>();
             containerRegistry.RegisterSingleton<FileTransferListViewModel>();
+            containerRegistry.RegisterSingleton<FileSharedViewModel>();
+            containerRegistry.RegisterSingleton<ILocalInfoService, LocalInfoService>();
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
+            
             containerRegistry.RegisterForNavigation<CloudFileManagerView, CloudFileManagerViewModel>();
             containerRegistry.RegisterForNavigation<OperaFileInfoView, OperaFileInfoViewModel>();
             containerRegistry.RegisterForNavigation<OperaDirInfoView, OperaDirInfoViewModel>();
+            containerRegistry.RegisterForNavigation<OperaSharedInfoDialogView, OperaSharedInfoDialogViewModel>();
+            containerRegistry.RegisterForNavigation<DiskInfoDialogView, DiskInfoDialogViewModel>();
+            containerRegistry.RegisterForNavigation<PrivateDiskView, PrivateDiskViewModel>();
+
             containerRegistry.RegisterForNavigation<DeleteFileDialogView, DeleteFileDialogViewModel>();
-            
+
 
 
             containerRegistry.RegisterForNavigation<FileTransferListView, FileTransferListViewModel>();
+            containerRegistry.RegisterForNavigation<FileSharedView, FileSharedViewModel>();
 
 
             containerRegistry.RegisterForNavigation<SkinView, SkinViewModel>();

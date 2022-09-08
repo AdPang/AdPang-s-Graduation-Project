@@ -1,0 +1,135 @@
+﻿<UserControl x:Class="AdPang.FileManager.Application_WPF.Views.PrivateDiskView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:local="clr-namespace:AdPang.FileManager.Application_WPF.Views"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:viewmodels="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:PrivateDiskViewModel}"
+             mc:Ignorable="d"
+             d:DesignHeight="768"
+             d:DesignWidth="1280">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="auto" />
+        </Grid.ColumnDefinitions>
+
+        <Grid Grid.Column="0">
+            <Grid Name="GridDbView">
+                <DataGrid IsReadOnly="True"
+                          x:Name="DgDbDiskInfo"
+                          ItemsSource="{Binding DiskInfos}"
+                          CanUserDeleteRows="False"
+                          CanUserResizeColumns="False"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          Margin="15">
+
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding DiskName}"
+                                            Header="硬盘别名"
+                                            Width="3*" />
+                        <DataGridTextColumn Binding="{Binding DiskSN}"
+                                            Header="硬盘唯一标识"
+                                            Width="5*" />
+                        <DataGridTemplateColumn Header="操作"
+                                                Width="8*">
+                            <DataGridTemplateColumn.CellTemplate>
+                                <DataTemplate>
+                                    <StackPanel Orientation="Horizontal">
+                                        <Button Height="25"
+                                                Margin="0,0,15,0">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Click">
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.EditDiskInfoCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                                                           CommandParameter="{Binding ElementName=DgDbDiskInfo,Path=SelectedItem}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                            <materialDesign:PackIcon Kind="Edit" />
+                                        </Button>
+
+                                        <Button IsEnabled="{Binding CanDelete}"
+                                                Height="25"
+                                                Margin="0,0,15,0">
+                                            <materialDesign:PackIcon Kind="Delete" />
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="Click">
+                                                    <i:InvokeCommandAction Command="{Binding DataContext.DeleteDiskCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                                                           CommandParameter="{Binding ElementName=DgDbDiskInfo,Path=SelectedItem}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </Button>
+                                    </StackPanel>
+                                </DataTemplate>
+                            </DataGridTemplateColumn.CellTemplate>
+                        </DataGridTemplateColumn>
+                    </DataGrid.Columns>
+                </DataGrid>
+
+                <DockPanel Grid.Column="0"
+                           LastChildFill="False">
+                    <Button Style="{StaticResource MaterialDesignFloatingActionButton }"
+                            FontSize="20"
+                            DockPanel.Dock="Top"
+                            HorizontalAlignment="Right"
+                            Height="35"
+                            Width="35"
+                            Margin="15"
+                            Command="{Binding AddDiskInfoCommand}"
+                            Cursor="Hand">
+                        <materialDesign:PackIcon Kind="Add" />
+                    </Button>
+                </DockPanel>
+            </Grid>
+
+            <Grid Name="GridLocalView"
+                  Visibility="Hidden">
+                <DataGrid IsReadOnly="True"
+                          ItemsSource="{Binding LocalDiskInfos}"
+                          CanUserDeleteRows="False"
+                          CanUserResizeColumns="False"
+                          AutoGenerateColumns="False"
+                          CanUserAddRows="False"
+                          Margin="15">
+                    <DataGrid.Columns>
+                        <DataGridTextColumn Binding="{Binding Id}"
+                                            Header="Id"
+                                            Width="1*" />
+                        <DataGridTextColumn Binding="{Binding Drive}"
+                                            Header="硬盘盘符"
+                                            Width="3*" />
+                        <DataGridTextColumn Binding="{Binding DriveSN}"
+                                            Header="硬盘唯一标识"
+                                            Width="5*" />
+                    </DataGrid.Columns>
+                </DataGrid>
+            </Grid>
+        </Grid>
+
+        <StackPanel Grid.Column="1"
+                    Orientation="Vertical"
+                    Width="200">
+            <Button Name="BtnChangeMode"
+                    Content="本地硬盘数据"
+                    Width="auto"
+                    Margin="15,15,15,0"
+                    Click="BtnChangeMode_Click" />
+            <Button Margin="15,15,15,0"
+                    Command="{Binding RefreshModelCommand}">
+                <Button.Content>
+                    <StackPanel Orientation="Horizontal">
+                        <TextBlock Text="刷新"
+                                   HorizontalAlignment="Center"
+                                   VerticalAlignment="Center" />
+                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                            <materialDesign:PackIcon Kind="Refresh" />
+                        </TextBlock>
+                    </StackPanel>
+                </Button.Content>
+            </Button>
+        </StackPanel>
+    </Grid>
+</UserControl>

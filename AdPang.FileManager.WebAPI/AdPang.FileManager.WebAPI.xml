@@ -91,7 +91,7 @@
             文件管理控制器
             </summary>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.#ctor(AutoMapper.IMapper,AdPang.FileManager.IServices.CloudSaved.ICloudFileService,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,AdPang.FileManager.IServices.CloudSaved.IUserPrivateFileService,AdPang.FileManager.IServices.CloudSaved.IDirService)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.#ctor(AutoMapper.IMapper,AdPang.FileManager.IServices.CloudSaved.ICloudFileService,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Hosting.IWebHostEnvironment,AdPang.FileManager.IServices.CloudSaved.IUserPrivateFileService,AdPang.FileManager.IServices.CloudSaved.IDirService,AdPang.FileManager.IServices.CloudSaved.ISharedFileInfoService)">
             <summary>
             构造
             </summary>
@@ -102,6 +102,7 @@
             <param name="hostingEnvironment"></param>
             <param name="userPrivateFileService"></param>
             <param name="dirService"></param>
+            <param name="sharedFileInfoService"></param>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileManageController.DeleteFileInfo(System.Guid)">
             <summary>
@@ -186,6 +187,13 @@
             <param name="dirService"></param>
             <param name="userPrivateFileService"></param>
         </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.GetMySharedInfo(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取我的全部分享列表
+            </summary>
+            <param name="queryParameter"></param>
+            <returns></returns>
+        </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.DeleteSharedInfo(System.Guid)">
             <summary>
             删除分享信息
@@ -193,7 +201,7 @@
             <param name="sharedId">分享信息Id</param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.GetFileShared(System.Guid,System.String)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.GetFileShare(System.Guid,System.String)">
             <summary>
             获取文件信息
             </summary>
@@ -201,16 +209,11 @@
             <param name="password">分享信息密码</param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.AddFileShared(System.Guid,System.Boolean,System.String,System.String,System.Boolean,System.Int32)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.AddFileShare(AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo.SharedFileInfoDetailDto)">
             <summary>
             创建分享
             </summary>
-            <param name="beSharedInfoId">分享Id</param>
-            <param name="isSingleFile">是否是单个文件分享</param>
-            <param name="sharedPassword">分享密码</param>
-            <param name="sharedDesc">文件分享描述</param>
-            <param name="hasExpired">是否有过期时间</param>
-            <param name="expiredTime">过期时间(天数)</param>
+            <param name="sharedFileInfoDetailDto"></param>
             <returns></returns>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.FileSharedController.DeleteSharedInfoAdmin(System.Guid)">

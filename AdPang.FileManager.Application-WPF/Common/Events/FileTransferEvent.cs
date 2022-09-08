@@ -14,6 +14,7 @@ namespace AdPang.FileManager.Application_WPF.Common.Events
 
         public string FilePath { get; set; }
         public Guid CurrentDirId { get; set; }
+        public string DownloadDir { get; set; } = string.Empty;
 
 
         public UserPrivateFileInfoDto UserPrivateFileInfo { get; set; }

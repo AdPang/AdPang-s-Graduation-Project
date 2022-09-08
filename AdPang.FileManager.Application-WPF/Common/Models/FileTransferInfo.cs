@@ -55,6 +55,14 @@ namespace AdPang.FileManager.Application_WPF.Common.Models
                 userPrivateFileInfo = value; RaisePropertyChanged();
             }
         }
+
+        private DateTime creatTime = DateTime.Now;
+
+        public DateTime CreatTime
+        {
+            get { return creatTime; }
+            set { creatTime = value; RaisePropertyChanged(); }
+        }
     }
 
 
@@ -100,6 +108,13 @@ namespace AdPang.FileManager.Application_WPF.Common.Models
             set { currentDirId = value;RaisePropertyChanged(); }
         }
 
+        private DateTime creatTime = DateTime.Now;
+
+        public DateTime CreatTime
+        {
+            get { return creatTime ; }
+            set { creatTime  = value; RaisePropertyChanged(); }
+        }
 
 
         //private UserPrivateFileInfoDetailDto userPrivateFileInfoDetailDto;

@@ -21,9 +21,38 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 {
     public class FileTransferListViewModel : NavigationViewModel
     {
+        #region field & prop
         private static List<FileDownloadInfo> localFileDownloadInfos = new();
-        private static List<FileUploadInfo> localFileUploadInfos= new();
+        private static List<FileUploadInfo> localFileUploadInfos = new();
 
+        private ObservableCollection<FileDownloadInfo> downloadFiles = new();
+        public ObservableCollection<FileDownloadInfo> DownloadFiles
+        {
+            get { return downloadFiles; }
+            set { downloadFiles = value; RaisePropertyChanged(); }
+        }
+        public ObservableCollection<FileUploadInfo> UploadFiles
+        {
+            get { return uploadFiles; }
+            set { uploadFiles = value; RaisePropertyChanged(); }
+        }
+        private ObservableCollection<FileUploadInfo> uploadFiles = new();
+
+        public DelegateCommand<object> OpenFileDirCommand { get; set; }
+        public DelegateCommand<object> OpenFileCommand { get; set; }
+
+        public DelegateCommand<FileDownloadInfo> DeleteDownloadedFileCommand { get; set; }
+
+        public DelegateCommand<FileUploadInfo> DeleteUploadedFileCommand { get; set; }
+
+        #endregion
+
+        #region readonly field
+        private readonly IFileRequestService fileRequestService;
+        private readonly IDialogHostService dialogHostService;
+        #endregion
+
+        #region ctor
         static FileTransferListViewModel()
         {
             try
@@ -31,7 +60,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 string downLoadList = System.Windows.Forms.Application.StartupPath + "\\data\\DownLoadList.json";
                 string upLoadList = System.Windows.Forms.Application.StartupPath + "\\data\\UpLoadList.json";
                 var tempDownloadFile = JsonConvert.DeserializeObject<List<FileDownloadInfo>>(File.ReadAllText(downLoadList));
-                if(tempDownloadFile != null) localFileDownloadInfos.AddRange(tempDownloadFile);
+                if (tempDownloadFile != null) localFileDownloadInfos.AddRange(tempDownloadFile);
 
                 var tempUploadFile = JsonConvert.DeserializeObject<List<FileUploadInfo>>(File.ReadAllText(upLoadList));
                 if (tempUploadFile != null) localFileUploadInfos.AddRange(tempUploadFile);
@@ -45,42 +74,12 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 
         }
 
-        #region field & prop
-
-        private ObservableCollection<FileDownloadInfo> downloadFiles = new();
-        public ObservableCollection<FileDownloadInfo> DownloadFiles
-        {
-            get { return downloadFiles; }
-            set { downloadFiles = value; RaisePropertyChanged(); }
-        }
-
-        private ObservableCollection<FileUploadInfo> uploadFiles = new();
-
-        public DelegateCommand<FileDownloadInfo> OpenFileDirCommand { get; set; }
-        public DelegateCommand<FileDownloadInfo> OpenFileCommand { get; set; }
-
-        public DelegateCommand<FileDownloadInfo> DeleteDownloadedFileCommand { get; set; }
-        #endregion
-
-        #region readonly field
-        private readonly IFileRequestService fileRequestService;
-        private readonly IDialogHostService dialogHostService;
-        #endregion
-
-
-        public ObservableCollection<FileUploadInfo> UploadFiles
-        {
-            get { return uploadFiles; }
-            set { uploadFiles = value; RaisePropertyChanged(); }
-        }
-        #region ctor
-
         public FileTransferListViewModel(IContainerProvider containerProvider, IEventAggregator eventAggregator, IFileRequestService fileRequestService, IDialogHostService dialogHostService) : base(containerProvider)
         {
             DownloadFiles.AddRange(localFileDownloadInfos);
             UploadFiles.AddRange(localFileUploadInfos);
 
-            eventAggregator.ResgiterPersonMessage(arg =>
+            eventAggregator.ResgiterFileTransferMessage(arg =>
             {
                 var downloadInfo = new FileDownloadInfo
                 {
@@ -94,14 +93,14 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                     var result = await fileRequestService.DownloadFile(arg.UserPrivateFileInfo, (sender, e) =>
                     {
                         downloadInfo.DownloadProgress = e.ProgressPercentage;
-                    }, SystemSettingsModel.GetDownloadPath());
+                    }, SystemSettingsModel.GetDownloadPath() + arg.DownloadDir);
                     downloadInfo.DownloadedPath = result;
                 });
                 task.Start();
 
             }, "Download");
 
-            eventAggregator.ResgiterPersonMessage(arg =>
+            eventAggregator.ResgiterFileTransferMessage(arg =>
             {
                 var file = new FileInfo(arg.FilePath);
 
@@ -138,25 +137,49 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 
             }, "Upload");
 
-            OpenFileDirCommand = new DelegateCommand<FileDownloadInfo>(fileInfo =>
+            OpenFileDirCommand = new DelegateCommand<object>(obj =>
             {
-                if (fileInfo == null || string.IsNullOrEmpty(fileInfo.DownloadedPath))
+                if (obj.GetType().Equals(typeof(FileDownloadInfo)))
                 {
-                    _aggregator.SendMessage("发生错误！", "Main");
-                    return;
+                    if (obj is not FileDownloadInfo fileInfo || string.IsNullOrEmpty(fileInfo.DownloadedPath))
+                    {
+                        _aggregator.SendMessage("发生错误！", "Main");
+                        return;
+                    }
+                    FileHelper.OpenFileDir(fileInfo.DownloadedPath);
                 }
-                FileHelper.OpenFileDir(fileInfo.DownloadedPath);
-
+                else if(obj.GetType().Equals(typeof(FileUploadInfo)))
+                {
+                    if (obj is not FileUploadInfo fileInfo || string.IsNullOrEmpty(fileInfo.UploadFilePath))
+                    {
+                        _aggregator.SendMessage("发生错误！", "Main");
+                        return;
+                    }
+                    FileHelper.OpenFileDir(fileInfo.UploadFilePath);
+                }
             });
 
-            OpenFileCommand = new DelegateCommand<FileDownloadInfo>(fileInfo =>
+            OpenFileCommand = new DelegateCommand<object>(obj =>
             {
-                if (fileInfo == null || string.IsNullOrEmpty(fileInfo.DownloadedPath))
+                if (obj.GetType().Equals(typeof(FileDownloadInfo)))
                 {
-                    _aggregator.SendMessage("发生错误！", "Main");
-                    return;
+                    if (obj is not FileDownloadInfo fileInfo || string.IsNullOrEmpty(fileInfo.DownloadedPath))
+                    {
+                        _aggregator.SendMessage("发生错误！", "Main");
+                        return;
+                    }
+                    FileHelper.OpenFile(fileInfo.DownloadedPath);
                 }
-                FileHelper.OpenFile(fileInfo.DownloadedPath);
+                else if (obj.GetType().Equals(typeof(FileUploadInfo)))
+                {
+                    if (obj is not FileUploadInfo fileInfo || string.IsNullOrEmpty(fileInfo.UploadFilePath))
+                    {
+                        _aggregator.SendMessage("发生错误！", "Main");
+                        return;
+                    }
+                    FileHelper.OpenFile(fileInfo.UploadFilePath);
+                }
+                
             });
 
             DeleteDownloadedFileCommand = new DelegateCommand<FileDownloadInfo>(async fileInfo =>
@@ -165,9 +188,9 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 param.Add("Value", fileInfo.UserPrivateFileInfo.FileName);
                 var dialogResult = await dialogHostService.ShowDialog("DeleteFileDialogView", param);
                 if (dialogResult.Result != ButtonResult.OK) return;
-                UpdateLoading(true);
                 try
                 {
+                    UpdateLoading(true);
                     var isDeleteLocalFile = dialogResult.Parameters.GetValue<bool>("Value");
                     FileInfo file = new(fileInfo.DownloadedPath);
                     if (file.Exists && isDeleteLocalFile)
@@ -185,6 +208,26 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                     UpdateLoading(false);
                 }
             });
+
+            DeleteUploadedFileCommand = new DelegateCommand<FileUploadInfo>(async fileInfo =>
+            {
+                var dialogResult = await dialogHostService.Question("温馨提示",$"是否删除{fileInfo.FileName}？");
+                if (dialogResult.Result != ButtonResult.OK) return;
+                try
+                {
+                    UpdateLoading(true);
+                    UploadFiles.Remove(fileInfo);
+                }
+                catch (Exception e)
+                {
+                    _aggregator.SendMessage("发生错误：" + e.Message);
+                }
+                finally
+                {
+                    UpdateLoading(false);
+                }
+            });
+
             this.fileRequestService = fileRequestService;
             this.dialogHostService = dialogHostService;
         }

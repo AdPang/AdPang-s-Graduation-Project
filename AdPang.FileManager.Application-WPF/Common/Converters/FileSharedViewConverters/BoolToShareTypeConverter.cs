@@ -6,15 +6,15 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace AdPang.FileManager.Application_WPF.Common.Converters
+namespace AdPang.FileManager.Application_WPF.Common.Converters.FileSharedViewConverters
 {
-    public class DataTimeToStringConvert : IValueConverter
+    public class BoolToShareTypeConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
-            if (!value.GetType().Equals(typeof(DateTime))) return value;
-            DateTime date = (DateTime)value;
-            return date.ToString(@"yyyy/MM/dd HH:mm");
+            if (value.GetType().Equals((typeof(bool))))
+                return (bool)value ? "文件分享" : "文件夹分享";
+            return value;
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

@@ -51,6 +51,11 @@ namespace HttpRequestClient.Services.RequestServices
                 {
                     return string.Empty;
                 }
+                if (!Directory.Exists(downloadPath))
+                {
+                    Directory.CreateDirectory(downloadPath);
+                }
+
                 var fileFullName = downloadPath + "\\" + userPrivateFileInfo.FileName;
                 for (int i = 1; File.Exists(fileFullName); i++) 
                 {

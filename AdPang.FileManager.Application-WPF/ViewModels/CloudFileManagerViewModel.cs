@@ -2,28 +2,21 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
-using AdPang.FileManager.Application_WPF.Common.Models;
-using System.Windows.Input;
 using AdPang.FileManager.Application_WPF.Extensions;
 using HttpRequestClient.Services.IRequestServices;
 using Prism.Ioc;
-using System.Xml.Linq;
 using System.Windows;
 using Prism.Commands;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
-using ImTools;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;
-using AdPang.FileManager.Application_WPF.Services.Services;
 using AdPang.FileManager.Application_WPF.Services.IServices;
 using Prism.Services.Dialogs;
 using Prism.Regions;
-using AdPang.FileManager.Application_WPF.Views.Dialogs;
-using AdPang.FileManager.Application_WPF.Views;
-using Prism.Mvvm;
 using AdPang.FileManager.Application_WPF.Common.Events;
 using AdPang.FileManager.Application_WPF.Common.Helper;
+using AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo;
+using System.IO;
 
 namespace AdPang.FileManager.Application_WPF.ViewModels
 {
@@ -107,7 +100,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         #endregion
 
 
-        public CloudFileManagerViewModel(IContainerProvider containerProvider, IUserCloudDirInfoRequestService userCloudDirInfoRequestService, IDialogHostService dialogHostService, IFileRequestService fileRequestService, IRegionManager regionManager) : base(containerProvider)
+        public CloudFileManagerViewModel(IContainerProvider containerProvider, IUserCloudDirInfoRequestService userCloudDirInfoRequestService, IDialogHostService dialogHostService, IFileRequestService fileRequestService, IRegionManager regionManager, FileSharedViewModel fileSharedViewModel) : base(containerProvider)
         {
             //ViewModelLocationProvider.Register<FileTransferListView, FileTransferListViewModel>();
 
@@ -157,30 +150,211 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 case "EditDir"://编辑文件夹
                     EditDirInfo();
                     break;
-                case "DeleteDir":
+                case "DownloadDir"://下载文件夹
+                    DownloadDir();
+                    break;
+                case "DeleteDir"://删除文件夹
                     DeleteDirInfo();
                     break;
                 case "GotoUpDir"://返回上一级
                     GotoUpDir();
                     break;
-                case "DownloadFile":
+                case "DownloadFile"://下载文件
                     DownloadFile();
                     break;
-                case "Refresh":
+                case "Refresh"://刷新
                     RefreshModel();
                     break;
-                case "GotoTransferView":
-                    GotoTransferView();
+                case "GotoTransferView"://去传输中心界面
+                    regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("FileTransferListView");
+                    break;
+                case "ShareDir"://分享文件夹
+                    ShareDir();
+                    break;
+                case "ShareFile"://分享文件
+                    ShareFile();
+                    break;
+                case "GotoShareCenter"://分享中心
+                    regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("FileSharedView");
+                    break;
+                case "UploadDir":
+                    UploadDir();//上传文件夹
                     break;
                 default:
                     break;
             }
         }
 
-        private void GotoTransferView()
+        private async void UploadDir()
         {
-            regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("FileTransferListView");
+            if (CurrentSelectedItem.ParentDirInfoId == null)
+            {
+                _aggregator.SendMessage("无法在根目录下添加文件！", "DirView");
+                return;
+            }
+            try
+            {
+                var dirPaht = DirSelectorDialogHelper.GetPathByFolderBrowserDialog();
+                if (string.IsNullOrEmpty(dirPaht)) return;
+                DirectoryInfo dirInfo = new(dirPaht);
+                if (!dirInfo.Exists) return;
+                UpdateLoading(true);
+
+                var newDirResult = await userCloudDirInfoRequestService.AddAsync(new DirInfoDetailDto
+                {
+                    ParentDirInfoId = CurrentSelectedItem.Id,
+                    DirName = dirInfo.Name
+                });
+                if (!newDirResult.Status)
+                {
+                    _aggregator.SendMessage("发生错误：" + newDirResult.Message, "DirView");
+                    return;
+                }
+                CurrentSelectedItem.ChildrenDirInfo.Add(newDirResult.Result);
+                CreatDir(dirInfo, (Guid)newDirResult.Result.Id);
+            }
+            catch (Exception e)
+            {
+                _aggregator.SendMessage("发生错误：" + e.Message,"DirView");
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
+
         }
+
+
+        private async void CreatDir(DirectoryInfo root,Guid parentDirId)
+        {
+            var parentDir = FindChildren(DirInfoDetailDtos.FirstOrDefault(), parentDirId);
+            if (parentDir == null)
+            {
+                _aggregator.SendMessage("未找到父目录！", "DirView");
+                return;
+            }
+
+            foreach (var file in root.GetFiles())
+            {
+                _aggregator.SendFileTransferMessage(new FileTransferMessage
+                {
+                    CurrentDirId = parentDirId,
+                    FilePath = file.FullName,
+                }, "Upload");
+
+                parentDir.ChildrenFileInfo.Add(new UserPrivateFileInfoDto
+                {
+                    FileName = file.Name,
+                    RealFileInfo = new Shared.Dtos.CloudSavedDto.CloudFileInfo.CloudFileInfoDto
+                    {
+                        FileType = file.Extension,
+                        FileLength = file.Length,
+                        UpdateTime = DateTime.Now,
+                    }
+                });
+            }
+
+            foreach (var dir in root.GetDirectories())
+            {
+                var newDirResult = await userCloudDirInfoRequestService.AddAsync(new DirInfoDetailDto
+                {
+                    ParentDirInfoId = parentDirId,
+                    DirName = dir.Name
+                });
+                if (!newDirResult.Status)
+                {
+                    _aggregator.SendMessage("发生错误：" + newDirResult.Message, "DirView");
+                    return;
+                }
+                if(newDirResult.Result.Id == null)
+                {
+                    _aggregator.SendMessage("发生错误：服务器发生错误，发生此问题请联系管理员！", "DirView");
+                    return;
+                }
+                
+                
+                
+                parentDir.ChildrenDirInfo.Add(newDirResult.Result);
+                CreatDir(dir, (Guid)newDirResult.Result.Id);
+            }
+        }
+
+
+        private void ShareDir()
+        {
+            if (CurrentSelectedItem.ParentDirInfoId == null)
+            {
+                _aggregator.SendMessage("无法在根目录下添加文件！", "DirView");
+                return;
+            }
+            var dir = CurrentSelectedItem.ChildrenDirInfo[SelectedDirIndex];
+            SharedFileInfoDetailDto sharedFileInfo = new()
+            {
+                IsSingleFile = false,
+                DirId = dir.Id,
+                DirInfo = dir,
+            };
+            SendAddShareFileInfoMessage(sharedFileInfo);
+
+        }
+
+        private void ShareFile()
+        {
+            var file = CurrentSelectedItem.ChildrenFileInfo[SelectedFileIndex];
+            if (file.Id == null)
+            {
+                _aggregator.SendMessage("请刷新后重试！", "DirView");
+            }
+            SharedFileInfoDetailDto sharedFileInfo = new()
+            {
+                IsSingleFile = true,
+                SingleFileId = file.Id,
+                SingleFileInfo = file,
+                HasExpired = false,
+            };
+            SendAddShareFileInfoMessage(sharedFileInfo);
+        }
+
+        private async void SendAddShareFileInfoMessage(SharedFileInfoDetailDto sharedFileInfoDetailDto)
+        {
+            DialogParameters param = new();
+            param.Add("Value", sharedFileInfoDetailDto);
+            param.Add("IsEdit", false);
+            var dialogResult =  await dialogHostService.ShowDialog("OperaSharedInfoDialogView", param);
+            if (dialogResult.Result != ButtonResult.OK) return;
+            var shareFileInfo = dialogResult.Parameters.GetValue<SharedFileInfoDetailDto>("Value");
+            _aggregator.SendFileSharedMessage(shareFileInfo);
+        }
+
+        private void DownloadDir()
+        {
+            var dir = CurrentSelectedItem;
+            var fileList = new List<FileTransferMessage>();
+            var dirName = string.Empty;
+            GetAllFiles(dir, dirName, fileList);
+            foreach (var file in fileList)
+            {
+                _aggregator.SendFileTransferMessage(file, "Download");
+            }
+            _aggregator.SendMessage($"文件夹{dir.DirName}开始下载", "DirView");
+        }
+
+        private void GetAllFiles(DirInfoDetailDto rootDir,string dirName,List<FileTransferMessage> fileList)
+        {
+            foreach (var item in rootDir.ChildrenFileInfo)
+            {
+                fileList.Add(new FileTransferMessage
+                {
+                    UserPrivateFileInfo = item,
+                    DownloadDir = dirName,
+                });  
+            }
+            foreach (var item in rootDir.ChildrenDirInfo)
+            {
+                GetAllFiles(item, dirName + "\\" + item.DirName, fileList);
+            }
+        }
+
 
         private Guid? lastDirId = null;
         /// <summary>
@@ -188,9 +362,21 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         /// </summary>
         private void RefreshModel()
         {
-            lastDirId = CurrentSelectedItem.Id;
-            if (lastDirId == null) return;
-            GetDirInfo();
+            try
+            {
+                UpdateLoading(true);
+                lastDirId = CurrentSelectedItem.Id;
+                if (lastDirId == null) return;
+                GetDirInfo();
+            }
+            catch (Exception e)
+            {
+                _aggregator.SendMessage("发生错误："+e.Message, "DirView");
+            }
+            finally
+            {
+                UpdateLoading(false);
+            }
         }
         /// <summary>
         /// 下载文件
@@ -203,10 +389,11 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 _aggregator.SendMessage("发生错误，请刷新后再试试！", "DirView");
                 return;
             }
-            _aggregator.SendPersonMessage(new Common.Events.FileTransferMessage
+            _aggregator.SendFileTransferMessage(new Common.Events.FileTransferMessage
             {
                 UserPrivateFileInfo = CurrentSelectedItem.ChildrenFileInfo[SelectedFileIndex]
             }, "Download");
+            _aggregator.SendMessage("文件开始下载", "DirView");
         }
         /// <summary>
         /// 删除文件
@@ -381,7 +568,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 
 
 
-            _aggregator.SendPersonMessage(new FileTransferMessage
+            _aggregator.SendFileTransferMessage(new FileTransferMessage
             {
                 CurrentDirId = (Guid)CurrentSelectedItem.Id,
                 FilePath = filePath
@@ -516,6 +703,5 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 OperaVisibility = Visibility.Visible;
             }
         }
-
     }
 }

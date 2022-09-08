@@ -45,7 +45,7 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
         /// <summary>
         /// 分享文件夹
         /// </summary>
-        public virtual DirInfo DirInfo { get; set; }
+        public virtual DirInfo? DirInfo { get; set; }
         /// <summary>
         /// 分享用户
         /// </summary>
@@ -53,7 +53,7 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
         /// <summary>
         /// 分享单个文件信息
         /// </summary>
-        public virtual UserPrivateFileInfo SingleFileInfo { get; set; }
+        public virtual UserPrivateFileInfo? SingleFileInfo { get; set; }
 
     }
 }

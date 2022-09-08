@@ -7,7 +7,7 @@
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:viewmodels="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels"
-             xmlns:cv="clr-namespace:AdPang.FileManager.Application_WPF.Common.Converters.FileTransferListView"
+             xmlns:cv="clr-namespace:AdPang.FileManager.Application_WPF.Common.Converters.FileTransferListViewConverters"
              d:DataContext="{d:DesignInstance Type=viewmodels:FileTransferListViewModel}"
              xmlns:commonCv="clr-namespace:AdPang.FileManager.Application_WPF.Common.Converters"
              mc:Ignorable="d"
@@ -19,6 +19,7 @@
         <cv:DownloadStatusToBtnEnableConverter x:Key="DownloadStatusToBtnEnable" />
         <cv:UploadStatusToVisibilityConverter x:Key="UploadStatusToVisibility" />
         <commonCv:IntByteLengthToOtherLengthConvert x:Key="IntByteLengthToOtherLength" />
+        <commonCv:DataTimeToStringConvert x:Key="DataTimeToString" />
     </UserControl.Resources>
     <Grid Margin="20,10,20,10">
         <Grid.RowDefinitions>
@@ -66,8 +67,11 @@
                     <DataGridTextColumn Binding="{Binding UserPrivateFileInfo.RealFileInfo.FileLength,Converter={StaticResource IntByteLengthToOtherLength},ConverterParameter=MB}"
                                         Header="文件大小"
                                         Width="3*" />
+                    <DataGridTextColumn Binding="{Binding CreatTime,Converter={StaticResource DataTimeToString}}"
+                                        Header="创建时间"
+                                        Width="4*" />
                     <DataGridTemplateColumn Header="下载进度"
-                                            Width="6*">
+                                            Width="5*">
                         <DataGridTemplateColumn.CellTemplate>
 
                             <DataTemplate>
@@ -184,6 +188,7 @@
                       IsReadOnly="True"
                       ItemsSource="{Binding UploadFiles}"
                       AutoGenerateColumns="False"
+                      x:Name="UploadList"
                       Margin="3">
                 <DataGrid.Columns>
                     <DataGridTextColumn Binding="{Binding FileName}"
@@ -192,8 +197,12 @@
                     <DataGridTextColumn Binding="{Binding FileLength,Converter={StaticResource IntByteLengthToOtherLength},ConverterParameter=MB}"
                                         Header="文件大小"
                                         Width="3*" />
-                    <DataGridTemplateColumn Header="下载进度"
+                    <DataGridTextColumn Binding="{Binding CreatTime,Converter={StaticResource DataTimeToString}}"
+                                        Header="创建时间"
+                                        Width="4*" />
+                    <DataGridTemplateColumn Header="上传进度"
                                             Width="5*">
+                        
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
                                 <Grid>
@@ -221,7 +230,7 @@
                                     </StackPanel>
 
                                     <TextBlock Grid.Column="1"
-                                               Visibility="{Binding DownloadProgress,Converter={StaticResource UploadStatusToVisibility},ConverterParameter=Finished}"
+                                               Visibility="{Binding UploadProgress,Converter={StaticResource UploadStatusToVisibility},ConverterParameter=Finished}"
                                                Text="上传完成"
                                                VerticalAlignment="Center"
                                                HorizontalAlignment="Center" />
@@ -234,9 +243,47 @@
                                             Width="4*">
                         <DataGridTemplateColumn.CellTemplate>
                             <DataTemplate>
-                                <StackPanel>
-                                    <Button Content="打开文件位置"
-                                            Command="{Binding OpearCommand}" />
+                                <StackPanel Orientation="Horizontal"
+                                            Margin="0"
+                                            >
+
+                                    <Button Height="25"
+                                            Margin="0,0,15,0"
+                                            ToolTip="打开文件">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.OpenFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                                                       CommandParameter="{Binding ElementName=UploadList,Path=SelectedItem}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <materialDesign:PackIcon Kind="FileOutline" />
+                                    </Button>
+
+                                    <Button Height="25"
+                                            Margin="0,0,15,0"
+                                            ToolTip="打开文件位置">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.OpenFileDirCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                                                       CommandParameter="{Binding ElementName=UploadList,Path=SelectedItem}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <materialDesign:PackIcon Kind="FolderOpenOutline" />
+                                    </Button>
+
+                                    <Button Height="25"
+                                            Margin="0,0,15,0"
+                                            ToolTip="删除"
+                                            IsEnabled="{Binding UploadProgress,Converter={StaticResource DownloadStatusToBtnEnable}}">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Click">
+                                                <i:InvokeCommandAction Command="{Binding DataContext.DeleteUploadedFileCommand, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DataGrid}}"
+                                                                       CommandParameter="{Binding ElementName=UploadList,Path=SelectedItem}" />
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <materialDesign:PackIcon Kind="FileRemoveOutline" />
+                                    </Button>
+
                                 </StackPanel>
                             </DataTemplate>
                         </DataGridTemplateColumn.CellTemplate>

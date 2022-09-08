@@ -89,8 +89,9 @@
                 <materialDesign:PackIcon Kind="ArrowUpThin"
                                          Height="30"
                                          Width="30" />
-            </Button>
 
+            </Button>
+            
         </StackPanel>
         <!--主体-->
         <StackPanel  Grid.Column="1"
@@ -104,6 +105,9 @@
                     <MenuItem Header="添加文件夹"
                               Command="{Binding CommandExecute}"
                               CommandParameter="AddDir" />
+                    <MenuItem Header="上传文件夹"
+                              Command="{Binding CommandExecute}"
+                              CommandParameter="UploadDir" />
                 </ContextMenu>
             </StackPanel.ContextMenu>
             <StackPanel Grid.Row="1"
@@ -150,6 +154,12 @@
                                     <MenuItem Header="删除文件夹"
                                               Command="{Binding CommandExecute}"
                                               CommandParameter="DeleteDir" />
+                                    <MenuItem Header="分享文件夹"
+                                              Command="{Binding CommandExecute}"
+                                              CommandParameter="ShareDir" />
+                                    <MenuItem Header="下载该文件夹"
+                                              Command="{Binding CommandExecute}"
+                                              CommandParameter="DownloadDir" />
                                 </ContextMenu>
                             </ListView.ContextMenu>
                             <i:Interaction.Triggers>
@@ -254,6 +264,9 @@
                                     <MenuItem Header="重命名"
                                               Command="{Binding CommandExecute}"
                                               CommandParameter="EditFile" />
+                                    <MenuItem Header="分享文件"
+                                              Command="{Binding CommandExecute}"
+                                              CommandParameter="ShareFile" />
                                     <MenuItem Header="删除文件"
                                               Command="{Binding CommandExecute}"
                                               CommandParameter="DeleteFile" />
@@ -298,7 +311,7 @@
               Grid.Column="1">
             <Grid.ColumnDefinitions>
                 <ColumnDefinition />
-                <ColumnDefinition Width="100" />
+                <ColumnDefinition Width="130" />
             </Grid.ColumnDefinitions>
 
             <ListView Grid.Column="0"
@@ -355,8 +368,18 @@
                         Command="{Binding CommandExecute}"
                         CommandParameter="GotoTransferView"
                         ToolTip="下载中心">
-                    <materialDesign:PackIcon Kind="FileArrowUpDownOutline" />
+                    <materialDesign:PackIcon Kind="FileArrowUpDownOutline"/>
 
+                </Button>
+
+                <Button Style="{StaticResource MaterialDesignFloatingActionButton}"
+                        Height="30"
+                        Width="30"
+                        Padding="0"
+                        Command="{Binding CommandExecute}"
+                        CommandParameter="GotoShareCenter"
+                        ToolTip="分享中心">
+                    <materialDesign:PackIcon Kind="ShareVariantOutline" />
                 </Button>
             </StackPanel>
 

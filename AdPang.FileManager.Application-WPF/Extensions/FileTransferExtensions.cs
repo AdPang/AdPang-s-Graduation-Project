@@ -11,7 +11,7 @@ namespace AdPang.FileManager.Application_WPF.Extensions
         /// </summary>
         /// <param name="aggregator"></param>
         /// <param name="action"></param>
-        public static void ResgiterPersonMessage(this IEventAggregator aggregator,
+        public static void ResgiterFileTransferMessage(this IEventAggregator aggregator,
             Action<FileTransferMessage> action, string filterName = "Download")
         {
             aggregator.GetEvent<FileTransferEvent>().Subscribe(action,
@@ -27,10 +27,10 @@ namespace AdPang.FileManager.Application_WPF.Extensions
         /// </summary>
         /// <param name="aggregator"></param>
         /// <param name="message"></param>
-        public static void SendPersonMessage(this IEventAggregator aggregator, FileTransferMessage person, string filterName = "Download")
+        public static void SendFileTransferMessage(this IEventAggregator aggregator, FileTransferMessage  fileTransferMessage, string filterName = "Download")
         {
-            person.Filter = filterName;
-            aggregator.GetEvent<FileTransferEvent>().Publish(person);
+            fileTransferMessage.Filter = filterName;
+            aggregator.GetEvent<FileTransferEvent>().Publish(fileTransferMessage);
         }
     }
 }

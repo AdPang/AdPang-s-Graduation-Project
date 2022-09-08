@@ -15,38 +15,97 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo
         /// <summary>
         /// 分享文件描述
         /// </summary>
-        public string? SharedDesc { get; set; }
+        private string? sharedDesc;
+
+        public string? SharedDesc
+        {
+            get { return sharedDesc; }
+            set { sharedDesc = value; OnPropertyChanged(); }
+        }
         /// <summary>
         /// 分享密码
         /// </summary>
-        public string? SharedPassword { get; set; }
+        private string? sharedPassword;
+
+        public string? SharedPassword
+        {
+            get { return sharedPassword; }
+            set { sharedPassword = value; OnPropertyChanged(); }
+        }
+
         /// <summary>
         /// 分享文件夹外键Id （可以为空）
         /// </summary>
-        public Guid? DirId { get; set; }
+        private Guid? dirId;
+
+        public Guid? DirId
+        {
+            get { return dirId; }
+            set { dirId = value;OnPropertyChanged(); }
+        }
         /// <summary>
         /// 单个文件信息Id
         /// </summary>
-        public Guid? SingleFileId { get; set; }
+        private Guid? singleFileId;
+
+        public Guid? SingleFileId
+        {
+            get { return singleFileId; }
+            set { singleFileId = value;OnPropertyChanged(); }
+        }
+
         /// <summary>
         /// 是否是单个文件
         /// </summary>
-        public bool IsSingleFile { get; set; } = false;
+        private bool isSingleFile = false;
+
+        public bool IsSingleFile
+        {
+            get { return isSingleFile; }
+            set { isSingleFile = value; OnPropertyChanged(); }
+        }
         /// <summary>
         /// 是否有过期时间
         /// </summary>
-        public bool HasExpired { get; set; } = true;
+        private bool hasExpired = true;
+
+        public bool HasExpired
+        {
+            get { return hasExpired; }
+            set { hasExpired = value;OnPropertyChanged(); }
+        }
         /// <summary>
         /// 过期时间（默认7天）
         /// </summary>
-        public DateTime ExpiredTime { get; set; } = DateTime.Now.AddDays(7);
+        private DateTime? expiredTime;
+
+        public DateTime? ExpiredTime
+        {
+            get { return expiredTime; }
+            set { expiredTime = value;OnPropertyChanged(); }
+        }
+
         /// <summary>
         /// 分享文件夹
         /// </summary>
-        public virtual DirInfoDetailDto DirInfo { get; set; }
+        private DirInfoDetailDto? dirInfo;
+
+        public DirInfoDetailDto? DirInfo
+        {
+            get { return dirInfo; }
+            set { dirInfo = value;OnPropertyChanged(); }
+        }
+
         /// <summary>
         /// 分享单个文件信息
         /// </summary>
-        public virtual UserPrivateFileInfoDetailDto SingleFileInfo { get; set; }
+        private UserPrivateFileInfoDto? singleFileInfo;
+
+        public UserPrivateFileInfoDto? SingleFileInfo
+        {
+            get { return singleFileInfo; }
+            set { singleFileInfo = value;OnPropertyChanged(); }
+        }
+
     }
 }

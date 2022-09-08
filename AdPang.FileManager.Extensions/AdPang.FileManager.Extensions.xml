@@ -26,6 +26,16 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="T:AdPang.FileManager.Extensions.AutoMapper.LocalPrivate.PrivateDiskInfoProfile">
+            <summary>
+            私有硬盘实体AutoMapper配置
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.Extensions.AutoMapper.LocalPrivate.PrivateDiskInfoProfile.#ctor">
+            <summary>
+            构造
+            </summary>
+        </member>
         <member name="T:AdPang.FileManager.Extensions.AutoMapper.SystemCommon.RoleProfile">
             <summary>
             

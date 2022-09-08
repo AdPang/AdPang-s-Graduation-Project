@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
-namespace AdPang.FileManager.Application_WPF.Common.Converters.FileTransferListView
+namespace AdPang.FileManager.Application_WPF.Common.Converters.FileTransferListViewConverters
 {
-    public class UploadStatusToVisibilityConverter : IValueConverter
+    public class DownloadStatusToVisibilityConverter : IValueConverter
     {
         public object Convert(object value, Type targetType, object parameter, CultureInfo culture)
         {
@@ -19,8 +19,7 @@ namespace AdPang.FileManager.Application_WPF.Common.Converters.FileTransferListV
             {
                 return p >= 100 ? Visibility.Visible : Visibility.Collapsed;
 
-            }
-            else if (parameter.ToString().Equals("Loading"))
+            }else if (parameter.ToString().Equals("Loading"))
             {
                 return p >= 100 ? Visibility.Collapsed : Visibility.Visible;
             }

@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Data;
 
-namespace AdPang.FileManager.Application_WPF.Common.Converters.FileTransferListView
+namespace AdPang.FileManager.Application_WPF.Common.Converters.FileTransferListViewConverters
 {
     public class DownloadStatusToBtnEnableConverter : IValueConverter
     {

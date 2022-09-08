@@ -64,7 +64,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CloudFileInfos");
+                    b.ToTable("CloudFileInfos", (string)null);
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo", b =>
@@ -95,7 +95,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DirInfos");
+                    b.ToTable("DirInfos", (string)null);
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.SharedFileInfo", b =>
@@ -144,7 +144,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("SingleFileId");
 
-                    b.ToTable("SharedFileInfos");
+                    b.ToTable("SharedFileInfos", (string)null);
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.UserPrivateFileInfo", b =>
@@ -180,7 +180,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserPrivateFileInfos");
+                    b.ToTable("UserPrivateFileInfos", (string)null);
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.LocalPrivate.PrivateDiskInfo", b =>
@@ -214,7 +214,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PrivateDiskInfos");
+                    b.ToTable("PrivateDiskInfos", (string)null);
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.LocalPrivate.PrivateFileInfo", b =>
@@ -260,7 +260,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PrivateFileInfos");
+                    b.ToTable("PrivateFileInfos", (string)null);
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.IdentityEntities.Role", b =>
@@ -369,7 +369,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("CloudFileInfoUser");
+                    b.ToTable("CloudFileInfoUser", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>
