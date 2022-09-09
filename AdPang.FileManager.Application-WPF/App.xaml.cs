@@ -82,7 +82,8 @@ namespace AdPang.FileManager.Application_WPF
             containerRegistry.Register<IFileRequestService, FileRequestService>();
             containerRegistry.Register<ISharedInfoRequestService, SharedInfoRequestService>();
             containerRegistry.Register<IPrivateDiskRequestService, PrivateDiskRequestService>();
-            
+            containerRegistry.Register<IPrivateFileInfoRequestService, PrivateFileInfoRequestService>();
+
 
 
             containerRegistry.RegisterSingleton<IAuthModel, AuthModel>();
@@ -94,6 +95,8 @@ namespace AdPang.FileManager.Application_WPF
             containerRegistry.Register<IDialogHostService, DialogHostService>();
             containerRegistry.RegisterSingleton<FileTransferListViewModel>();
             containerRegistry.RegisterSingleton<FileSharedViewModel>();
+            containerRegistry.RegisterSingleton<PrivateFileInfoViewModel>();
+            
             containerRegistry.RegisterSingleton<ILocalInfoService, LocalInfoService>();
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
             
@@ -103,6 +106,7 @@ namespace AdPang.FileManager.Application_WPF
             containerRegistry.RegisterForNavigation<OperaSharedInfoDialogView, OperaSharedInfoDialogViewModel>();
             containerRegistry.RegisterForNavigation<DiskInfoDialogView, DiskInfoDialogViewModel>();
             containerRegistry.RegisterForNavigation<PrivateDiskView, PrivateDiskViewModel>();
+            containerRegistry.RegisterForNavigation<PrivateFileInfoView, PrivateFileInfoViewModel>();
 
             containerRegistry.RegisterForNavigation<DeleteFileDialogView, DeleteFileDialogViewModel>();
 

@@ -48,11 +48,12 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [HttpGet("GetAll")]
         [Authorize(Roles ="Ordinary")]
-        public async Task<ApiResponse<IPagedList<PrivateFileInfoDto>>> GetFileInfos([FromQuery] QueryParameter queryParameter)
+        public async Task<ApiResponse<IPagedList<PrivateFileInfoDto>>> GetFileInfos([FromQuery] PrivateFileInfoQueryParameter queryParameter)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             if (userId == null) return new ApiResponse<IPagedList<PrivateFileInfoDto>>(false, "发生错误");
-            var fileInfos = await privateFileService.GetPagedListAsync(x => queryParameter.Search == null || queryParameter.Search.Contains(x.FileName) || x.FileName.Contains(queryParameter.Search) && x.UserId.Equals(userId), queryParameter.PageIndex * queryParameter.PageSize, queryParameter.PageSize, "CreatTime", default, false);
+            //var fileInfos = await privateFileService.GetPagedListAsync(x =>(queryParameter.DiskId == null || x.DiskId == queryParameter.DiskId) && (queryParameter.Search == null || queryParameter.Search.Contains(x.FileName) || x.FileName.Contains(queryParameter.Search)) && (x.UserId.Equals(userId)), queryParameter.PageIndex * queryParameter.PageSize, queryParameter.PageSize, "CreatTime", default, false);
+            var fileInfos = await privateFileService.GetPagedListAsync(x => (queryParameter.DiskId == null || x.DiskId == new Guid(queryParameter.DiskId)) && (queryParameter.Search == null || queryParameter.Search.Contains(x.FileName) || x.FileName.Contains(queryParameter.Search)) && (x.UserId.Equals(userId)), default, int.MaxValue, "CreatTime", default, false);
             var fileInfoDtos = mapper.Map<List<PrivateFileInfoDto>>(fileInfos);
             return new ApiResponse<IPagedList<PrivateFileInfoDto>>(true, new PagedList<PrivateFileInfoDto>(fileInfoDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
         }

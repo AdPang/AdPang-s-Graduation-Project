@@ -65,6 +65,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         {
             MenuBars.Add(new MenuBar() { Icon = "Home", Title = "首页", NameSpace = "IndexView" });
             MenuBars.Add(new MenuBar() { Icon = "ContentSave", Title = "私有硬盘信息", NameSpace = "PrivateDiskView" });
+            MenuBars.Add(new MenuBar() { Icon = "FileMultiple", Title = "私有文件列表", NameSpace = "PrivateFileInfoView" });
             MenuBars.Add(new MenuBar() { Icon = "Nas", Title = "我的网盘", NameSpace = "CloudFileManagerView" });
             MenuBars.Add(new MenuBar() { Icon = "FileArrowUpDown", Title = "文件传输列表", NameSpace = "FileTransferListView" });
             MenuBars.Add(new MenuBar() { Icon = "ShareAll", Title = "分享列表", NameSpace = "FileSharedView" });

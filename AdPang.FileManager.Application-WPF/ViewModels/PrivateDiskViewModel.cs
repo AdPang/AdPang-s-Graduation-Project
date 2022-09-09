@@ -13,6 +13,7 @@ using HttpRequestClient.Services.IRequestServices;
 using MaterialDesignThemes.Wpf;
 using Prism.Commands;
 using Prism.Ioc;
+using Prism.Regions;
 using Prism.Services.Dialogs;
 
 namespace AdPang.FileManager.Application_WPF.ViewModels
@@ -20,7 +21,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
     public class PrivateDiskViewModel : NavigationViewModel
     {
         #region 构造
-        public PrivateDiskViewModel(IContainerProvider containerProvider, ILocalInfoService localInfoService, IPrivateDiskRequestService privateDiskRequestService) : base(containerProvider)
+        public PrivateDiskViewModel(IContainerProvider containerProvider, ILocalInfoService localInfoService, IPrivateDiskRequestService privateDiskRequestService, IRegionManager regionManager, PrivateFileInfoViewModel privateFileInfoViewModel) : base(containerProvider)
         {
             this.dialogHost = containerProvider.Resolve<IDialogHostService>();
             this.localInfoService = localInfoService;
@@ -29,11 +30,18 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             AddDiskInfoCommand = new DelegateCommand(AddDisk);
             DeleteDiskCommand = new DelegateCommand<PrivateDiskInfoDto>(DeleteDisk);
             EditDiskInfoCommand = new DelegateCommand<PrivateDiskInfoDto>(EditDisk);
+            ToFileInfosViewCommand = new DelegateCommand<PrivateDiskInfoDto>(diskInfo =>
+            {
+                if (diskInfo.Id == null) return;
+                _aggregator.SendFileInfosMessage(new Common.Events.FileInfosMessage
+                {
+                    DiskId = (Guid)diskInfo.Id
+                });
+                regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("PrivateFileInfoView");
+            });
 
             RefreshModels();
         }
-
-
 
         #endregion
         #region 字段、属性
@@ -41,6 +49,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 
         public DelegateCommand<PrivateDiskInfoDto> DeleteDiskCommand { get; set; }
         public DelegateCommand<PrivateDiskInfoDto> EditDiskInfoCommand { get; set; }
+        public DelegateCommand<PrivateDiskInfoDto> ToFileInfosViewCommand { get; set; }
         public DelegateCommand AddDiskInfoCommand { get; set; }
         public DelegateCommand RefreshModelCommand { get; set; }
 
@@ -173,7 +182,6 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 DiskInfos.Clear();
                 DiskInfos.AddRange(getsResult.Result.Items);
 
-               
             }
             catch (Exception e)
             {

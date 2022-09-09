@@ -331,7 +331,7 @@
             <param name="userManager"></param>
             <param name="requestInfoModel"></param>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.GetFileInfos(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.LocalPrivate.PrivateFileController.GetFileInfos(AdPang.FileManager.Shared.Paremeters.PrivateFileInfoQueryParameter)">
             <summary>
             获取当前账号的文件详情列表
             </summary>
