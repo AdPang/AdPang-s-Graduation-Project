@@ -92,6 +92,20 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         private ObservableCollection<PrivateFileInfoDto> fileInfoDtos = new();
         private ObservableCollection<PrivateDiskInfoDto> diskInfoDtos = new();
         private PrivateDiskInfoDto diskSeletedItem;
+        private bool isFindDuplicate = false;
+
+        public bool IsFindDuplicate
+        {
+            get { return isFindDuplicate; }
+            set 
+            { 
+                isFindDuplicate = value;
+                requestMode = value ? Shared.Paremeters.RequestMode.Distinct : Shared.Paremeters.RequestMode.Default;
+                RefreshFileListModel();
+                RaisePropertyChanged();
+            }
+        }
+
 
         public PrivateDiskInfoDto DiskSeletedItem
         {
@@ -109,7 +123,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         private int pageSize = 10;
         private int pageCount = 1;
         private int currentPage = 1;
-
+        private Shared.Paremeters.RequestMode requestMode = Shared.Paremeters.RequestMode.Default;
 
         public int CurrentPage
         {
@@ -177,7 +191,8 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 {
                     PageIndex = CurrentPage - 1,
                     PageSize = PageSize,
-                    DiskId = DiskSeletedItem == null || DiskSeletedItem.Id == null ? null : DiskSeletedItem.Id.ToString()
+                    DiskId = DiskSeletedItem == null || DiskSeletedItem.Id == null ? null : DiskSeletedItem.Id.ToString(),
+                    RequestMode = requestMode
                 });
                 if (!getRequestResult.Status)
                 {

@@ -17,15 +17,15 @@
             <RowDefinition Height="auto"/>
         </Grid.RowDefinitions>
 
-        <StackPanel Orientation="Horizontal"
-                    Margin="10"
-                    Grid.Row="0">
-            <TextBlock Text="硬盘" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20"/>
+        <DockPanel Margin="10"
+                  
+                    Grid.Row="0" LastChildFill="False">
+            <TextBlock Text="硬盘" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" DockPanel.Dock="Left"/>
             <ComboBox ItemsSource="{Binding DiskInfoDtos}"
-                      SelectedItem="{Binding DiskSeletedItem}" >
+                      SelectedItem="{Binding DiskSeletedItem}" DockPanel.Dock="Left">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
-                        <i:InvokeCommandAction Command="{Binding DataContext.DiskSelectedChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=StackPanel}}" />
+                        <i:InvokeCommandAction Command="{Binding DataContext.DiskSelectedChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DockPanel}}" />
                     </i:EventTrigger>
                 </i:Interaction.Triggers>
                 <ComboBox.ItemTemplate>
@@ -46,9 +46,14 @@
                     </DataTemplate>
                 </ComboBox.ItemTemplate>
             </ComboBox>
-        </StackPanel>
 
-        
+            <CheckBox DockPanel.Dock="Right"
+                      Content="查找重复文件"
+                      Margin="10,0"
+                      IsChecked="{Binding IsFindDuplicate,Mode=TwoWay}" />
+
+        </DockPanel>
+
 
         <DataGrid Grid.Row="1"
                   IsReadOnly="True"
