@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AdPang.FileManager.Common.Helper
+﻿namespace AdPang.FileManager.Common.Helper
 {
     /// <summary>
     /// 令牌

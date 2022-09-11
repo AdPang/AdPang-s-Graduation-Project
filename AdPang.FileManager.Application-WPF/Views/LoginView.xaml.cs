@@ -1,5 +1,4 @@
 ﻿using System.Windows.Controls;
-using AdPang.FileManager.Application_WPF.Common.Events;
 using AdPang.FileManager.Application_WPF.Extensions;
 using Prism.Events;
 

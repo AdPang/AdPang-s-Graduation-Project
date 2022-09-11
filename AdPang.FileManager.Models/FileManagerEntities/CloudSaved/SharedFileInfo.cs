@@ -1,10 +1,6 @@
-﻿using AdPang.FileManager.Models.FileManagerEntities.Base;
+﻿using System;
+using AdPang.FileManager.Models.FileManagerEntities.Base;
 using AdPang.FileManager.Models.IdentityEntities;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
 {

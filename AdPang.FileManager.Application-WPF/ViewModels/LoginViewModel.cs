@@ -1,13 +1,6 @@
 ﻿using System;
-using System.CodeDom.Compiler;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Principal;
-using System.Text;
-using System.Threading.Tasks;
 using AdPang.FileManager.Application_WPF.Extensions;
 using AdPang.FileManager.Application_WPF.Services.IServices;
-using AdPang.FileManager.Application_WPF.Services.Services;
 using AdPang.FileManager.Shared.Dtos.SystemCommon;
 using HttpRequestClient.Services.IRequestServices;
 using Prism.Commands;
@@ -48,6 +41,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             this.authModel = authModel;
             this.authRequestService = authRequestService;
             this.eventAggregator = eventAggregator;
+            verfiyCodeImgUrl = authRequestService.GetVerfiyCodeImgUrl(seed);
         }
 
         private void Execute(string arg)
@@ -59,13 +53,16 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 case "GoRegister": SelectedIndex = 1; break; //跳转注册页面
                 case "Register": Register(); break;          //注册账号
                 case "Return": SelectedIndex = 0; break;   //返回登陆页面
+                case "RefreshVerfiyCode":
+                    seed = Guid.NewGuid();
+                    VerfiyCodeImgUrl = authRequestService.GetVerfiyCodeImgUrl(seed);
+                    break;
             }
         }
 
         private async void Register()
         {
-            if (string.IsNullOrWhiteSpace(UserDto.Account)
-                || string.IsNullOrWhiteSpace(UserDto.UserName)
+            if (string.IsNullOrWhiteSpace(UserDto.UserName)
                 || string.IsNullOrWhiteSpace(UserDto.Password)
                 || string.IsNullOrWhiteSpace(UserDto.NewPassword))
             {
@@ -84,17 +81,17 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             var registerResult = await authRequestService.RegisterAsync(new UserDto
             {
                 //U = UserDto.Account,
-                UserName = UserDto.Account,
+                UserName = UserDto.UserName,
                 Password = UserDto.Password
-            });
-            if (registerResult is not null && registerResult.Status)
+            }, seed, VerfiyCode);
+            if (!registerResult.Status)
             {
                 //注册成功
-                eventAggregator.SendMessage("注册成功！", "Login");
-                SelectedIndex = 0;
+                eventAggregator.SendMessage("注册失败：" + registerResult.Message, "Login");
                 return;
             }
-            eventAggregator.SendMessage(registerResult.Message, "Login");
+            eventAggregator.SendMessage("注册成功！", "Login");
+            SelectedIndex = 0;
             //注册失败提示...
         }
 
@@ -134,9 +131,30 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 
         private string account = "test1";
         private string password = "123456";
+        private Guid seed = Guid.NewGuid();
         private int selectedIndex;
         private RegisterUserDto userDto = new RegisterUserDto();
+        private string verfiyCode;
+        private string verfiyCodeImgUrl;
 
+        public string VerfiyCode
+        {
+            get { return verfiyCode; }
+            set { verfiyCode = value; RaisePropertyChanged(); }
+        }
+
+
+        public string VerfiyCodeImgUrl
+        {
+            get
+            {
+                return verfiyCodeImgUrl;
+            }
+            set
+            {
+                verfiyCodeImgUrl = value; RaisePropertyChanged();
+            }
+        }
 
         public RegisterUserDto UserDto
         {

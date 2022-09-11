@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
 
 namespace AdPang.FileManager.Application_WPF.Common.Converters.FileSharedViewConverters
@@ -18,7 +14,7 @@ namespace AdPang.FileManager.Application_WPF.Common.Converters.FileSharedViewCon
                 return value;
             }
             DateTime dateTime = (DateTime)value;
-            if (dateTime - DateTime.Now < TimeSpan.Zero) 
+            if (dateTime - DateTime.Now < TimeSpan.Zero)
             {
                 return "该分享已过期";
             }

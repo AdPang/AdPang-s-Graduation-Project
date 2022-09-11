@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Swashbuckle.AspNetCore.Filters;
-using Microsoft.OpenApi.Models;
-using System.Reflection;
+﻿using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Controllers;
-using Microsoft.OpenApi.Interfaces;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.Filters;
 
 namespace AdPang.FileManager.Extensions.ServiceExtensions
 {

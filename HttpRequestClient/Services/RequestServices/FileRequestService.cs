@@ -56,10 +56,10 @@ namespace HttpRequestClient.Services.RequestServices
                     Directory.CreateDirectory(downloadPath);
                 }
 
-                var fileFullName = downloadPath + "\\" + userPrivateFileInfo.FileName;
+                var fileFullName = downloadPath + @"\" + userPrivateFileInfo.FileName;
                 for (int i = 1; File.Exists(fileFullName); i++) 
                 {
-                    fileFullName = downloadPath + "\\" + $"({i})" + userPrivateFileInfo.FileName;
+                    fileFullName = downloadPath + @"\" + $"({i})" + userPrivateFileInfo.FileName;
                 }
                 using var filestream = new FileStream(fileFullName, FileMode.Create);
                 var netStream = await t.Content.ReadAsStreamAsync();

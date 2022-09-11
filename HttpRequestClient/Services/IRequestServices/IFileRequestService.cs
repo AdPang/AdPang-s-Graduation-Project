@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http.Handlers;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Net.Http.Handlers;
 using AdPang.FileManager.Shared;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;

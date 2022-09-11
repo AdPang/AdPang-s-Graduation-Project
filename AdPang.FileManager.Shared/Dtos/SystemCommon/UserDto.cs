@@ -1,9 +1,4 @@
 ﻿using AdPang.FileManager.Shared.Dtos.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.SystemCommon
 {
@@ -16,7 +11,7 @@ namespace AdPang.FileManager.Shared.Dtos.SystemCommon
         /// <summary>
         /// 邮箱
         /// </summary>
-        public string Email { get; set; }
+        public string? Email { get; set; }
         /// <summary>
         /// 密码
         /// </summary>
@@ -24,7 +19,7 @@ namespace AdPang.FileManager.Shared.Dtos.SystemCommon
         /// <summary>
         /// 电话
         /// </summary>
-        public string PhoneNumber { get; set; }
+        public string? PhoneNumber { get; set; }
 
 
     }

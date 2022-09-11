@@ -1,13 +1,13 @@
-﻿<UserControl x:Class="AdPang.FileManager.Application_WPF.Views.PrivateDiskView"
+﻿<UserControl x:Class="AdPang.FileManager.Application_WPF.Views.LocalPrivateManage.PrivateDiskView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-             xmlns:local="clr-namespace:AdPang.FileManager.Application_WPF.Views"
+             xmlns:local="clr-namespace:AdPang.FileManager.Application_WPF.Views.LocalPrivateManage"
              xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
-             xmlns:viewmodels="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels"
-             d:DataContext="{d:DesignInstance Type=viewmodels:PrivateDiskViewModel}"
+             xmlns:localprivatemanage="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels.LocalPrivateManage"
+             d:DataContext="{d:DesignInstance Type=localprivatemanage:PrivateDiskViewModel}"
              mc:Ignorable="d"
              d:DesignHeight="768"
              d:DesignWidth="1280">
@@ -18,7 +18,7 @@
         </Grid.ColumnDefinitions>
 
         <Grid Grid.Column="0">
-            <Grid Name="GridDbView">
+            <Grid x:Name="GridDbView">
                 <DataGrid IsReadOnly="True"
                           x:Name="DgDbDiskInfo"
                           ItemsSource="{Binding DiskInfos}"
@@ -136,7 +136,8 @@
                         <TextBlock Text="刷新"
                                    HorizontalAlignment="Center"
                                    VerticalAlignment="Center" />
-                        <TextBlock HorizontalAlignment="Center" VerticalAlignment="Center">
+                        <TextBlock HorizontalAlignment="Center"
+                                   VerticalAlignment="Center">
                             <materialDesign:PackIcon Kind="Refresh" />
                         </TextBlock>
                     </StackPanel>

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Data;
 
@@ -19,7 +15,8 @@ namespace AdPang.FileManager.Application_WPF.Common.Converters.FileTransferListV
             {
                 return p >= 100 ? Visibility.Visible : Visibility.Collapsed;
 
-            }else if (parameter.ToString().Equals("Loading"))
+            }
+            else if (parameter.ToString().Equals("Loading"))
             {
                 return p >= 100 ? Visibility.Collapsed : Visibility.Visible;
             }

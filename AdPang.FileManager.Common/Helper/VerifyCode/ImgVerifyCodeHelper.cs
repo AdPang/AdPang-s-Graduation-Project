@@ -1,6 +1,4 @@
-﻿using System.Text;
-using System.Security.Cryptography;
-using System.DrawingCore;
+﻿using System.DrawingCore;
 using System.DrawingCore.Drawing2D;
 using System.DrawingCore.Imaging;
 using AdPang.FileManager.Common.Helper.Redis;
@@ -22,7 +20,7 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
             var recored = GetVerifyCodeByRedisDb(seed);
             if (recored != null)
             {
-                if(recored.IsUsed) throw new Exception("创建验证码错误！请重新获取");
+                if (recored.IsUsed) throw new Exception("创建验证码错误！请重新获取");
                 return result;
             }
             if (SaveVerifyCodeToRedisDb(seed, result))
@@ -33,12 +31,12 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
         {
             var result = VerifyCodeHelper.CreatVeriyCode(6, seed);
             var record = GetVerifyCodeByRedisDb(seed);
-            if(record != null)
+            if (record != null)
             {
                 if (record.IsUsed) throw new Exception("创建验证码错误！请重新获取");
                 return result;
             }
-            if(SaveVerifyCodeToRedisDb(seed, result))
+            if (SaveVerifyCodeToRedisDb(seed, result))
                 return result;
             else throw new Exception("发生错误！");
         }
@@ -82,7 +80,7 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
         }
 
 
-        
+
 
 
         /// <summary>
@@ -99,7 +97,7 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
         /// 保存验证码到redis
         /// </summary>
         /// <returns></returns>
-        private bool SaveVerifyCodeToRedisDb(Guid seed,string result)
+        private bool SaveVerifyCodeToRedisDb(Guid seed, string result)
         {
             var isSaved = redis.SetStringKey(seed.ToString(), new ImgVerfiyRecord
             {
@@ -110,7 +108,7 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
         }
 
 
-        
+
         public static byte[] CreateByteByImgVerifyCode(string verifyCode, int width, int height)
         {
             Font font = new Font("Arial", 14, FontStyle.Bold | FontStyle.Italic);
@@ -163,5 +161,5 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
         public bool IsUsed { get; set; }
     }
 
-    
+
 }

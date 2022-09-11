@@ -1,11 +1,5 @@
-﻿using AdPang.FileManager.Models.FileManagerEntities;
-using AdPang.FileManager.Models.LogEntities;
+﻿using AdPang.FileManager.Models.LogEntities;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.EntityFrameworkCore.LogDb
 {

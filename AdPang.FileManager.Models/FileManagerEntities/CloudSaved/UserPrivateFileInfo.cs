@@ -1,6 +1,6 @@
-﻿using AdPang.FileManager.Models.FileManagerEntities.Base;
+﻿using System;
+using AdPang.FileManager.Models.FileManagerEntities.Base;
 using AdPang.FileManager.Models.IdentityEntities;
-using System;
 
 namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
 {
@@ -29,7 +29,7 @@ namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
         /// <summary>
         /// 当前文件所在文件夹信息
         /// </summary>
-        public virtual DirInfo CurrentDirectoryInfo  { get; set; }
+        public virtual DirInfo CurrentDirectoryInfo { get; set; }
         /// <summary>
         /// 所属用户信息
         /// </summary>

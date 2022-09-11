@@ -1,10 +1,7 @@
-﻿using AdPang.FileManager.Models.FileManagerEntities.Base;
-using AdPang.FileManager.Models.IdentityEntities;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using AdPang.FileManager.Models.FileManagerEntities.Base;
+using AdPang.FileManager.Models.IdentityEntities;
 
 namespace AdPang.FileManager.Models.FileManagerEntities.LocalPrivate
 {
@@ -17,6 +14,14 @@ namespace AdPang.FileManager.Models.FileManagerEntities.LocalPrivate
         /// 硬盘别名
         /// </summary>
         public string DiskName { get; set; } = "暂未命名";
+        /// <summary>
+        /// 计算机名称
+        /// </summary>
+        public string? ComputerName { get; set; }
+        /// <summary>
+        /// 硬盘盘符
+        /// </summary>
+        public string? DriveName { get; set; }
         /// <summary>
         /// 硬盘SN码（唯一标识）
         /// </summary>

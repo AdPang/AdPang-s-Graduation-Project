@@ -11,15 +11,18 @@ namespace HttpRequestClient.Services
         private readonly IAuthModel authModel;
         public readonly string apiUrl;
         protected readonly RestClient client;
-        public HttpRestClient(IAuthModel authModel,string apiUrl)
+        public HttpRestClient(IAuthModel authModel, string apiUrl)
         {
             this.authModel = authModel;
             this.apiUrl = apiUrl;
             client = new RestClient();
         }
-        public async Task<ApiResponse> ExecuteAsync(BaseRequest baseRequest,bool hasAuth = true)
+        public async Task<ApiResponse> ExecuteAsync(BaseRequest baseRequest, bool hasAuth = true, ICollection<KeyValuePair<string, string>>? headers = null)
         {
-            var request = new RestRequest(baseRequest.Method);
+
+            RestRequest request = new RestRequest(baseRequest.Method);
+            if (headers != null)
+                request.AddHeaders(headers);
             request.AddHeader("Content-Type", baseRequest.ContentType);
 
             if (baseRequest.Parameter != null)
@@ -34,7 +37,7 @@ namespace HttpRequestClient.Services
             return new ApiResponse(false, response.ErrorMessage);
         }
 
-        
+
 
         public async Task<ApiResponse<T>> ExecuteAsync<T>(BaseRequest baseRequest, bool hasAuth = true)
         {
@@ -48,7 +51,7 @@ namespace HttpRequestClient.Services
             var response = await client.ExecuteAsync(request);
             if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 return JsonConvert.DeserializeObject<ApiResponse<T>>(response.Content);
-            else if(response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
+            else if (response.StatusCode == System.Net.HttpStatusCode.Unauthorized)
                 await UpdateAuthAsync();
             return new ApiResponse<T>(false, response.ErrorMessage);
 
@@ -58,7 +61,7 @@ namespace HttpRequestClient.Services
 
         private void AddAuthorize(RestRequest restRequest)
         {
-            if(authModel.JwtStr != null) restRequest.AddHeader("Authorization", $"Bearer {authModel.JwtStr}");
+            if (authModel.JwtStr != null) restRequest.AddHeader("Authorization", $"Bearer {authModel.JwtStr}");
         }
 
         private async Task UpdateAuthAsync()

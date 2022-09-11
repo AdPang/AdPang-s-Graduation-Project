@@ -1,11 +1,8 @@
-﻿using AdPang.FileManager.Common.RequestInfoModel;
+﻿using System.Security.Claims;
 using AdPang.FileManager.EntityFrameworkCore.LogDb;
 using AdPang.FileManager.Models.LogEntities;
 using AdPang.FileManager.Shared;
-using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
-using System.Security.Claims;
-using System.Text;
 
 namespace AdPang.FileManager.WebAPI.Middleware
 {

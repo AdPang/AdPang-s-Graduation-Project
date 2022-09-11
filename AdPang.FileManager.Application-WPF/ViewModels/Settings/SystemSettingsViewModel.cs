@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AdPang.FileManager.Application_WPF.Common.Helper;
+﻿using AdPang.FileManager.Application_WPF.Common.Helper;
 using AdPang.FileManager.Application_WPF.Common.Models;
 using Prism.Commands;
 using Prism.Mvvm;

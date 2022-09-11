@@ -11,5 +11,10 @@
         /// 设置页区域
         /// </summary>
         public static readonly string SettingsViewRegionName = "SettingsViewRegion";
+
+        /// <summary>
+        /// 本地管理区域
+        /// </summary>
+        public static readonly string LocalManageViewRegionName = "LocalManageRegion";
     }
 }

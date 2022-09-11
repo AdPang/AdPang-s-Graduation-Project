@@ -393,7 +393,7 @@
             验证控制器
             </summary>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.#ctor(Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},Microsoft.AspNetCore.Identity.RoleManager{AdPang.FileManager.Models.IdentityEntities.Role},Microsoft.Extensions.Logging.ILogger{AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController},AutoMapper.IMapper)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.#ctor(Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},Microsoft.AspNetCore.Identity.RoleManager{AdPang.FileManager.Models.IdentityEntities.Role},Microsoft.Extensions.Logging.ILogger{AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController},AutoMapper.IMapper,AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel)">
             <summary>
             构造
             </summary>
@@ -401,6 +401,7 @@
             <param name="roleManager"></param>
             <param name="logger"></param>
             <param name="mapper"></param>
+            <param name="requestInfoModel"></param>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController.Auth(System.String,System.String)">
             <summary>

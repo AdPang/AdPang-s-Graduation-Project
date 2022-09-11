@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;
 using Prism.Mvvm;
 
@@ -37,14 +33,14 @@ namespace AdPang.FileManager.Application_WPF.Common.Models
         public double DownloadProgress
         {
             get { return downloadProgress; }
-            set 
+            set
             {
-                downloadProgress = value; 
-                if (value > 0 && value < 100) 
+                downloadProgress = value;
+                if (value > 0 && value < 100)
                     LoadingStatus = TransferStatus.Loading;
-                else 
+                else
                     LoadingStatus = TransferStatus.Success;
-                RaisePropertyChanged(); 
+                RaisePropertyChanged();
             }
         }
         public UserPrivateFileInfoDto UserPrivateFileInfo
@@ -81,7 +77,7 @@ namespace AdPang.FileManager.Application_WPF.Common.Models
         public long FileLength
         {
             get { return fileLength; }
-            set { fileLength = value;RaisePropertyChanged(); }
+            set { fileLength = value; RaisePropertyChanged(); }
         }
 
 
@@ -97,7 +93,7 @@ namespace AdPang.FileManager.Application_WPF.Common.Models
         public string UploadFilePath
         {
             get { return uploadFilePath; }
-            set { uploadFilePath = value;RaisePropertyChanged(); }
+            set { uploadFilePath = value; RaisePropertyChanged(); }
         }
 
         private Guid currentDirId;
@@ -105,15 +101,15 @@ namespace AdPang.FileManager.Application_WPF.Common.Models
         public Guid CurrentDirId
         {
             get { return currentDirId; }
-            set { currentDirId = value;RaisePropertyChanged(); }
+            set { currentDirId = value; RaisePropertyChanged(); }
         }
 
         private DateTime creatTime = DateTime.Now;
 
         public DateTime CreatTime
         {
-            get { return creatTime ; }
-            set { creatTime  = value; RaisePropertyChanged(); }
+            get { return creatTime; }
+            set { creatTime = value; RaisePropertyChanged(); }
         }
 
 

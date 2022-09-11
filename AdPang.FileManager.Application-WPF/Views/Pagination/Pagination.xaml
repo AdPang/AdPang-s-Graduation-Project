@@ -201,7 +201,7 @@
                 <ComboBoxItem>30</ComboBoxItem>
                 <ComboBoxItem>50</ComboBoxItem>
             </ComboBox>
-            <TextBlock Text="条"/>
+            <TextBlock Text="条" />
         </StackPanel>
     </Grid>
 </UserControl>

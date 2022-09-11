@@ -1,16 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AdPang.FileManager.Application_WPF.Extensions;
 using AdPang.FileManager.Application_WPF.Services.IServices;
-using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo;
 using HttpRequestClient.Services.IRequestServices;
 using Prism.Commands;
-using Prism.Events;
 using Prism.Ioc;
 using Prism.Services.Dialogs;
 
@@ -49,12 +44,12 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             {
                 //发送添加请求
                 var addRequsetResult = await sharedInfoRequestService.AddAsync(sharedInfo);
-                if (!addRequsetResult.Status) 
+                if (!addRequsetResult.Status)
                 {
                     _aggregator.SendMessage("请求出错：" + addRequsetResult.Message);
                     return;
                 }
-                _aggregator.SendMessage("添加分享成功！","DirView");
+                _aggregator.SendMessage("添加分享成功！", "DirView");
                 //成功，添加数据到集合
                 SharedFiles.Add(addRequsetResult.Result);
             });
@@ -136,7 +131,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 var dialogResult = await dialogHostService.ShowDialog("OperaSharedInfoDialogView", param);
                 if (!isEdit) return;
 
-                if (dialogResult.Result != ButtonResult.OK) return; 
+                if (dialogResult.Result != ButtonResult.OK) return;
                 var editShare = dialogResult.Parameters.GetValue<SharedFileInfoDetailDto>("Value");
 
                 var editRequestResult = await sharedInfoRequestService.UpdateAsync(editShare);

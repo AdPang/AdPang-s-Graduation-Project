@@ -1,10 +1,5 @@
 ﻿using AdPang.FileManager.Common.Helper.Mail;
 using AdPang.FileManager.Common.Helper.Redis;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Common.Helper.VerifyCode
 {
@@ -19,7 +14,7 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
 
         public string Creat6MailVerfiyCode(string email, MailMsgOperaType operaType)
         {
-            var result = VerifyCodeHelper.CreatVeriyCode(6,Guid.NewGuid());
+            var result = VerifyCodeHelper.CreatVeriyCode(6, Guid.NewGuid());
             var record = GetVerifyCodeByRedisDb(email, operaType);
             if (record != null)
             {
@@ -43,9 +38,9 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
             return redis.GetStringKey<MailVerfiyRecord>(email + operaType);
         }
 
-        private bool SaveVerifyCodeToRedisDb(string email, MailMsgOperaType operaType,string result)
+        private bool SaveVerifyCodeToRedisDb(string email, MailMsgOperaType operaType, string result)
         {
-            var isSaved = redis.SetStringKey(email+operaType, new MailVerfiyRecord
+            var isSaved = redis.SetStringKey(email + operaType, new MailVerfiyRecord
             {
                 Result = result,
                 Email = email,
@@ -66,7 +61,7 @@ namespace AdPang.FileManager.Common.Helper.VerifyCode
             var record = GetVerifyCodeByRedisDb(email, operaType);
             if (record == null || record.IsUsed || !record.Result.ToUpper().Equals(verifyCode.ToUpper())) return false;
             record.IsUsed = true;
-            if(SaveVerifyCodeToRedisDb(record)) return true;
+            if (SaveVerifyCodeToRedisDb(record)) return true;
             return false;
         }
     }

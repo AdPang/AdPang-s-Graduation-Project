@@ -7,7 +7,6 @@ using AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateFile;
 using AdPang.FileManager.Shared.Paremeters;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 
@@ -33,7 +32,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <param name="privateFileService"></param>
         /// <param name="userManager"></param>
         /// <param name="requestInfoModel"></param>
-        public PrivateFileController(IMapper mapper, IPrivateFileService privateFileService,UserManager<User> userManager,RequestInfoModel requestInfoModel)
+        public PrivateFileController(IMapper mapper, IPrivateFileService privateFileService, UserManager<User> userManager, RequestInfoModel requestInfoModel)
         {
             this.mapper = mapper;
             this.privateFileService = privateFileService;
@@ -47,7 +46,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <param name="queryParameter"></param>
         /// <returns></returns>
         [HttpGet("GetAll")]
-        [Authorize(Roles ="Ordinary")]
+        [Authorize(Roles = "Ordinary")]
         public async Task<ApiResponse<IPagedList<PrivateFileInfoDto>>> GetFileInfos([FromQuery] PrivateFileInfoQueryParameter queryParameter)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
@@ -65,7 +64,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
                 default:
                     break;
             }
-            
+
             var fileInfoDtos = mapper.Map<List<PrivateFileInfoDto>>(fileInfos);
             return new ApiResponse<IPagedList<PrivateFileInfoDto>>(true, new PagedList<PrivateFileInfoDto>(fileInfoDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
         }
@@ -76,7 +75,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <param name="fileId">文件ID</param>
         /// <returns></returns>
         [HttpGet("Get/{fileId}")]
-        [Authorize(Roles ="Ordinary")]
+        [Authorize(Roles = "Ordinary")]
         public async Task<ApiResponse<PrivateFileInfoDto>> GetFileInfo(Guid fileId)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
@@ -93,7 +92,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <param name="privateFileInfoDto"></param>
         /// <returns></returns>
         [HttpPut("Edit")]
-        [Authorize(Roles="Ordinary")]
+        [Authorize(Roles = "Ordinary")]
         public async Task<ApiResponse<PrivateFileInfoDto>> EditFileInfo(PrivateFileInfoDto privateFileInfoDto)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
@@ -153,7 +152,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [HttpPost("Adds")]
         [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse<IList<PrivateFileInfoDto>>> AddFileInfos (IList<PrivateFileInfoDto> privateFileInfoDtos)
+        public async Task<ApiResponse<IList<PrivateFileInfoDto>>> AddFileInfos(IList<PrivateFileInfoDto> privateFileInfoDtos)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             var user = userManager.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();

@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using AdPang.FileManager.Application_WPF.Common.Helper;
 using AdPang.FileManager.Application_WPF.Common.Models;
 using AdPang.FileManager.Application_WPF.Extensions;
 using AdPang.FileManager.Application_WPF.Services.IServices;
-using AdPang.FileManager.Application_WPF.Services.Services;
-using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
 using HttpRequestClient.Services.IRequestServices;
 using Newtonsoft.Json;
 using Prism.Commands;
@@ -148,7 +145,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                     }
                     FileHelper.OpenFileDir(fileInfo.DownloadedPath);
                 }
-                else if(obj.GetType().Equals(typeof(FileUploadInfo)))
+                else if (obj.GetType().Equals(typeof(FileUploadInfo)))
                 {
                     if (obj is not FileUploadInfo fileInfo || string.IsNullOrEmpty(fileInfo.UploadFilePath))
                     {
@@ -179,7 +176,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                     }
                     FileHelper.OpenFile(fileInfo.UploadFilePath);
                 }
-                
+
             });
 
             DeleteDownloadedFileCommand = new DelegateCommand<FileDownloadInfo>(async fileInfo =>
@@ -211,7 +208,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 
             DeleteUploadedFileCommand = new DelegateCommand<FileUploadInfo>(async fileInfo =>
             {
-                var dialogResult = await dialogHostService.Question("温馨提示",$"是否删除{fileInfo.FileName}？");
+                var dialogResult = await dialogHostService.Question("温馨提示", $"是否删除{fileInfo.FileName}？");
                 if (dialogResult.Result != ButtonResult.OK) return;
                 try
                 {

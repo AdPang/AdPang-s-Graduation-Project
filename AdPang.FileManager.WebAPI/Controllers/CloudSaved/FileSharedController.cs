@@ -52,15 +52,15 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// </summary>
         /// <param name="queryParameter"></param>
         /// <returns></returns>
-        [Authorize(Roles="Ordinary")]
+        [Authorize(Roles = "Ordinary")]
         [HttpGet("GetAll")]
-        public async Task<ApiResponse<IPagedList<SharedFileInfoDetailDto>>> GetMySharedInfo([FromQuery]QueryParameter queryParameter)
+        public async Task<ApiResponse<IPagedList<SharedFileInfoDetailDto>>> GetMySharedInfo([FromQuery] QueryParameter queryParameter)
         {
             var userId = requestInfoModel.CurrentOperaingUser;
             if (userId == null) return new ApiResponse<IPagedList<SharedFileInfoDetailDto>>(false, "发生错误！");
             var sharedInfos = await sharedFileInfoService.GetMySharedInfoListAsync(x => x.ShardByUserId.Equals(userId), queryParameter.PageSize * queryParameter.PageIndex, queryParameter.PageSize, "CreatTime");
             var sharedInfoDtos = mapper.Map<IList<SharedFileInfoDetailDto>>(sharedInfos);
-            return new ApiResponse<IPagedList<SharedFileInfoDetailDto>>(true, new PagedList<SharedFileInfoDetailDto>(sharedInfoDtos, queryParameter.PageIndex, queryParameter.PageSize,default));
+            return new ApiResponse<IPagedList<SharedFileInfoDetailDto>>(true, new PagedList<SharedFileInfoDetailDto>(sharedInfoDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
         }
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             else
                 shareInfo.ExpiredTime = null;
             shareInfo.UpdateTime = DateTime.Now;
-            await sharedFileInfoService.UpdateAsync(shareInfo,true);
+            await sharedFileInfoService.UpdateAsync(shareInfo, true);
             return new ApiResponse<SharedFileInfoDetailDto>(true, mapper.Map<SharedFileInfoDetailDto>(shareInfo));
 
         }
@@ -182,7 +182,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <param name="sharedId"></param>
         /// <returns></returns>
         [HttpDelete("Delete/{sharedId}/Admin")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ApiResponse> DeleteSharedInfoAdmin(Guid sharedId)
         {
             var sharedInfo = await sharedFileInfoService.FindAsync(x => x.Id.Equals(sharedId));
@@ -197,7 +197,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <param name="queryParameter">查询条件</param>
         /// <returns></returns>
         [HttpGet("GetAll/Admin")]
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         public async Task<ApiResponse<IPagedList<SharedFileInfoDto>>> GetSharedInfos([FromQuery] QueryParameter queryParameter)
         {
             var sharedInfos = await sharedFileInfoService.GetPagedListAsync(x => queryParameter.Search == null || (x.SharedDesc != null && x.SharedDesc.Contains(queryParameter.Search) || (x.SharedDesc != null && queryParameter.Search.Contains(x.SharedDesc))), queryParameter.PageSize * queryParameter.PageIndex, queryParameter.PageSize, "CreatTime", default);

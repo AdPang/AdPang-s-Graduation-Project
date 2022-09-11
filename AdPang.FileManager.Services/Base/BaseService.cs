@@ -1,6 +1,6 @@
-﻿using AdPang.FileManager.IRepositories.Base;
+﻿using System.Linq.Expressions;
+using AdPang.FileManager.IRepositories.Base;
 using AdPang.FileManager.IServices.Base;
-using System.Linq.Expressions;
 
 namespace AdPang.FileManager.Services.Base
 {
@@ -71,7 +71,7 @@ namespace AdPang.FileManager.Services.Base
         public async Task<List<TEntity>> GetPagedListAsync(int skipCount, int maxResultCount, string sorting,
             CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            return await _baseRepository.GetPagedListAsync(skipCount, maxResultCount, sorting, cancellationToken,IsTracking);
+            return await _baseRepository.GetPagedListAsync(skipCount, maxResultCount, sorting, cancellationToken, IsTracking);
         }
         public async Task<List<TEntity>> GetPagedListAsync(Expression<Func<TEntity, bool>> predicate, int skipCount, int maxResultCount, string sorting, CancellationToken cancellationToken = default, bool IsTracking = false)
         {

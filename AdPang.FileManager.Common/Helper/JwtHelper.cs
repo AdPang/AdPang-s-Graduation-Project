@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IdentityModel.Tokens.Jwt;
-using System.Linq;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Http;
 using Microsoft.IdentityModel.Tokens;
 
 namespace AdPang.FileManager.Common.Helper
@@ -63,7 +58,7 @@ namespace AdPang.FileManager.Common.Helper
                 JwtSecurityToken jwtToken = jwtHandler.ReadJwtToken(authorStr);
                 userIdStr = jwtToken.Payload[ClaimTypes.NameIdentifier] as string;
 
-                
+
                 var testRoleStr = jwtToken.Payload[ClaimTypes.Role] as string;
             }
             return userIdStr;

@@ -69,7 +69,12 @@ namespace AdPang.FileManager.Application_WPF.ViewModels.Dialogs
         public int CbSelectedIndex
         {
             get { return cbSelectedIndex; }
-            set { cbSelectedIndex = value; RaisePropertyChanged(); Model.DiskSN = localDiskInfos[cbSelectedIndex].DriveSN; }
+            set 
+            { 
+                cbSelectedIndex = value; RaisePropertyChanged(); 
+                Model.DiskSN = localDiskInfos[cbSelectedIndex].DriveSN;
+                Model.DriveName = localDiskInfos[cbSelectedIndex].Drive.First().ToString();
+            }
         }
 
         public string DialogHostName { get; set; }
@@ -87,7 +92,11 @@ namespace AdPang.FileManager.Application_WPF.ViewModels.Dialogs
             else
             {
                 DialogTitle = "添加硬盘信息";
-                Model = new PrivateDiskInfoDto() { DiskSN = localDiskInfos[CbSelectedIndex].DriveSN };
+                Model = new PrivateDiskInfoDto() 
+                { 
+                    DiskSN = localDiskInfos[CbSelectedIndex].DriveSN,
+                    ComputerName = Environment.MachineName,
+                };
 
                 foreach (var item in localDiskInfos)
                 {

@@ -1,25 +1,24 @@
-using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
-using AdPang.FileManager.Extensions.ServiceExtensions;
-using Microsoft.AspNetCore.Identity;
-using Microsoft.EntityFrameworkCore;
-using Newtonsoft.Json;
-using Autofac;
-using Newtonsoft.Json.Serialization;
-using Autofac.Extensions.DependencyInjection;
 using AdPang.FileManager.Common.Helper;
-using AdPang.FileManager.WebAPI.Middleware;
-using AdPang.FileManager.WebAPI.Filter;
-using AdPang.FileManager.Common.RequestInfoModel;
-using AdPang.FileManager.Models.IdentityEntities;
-using AdPang.FileManager.EntityFrameworkCore.LogDb;
 using AdPang.FileManager.Common.Helper.Mail;
-using AdPang.FileManager.Common.Helper.VerifyCode;
 using AdPang.FileManager.Common.Helper.Redis;
-using Microsoft.EntityFrameworkCore.Diagnostics;
+using AdPang.FileManager.Common.Helper.VerifyCode;
+using AdPang.FileManager.Common.RequestInfoModel;
+using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
+using AdPang.FileManager.EntityFrameworkCore.LogDb;
+using AdPang.FileManager.Extensions.ServiceExtensions;
+using AdPang.FileManager.Models.IdentityEntities;
+using AdPang.FileManager.WebAPI.Filter;
+using AdPang.FileManager.WebAPI.Middleware;
+using Autofac;
+using Autofac.Extensions.DependencyInjection;
 using IGeekFan.AspNetCore.Knife4jUI;
-using Autofac.Core;
 using Microsoft.AspNetCore.Http.Features;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Server.Kestrel.Core;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Diagnostics;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<FormOptions>(options =>
@@ -30,7 +29,7 @@ builder.Services.Configure<FormOptions>(options =>
 builder.Services.Configure<KestrelServerOptions>(options =>
 {
     options.Limits.MaxRequestBodySize = 1024 * 1024 * 1024;
-    
+
 });
 #region autoFac
 builder.Host.UseServiceProviderFactory(new AutofacServiceProviderFactory());

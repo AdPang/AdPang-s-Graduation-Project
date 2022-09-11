@@ -1,10 +1,5 @@
 ﻿using AdPang.FileManager.Shared.Dtos.Base;
 using AdPang.FileManager.Shared.Dtos.SystemCommon;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo
 {
@@ -25,7 +20,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo
         /// <summary>
         /// 文件存储路径
         /// </summary>
-        public string FilePath { get; set; } 
+        public string FilePath { get; set; }
         /// <summary>
         /// 文件MD5值
         /// </summary>

@@ -1,5 +1,4 @@
 ﻿using AdPang.FileManager.Common.RequestInfoModel;
-using AdPang.FileManager.IRepositories.LocalPrivate;
 using AdPang.FileManager.IServices.LocalPrivate;
 using AdPang.FileManager.Models.FileManagerEntities.LocalPrivate;
 using AdPang.FileManager.Models.IdentityEntities;
@@ -9,7 +8,6 @@ using AdPang.FileManager.Shared.Dtos.SystemCommon;
 using AdPang.FileManager.Shared.Paremeters;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -51,7 +49,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [HttpGet("GetAll")]
         [Authorize(Roles = "Ordinary")]
-        public async Task<ApiResponse<PagedList<PrivateDiskInfoDto>>> GetDiskListFromUserAsync([FromQuery]QueryParameter queryParameter)
+        public async Task<ApiResponse<PagedList<PrivateDiskInfoDto>>> GetDiskListFromUserAsync([FromQuery] QueryParameter queryParameter)
         {
             if (requestInfoModel.CurrentOperaingUser == null) return new ApiResponse<PagedList<PrivateDiskInfoDto>>(false, "发生错误");
             var diskList = await privateDiskService.GetDiskPagedListAsync(x => (requestInfoModel.CurrentOperaingUser.Equals(x.UserId)) && (queryParameter.Search == null || queryParameter.Search.Contains(x.DiskName) || queryParameter.Search.Contains(x.DiskSN) || x.DiskSN.Contains(queryParameter.Search) || x.DiskName.Contains(queryParameter.Search)), queryParameter.PageSize * queryParameter.PageIndex, queryParameter.PageSize, "CreatTime", default);
@@ -72,10 +70,12 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
             var disk = mapper.Map<PrivateDiskInfo>(privateDiskInfoDto);
             var user = userManager.Users.Where(x => x.Id.Equals(requestInfoModel.CurrentOperaingUser)).FirstOrDefault();
             if (user == null) return new ApiResponse<PrivateDiskInfoDto>(false, "发生错误");
+            var tempDisk = await privateDiskService.FindAsync(x => x.DiskSN == privateDiskInfoDto.DiskSN);
+            if (tempDisk != null) return new ApiResponse<PrivateDiskInfoDto>(false, "该硬盘已经被注册！");
             disk.User = user;
             disk.UserId = user.Id;
             disk.UpdateTime = DateTime.Now;
-            var result = await privateDiskService.InsertAsync(disk,true);
+            var result = await privateDiskService.InsertAsync(disk, true);
             return new ApiResponse<PrivateDiskInfoDto>(true, mapper.Map<PrivateDiskInfoDto>(result));
         }
 
@@ -95,7 +95,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
             oldDisk.UpdateTime = DateTime.Now;
             oldDisk.DiskName = privateDiskInfoDto.DiskName;
             oldDisk.DiskSN = privateDiskInfoDto.DiskSN;
-            var result = await privateDiskService.UpdateAsync(oldDisk,true);
+            var result = await privateDiskService.UpdateAsync(oldDisk, true);
             return new ApiResponse<PrivateDiskInfoDto>(true, mapper.Map<PrivateDiskInfoDto>(result));
         }
 
@@ -112,7 +112,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
             if (userId == null) return new ApiResponse(false, "发生错误");
             var disk = await privateDiskService.FindAsync(x => x.Id.Equals(diskId) && userId.Equals(userId));
             if (disk == null) return new ApiResponse(false, "硬盘不存在！");
-            await privateDiskService.DeleteAsync(disk,true);
+            await privateDiskService.DeleteAsync(disk, true);
             return new ApiResponse(true, "删除成功！");
         }
 
@@ -124,7 +124,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpDelete("Delete/{diskId}/{userId}/admin")]
-        public async Task<ApiResponse> DeleteDiskAsync(Guid diskId,Guid userId)
+        public async Task<ApiResponse> DeleteDiskAsync(Guid diskId, Guid userId)
         {
             var disk = await privateDiskService.FindAsync(x => x.Id.Equals(diskId) && x.UserId.Equals(userId));
             if (disk == null) return new ApiResponse(false, "发生错误");
@@ -139,7 +139,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPost("Add/{userId}/admin")]
-        public async Task<ApiResponse> AddDiskAsync(Guid userId,PrivateDiskInfoDto diskInfoDto)
+        public async Task<ApiResponse> AddDiskAsync(Guid userId, PrivateDiskInfoDto diskInfoDto)
         {
             var user = userManager.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();
             if (user == null) return new ApiResponse(false, "用户不存在");
@@ -157,9 +157,9 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <param name="userId"></param>
         /// <param name="diskInfoDto"></param>
         /// <returns></returns>
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("Edit/{userId}/admin")]
-        public async Task<ApiResponse> EditDiskAsync(Guid userId,PrivateDiskInfoDto diskInfoDto)
+        public async Task<ApiResponse> EditDiskAsync(Guid userId, PrivateDiskInfoDto diskInfoDto)
         {
             //var user = userManager.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();
             //if (user == null) return new ApiResponse(false, "用户不存在");
@@ -177,7 +177,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// </summary>
         /// <param name="queryParameter"></param>
         /// <returns></returns>
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAll/admin")]
         public async Task<ApiResponse<IPagedList<DiskInfoContainFileInfoDto>>> GetDiskListAsync([FromQuery] QueryParameter queryParameter)
         {
@@ -208,7 +208,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.LocalPrivate
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpGet("GetAllDiskDetail/admin")]
-        public async Task<ApiResponse<IPagedList<UserInfoContainDiskInfoDto>>> GetDiskDetail([FromQuery]QueryParameter  queryParameter)
+        public async Task<ApiResponse<IPagedList<UserInfoContainDiskInfoDto>>> GetDiskDetail([FromQuery] QueryParameter queryParameter)
         {
             var users = await userManager.Users.Include(x => x.PrivateDiskInfos).ThenInclude(x => x.PrivateFiles).Where(x => queryParameter.Search == null || x.UserName.Contains(queryParameter.Search) || queryParameter.Search.Contains(x.UserName)).OrderBy(x => x.UserName).Take(queryParameter.PageSize).Skip(queryParameter.PageSize * queryParameter.PageIndex).ToListAsync();
             if (users == null || users.Count <= 0) return new ApiResponse<IPagedList<UserInfoContainDiskInfoDto>>(false, "发生错误");

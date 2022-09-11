@@ -1,23 +1,23 @@
-﻿using System.Windows;
-using Prism.DryIoc;
-using DryIoc;
-using Prism.Ioc;
-using AdPang.FileManager.Application_WPF.Views;
+﻿using System;
+using System.Windows;
+using AdPang.FileManager.Application_WPF.Common;
 using AdPang.FileManager.Application_WPF.Services.IServices;
 using AdPang.FileManager.Application_WPF.Services.Services;
-using AdPang.FileManager.Application_WPF.Common;
+using AdPang.FileManager.Application_WPF.ViewModels;
+using AdPang.FileManager.Application_WPF.ViewModels.Dialogs;
+using AdPang.FileManager.Application_WPF.ViewModels.LocalPrivateManage;
+using AdPang.FileManager.Application_WPF.ViewModels.Settings;
+using AdPang.FileManager.Application_WPF.Views;
+using AdPang.FileManager.Application_WPF.Views.Dialogs;
+using AdPang.FileManager.Application_WPF.Views.LocalPrivateManage;
+using AdPang.FileManager.Application_WPF.Views.Settings;
+using DryIoc;
 using HttpRequestClient.Services;
 using HttpRequestClient.Services.IRequestServices;
 using HttpRequestClient.Services.RequestServices;
+using Prism.DryIoc;
+using Prism.Ioc;
 using Prism.Services.Dialogs;
-using System;
-using AdPang.FileManager.Application_WPF.ViewModels;
-using AdPang.FileManager.Application_WPF.Views.Dialogs;
-using AdPang.FileManager.Application_WPF.ViewModels.Dialogs;
-using Prism.Mvvm;
-using AdPang.FileManager.Application_WPF.ViewModels.Settings;
-using AdPang.FileManager.Application_WPF.Views.Settings;
-using AdPang.FileManager.Application_WPF.Common.Models;
 
 namespace AdPang.FileManager.Application_WPF
 {
@@ -58,8 +58,7 @@ namespace AdPang.FileManager.Application_WPF
                     Environment.Exit(0);
                     return;
                 }
-                var service = App.Current.MainWindow.DataContext as IConfigureService;
-                if (service != null)
+                if (App.Current.MainWindow.DataContext is IConfigureService service)
                     service.Configure();
                 base.OnInitialized();
 
@@ -85,7 +84,6 @@ namespace AdPang.FileManager.Application_WPF
             containerRegistry.Register<IPrivateFileInfoRequestService, PrivateFileInfoRequestService>();
 
 
-
             containerRegistry.RegisterSingleton<IAuthModel, AuthModel>();
 
             #endregion
@@ -96,17 +94,20 @@ namespace AdPang.FileManager.Application_WPF
             containerRegistry.RegisterSingleton<FileTransferListViewModel>();
             containerRegistry.RegisterSingleton<FileSharedViewModel>();
             containerRegistry.RegisterSingleton<PrivateFileInfoViewModel>();
-            
+
             containerRegistry.RegisterSingleton<ILocalInfoService, LocalInfoService>();
             containerRegistry.RegisterForNavigation<MsgView, MsgViewModel>();
-            
+
             containerRegistry.RegisterForNavigation<CloudFileManagerView, CloudFileManagerViewModel>();
             containerRegistry.RegisterForNavigation<OperaFileInfoView, OperaFileInfoViewModel>();
             containerRegistry.RegisterForNavigation<OperaDirInfoView, OperaDirInfoViewModel>();
             containerRegistry.RegisterForNavigation<OperaSharedInfoDialogView, OperaSharedInfoDialogViewModel>();
             containerRegistry.RegisterForNavigation<DiskInfoDialogView, DiskInfoDialogViewModel>();
+            containerRegistry.RegisterForNavigation<LocalManageView, LocalManageViewModel>();
+            containerRegistry.RegisterForNavigation<LocalFileManagerView, LocalFileManagerViewModel>();
             containerRegistry.RegisterForNavigation<PrivateDiskView, PrivateDiskViewModel>();
             containerRegistry.RegisterForNavigation<PrivateFileInfoView, PrivateFileInfoViewModel>();
+            containerRegistry.RegisterForNavigation<FileInfosDetailDialogView, FileInfosDetailDialogViewModel>();
 
             containerRegistry.RegisterForNavigation<DeleteFileDialogView, DeleteFileDialogViewModel>();
 

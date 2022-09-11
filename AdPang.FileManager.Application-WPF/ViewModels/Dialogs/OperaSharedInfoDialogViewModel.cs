@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AdPang.FileManager.Application_WPF.Common;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo;
 using MaterialDesignThemes.Wpf;
@@ -27,7 +23,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels.Dialogs
         public bool Editable
         {
             get { return editable; }
-            set { editable = value;RaisePropertyChanged(); }
+            set { editable = value; RaisePropertyChanged(); }
         }
 
 
@@ -43,7 +39,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels.Dialogs
         public string Title
         {
             get { return title; }
-            set { title = value;RaisePropertyChanged(); }
+            set { title = value; RaisePropertyChanged(); }
         }
 
         private SharedFileInfoDetailDto model;
@@ -86,7 +82,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels.Dialogs
         /// </summary>
         private void Save()
         {
-            if(Model.HasExpired && Model.ExpiredTime == null)  return;
+            if (Model.HasExpired && Model.ExpiredTime == null) return;
             if (!Model.HasExpired)
                 Model.ExpiredTime = null;
             if (DialogHost.IsDialogOpen(DialogHostName))

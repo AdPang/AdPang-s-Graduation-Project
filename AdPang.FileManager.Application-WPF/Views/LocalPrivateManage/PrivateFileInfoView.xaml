@@ -1,28 +1,34 @@
-﻿<UserControl x:Class="AdPang.FileManager.Application_WPF.Views.PrivateFileInfoView"
+﻿<UserControl x:Class="AdPang.FileManager.Application_WPF.Views.LocalPrivateManage.PrivateFileInfoView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
-             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:local="clr-namespace:AdPang.FileManager.Application_WPF.Views"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
              xmlns:pager="clr-namespace:AdPang.FileManager.Application_WPF.Views.Pagination"
-             xmlns:viewmodels="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels"
+             xmlns:viewmodels="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels.LocalPrivateManage"
              d:DataContext="{d:DesignInstance Type=viewmodels:PrivateFileInfoViewModel}"
-             mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
+             mc:Ignorable="d"
+             d:DesignHeight="450"
+             d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="auto" />
             <RowDefinition />
-            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto" />
         </Grid.RowDefinitions>
 
         <DockPanel Margin="10"
-                  
-                    Grid.Row="0" LastChildFill="False">
-            <TextBlock Text="硬盘" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="20" DockPanel.Dock="Left"/>
+                   Grid.Row="0"
+                   LastChildFill="False">
+            <TextBlock Text="硬盘"
+                       HorizontalAlignment="Center"
+                       VerticalAlignment="Center"
+                       Margin="20"
+                       DockPanel.Dock="Left" />
             <ComboBox ItemsSource="{Binding DiskInfoDtos}"
-                      SelectedItem="{Binding DiskSeletedItem}" DockPanel.Dock="Left">
+                      SelectedItem="{Binding DiskSeletedItem}"
+                      DockPanel.Dock="Left">
                 <i:Interaction.Triggers>
                     <i:EventTrigger EventName="SelectionChanged">
                         <i:InvokeCommandAction Command="{Binding DataContext.DiskSelectedChanged, RelativeSource={RelativeSource Mode=FindAncestor, AncestorType=DockPanel}}" />
@@ -53,7 +59,6 @@
                       IsChecked="{Binding IsFindDuplicate,Mode=TwoWay}" />
 
         </DockPanel>
-
 
         <DataGrid Grid.Row="1"
                   IsReadOnly="True"

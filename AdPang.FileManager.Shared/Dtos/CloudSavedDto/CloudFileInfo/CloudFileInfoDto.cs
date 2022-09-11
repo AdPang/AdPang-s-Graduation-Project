@@ -1,9 +1,4 @@
 ﻿using AdPang.FileManager.Shared.Dtos.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo
 {
@@ -20,7 +15,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo
         /// <summary>
         /// 文件大小
         /// </summary>
-        public long FileLength { get { return fileLength; } set { fileLength = value;OnPropertyChanged(); } }
+        public long FileLength { get { return fileLength; } set { fileLength = value; OnPropertyChanged(); } }
         /// <summary>
         /// 文件MD5值
         /// </summary>
@@ -31,7 +26,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo
         public DateTime UpdateTime
         {
             get { return updateTime; }
-            set { updateTime = value;OnPropertyChanged(); }
+            set { updateTime = value; OnPropertyChanged(); }
         }
 
     }

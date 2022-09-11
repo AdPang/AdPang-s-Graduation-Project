@@ -3,17 +3,14 @@ using AdPang.FileManager.Common.RequestInfoModel;
 using AdPang.FileManager.IServices.CloudSaved;
 using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Models.IdentityEntities;
-using AdPang.FileManager.Services.CloudSaved;
 using AdPang.FileManager.Shared;
 using AdPang.FileManager.Shared.Common.Helper;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo;
-using AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;
 using AdPang.FileManager.Shared.Dtos.SystemCommon;
 using AdPang.FileManager.Shared.Paremeters;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -47,7 +44,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
         /// <param name="userPrivateFileService"></param>
         /// <param name="dirService"></param>
         /// <param name="sharedFileInfoService"></param>
-        public FileManageController(IMapper mapper, ICloudFileService cloudFileService, UserManager<User> userManager, RequestInfoModel requestInfoModel, IWebHostEnvironment hostingEnvironment, IUserPrivateFileService userPrivateFileService, IDirService dirService,ISharedFileInfoService sharedFileInfoService)
+        public FileManageController(IMapper mapper, ICloudFileService cloudFileService, UserManager<User> userManager, RequestInfoModel requestInfoModel, IWebHostEnvironment hostingEnvironment, IUserPrivateFileService userPrivateFileService, IDirService dirService, ISharedFileInfoService sharedFileInfoService)
         {
             this.mapper = mapper;
             this.cloudFileService = cloudFileService;

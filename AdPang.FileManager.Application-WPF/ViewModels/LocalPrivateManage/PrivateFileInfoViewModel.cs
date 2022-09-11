@@ -1,23 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Diagnostics.Metrics;
-using System.Drawing.Printing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AdPang.FileManager.Application_WPF.Extensions;
 using AdPang.FileManager.Application_WPF.Services.IServices;
-using AdPang.FileManager.Shared;
 using AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk;
 using AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateFile;
 using DryIoc;
 using HttpRequestClient.Services.IRequestServices;
 using Prism.Commands;
 using Prism.Ioc;
-using Prism.Regions;
 
-namespace AdPang.FileManager.Application_WPF.ViewModels
+namespace AdPang.FileManager.Application_WPF.ViewModels.LocalPrivateManage
 {
     public class PrivateFileInfoViewModel : NavigationViewModel
     {
@@ -26,16 +19,16 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         /// 构造
         /// </summary>
         /// <param name="containerProvider"></param>
-        public PrivateFileInfoViewModel(IContainerProvider containerProvider, IPrivateFileInfoRequestService privateFileInfoRequestService,IPrivateDiskRequestService privateDiskRequestService) : base(containerProvider)
+        public PrivateFileInfoViewModel(IContainerProvider containerProvider, IPrivateFileInfoRequestService privateFileInfoRequestService, IPrivateDiskRequestService privateDiskRequestService) : base(containerProvider)
         {
-            this.dialogHostService = containerProvider.Resolve<IDialogHostService>();
+            dialogHostService = containerProvider.Resolve<IDialogHostService>();
             this.privateFileInfoRequestService = privateFileInfoRequestService;
             this.privateDiskRequestService = privateDiskRequestService;
             _aggregator.ResgiterFileInfoMessage(message =>
             {
                 var diskId = message.DiskId;
                 var disk = DiskInfoDtos.Where(x => x.Id.Equals(diskId)).FirstOrDefault();
-                if(disk!=null)
+                if (disk != null)
                     DiskSeletedItem = disk;
                 else
                 {
@@ -58,7 +51,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
             //下一页
             NextPageCommand = new DelegateCommand(() =>
             {
-                if (CurrentPage  >= PageCount) return;
+                if (CurrentPage >= PageCount) return;
                 CurrentPage++;
                 RefreshFileListModel();
             });
@@ -85,7 +78,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         #endregion
 
         #region 字段、属性
-        
+
         private readonly IDialogHostService dialogHostService;
         private readonly IPrivateFileInfoRequestService privateFileInfoRequestService;
         private readonly IPrivateDiskRequestService privateDiskRequestService;
@@ -97,8 +90,8 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         public bool IsFindDuplicate
         {
             get { return isFindDuplicate; }
-            set 
-            { 
+            set
+            {
                 isFindDuplicate = value;
                 requestMode = value ? Shared.Paremeters.RequestMode.Distinct : Shared.Paremeters.RequestMode.Default;
                 RefreshFileListModel();
@@ -135,14 +128,14 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         public int PageCount
         {
             get { return pageCount; }
-            set { pageCount = value;RaisePropertyChanged(nameof(PageCount)); }
+            set { pageCount = value; RaisePropertyChanged(nameof(PageCount)); }
         }
 
 
         public int PageSize
         {
             get { return pageSize; }
-            set { pageSize = value;RaisePropertyChanged(nameof(PageSize)); }
+            set { pageSize = value; RaisePropertyChanged(nameof(PageSize)); }
         }
 
 
@@ -154,7 +147,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         /// <summary>
         /// PageSize改变事件
         /// </summary>
-        public DelegateCommand PageSizeChangedCommand { get;private set; }
+        public DelegateCommand PageSizeChangedCommand { get; private set; }
         /// <summary>
         /// 第一页
         /// </summary>

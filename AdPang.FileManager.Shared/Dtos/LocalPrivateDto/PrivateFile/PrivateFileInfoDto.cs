@@ -1,13 +1,8 @@
 ﻿using AdPang.FileManager.Shared.Dtos.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateFile
 {
-    public class PrivateFileInfoDto:BaseDto<Guid>
+    public class PrivateFileInfoDto : BaseDto<Guid>
     {
         public string FileName { get; set; } = string.Empty;
         /// <summary>

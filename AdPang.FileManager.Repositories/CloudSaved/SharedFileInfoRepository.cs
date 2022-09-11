@@ -1,15 +1,10 @@
-﻿using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
+﻿using System.Linq.Dynamic.Core;
+using System.Linq.Expressions;
+using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
 using AdPang.FileManager.IRepositories.CloudSaved;
 using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Dynamic.Core;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Repositories.CloudSaved
 {

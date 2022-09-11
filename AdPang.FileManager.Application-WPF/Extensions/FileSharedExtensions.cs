@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AdPang.FileManager.Application_WPF.Common.Events;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo;
 using Prism.Events;
@@ -29,7 +25,7 @@ namespace AdPang.FileManager.Application_WPF.Extensions
         /// </summary>
         /// <param name="aggregator"></param>
         /// <param name="message"></param>
-        public static void SendFileSharedMessage(this IEventAggregator aggregator, SharedFileInfoDetailDto  sharedFileInfoDetailDto)
+        public static void SendFileSharedMessage(this IEventAggregator aggregator, SharedFileInfoDetailDto sharedFileInfoDetailDto)
         {
             aggregator.GetEvent<FileSharedEvent>().Publish(sharedFileInfoDetailDto);
         }

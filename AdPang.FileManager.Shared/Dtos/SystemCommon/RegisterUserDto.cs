@@ -1,17 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AdPang.FileManager.Shared.Dtos.Base;
+﻿using AdPang.FileManager.Shared.Dtos.Base;
 
 namespace AdPang.FileManager.Shared.Dtos.SystemCommon
 {
     public class RegisterUserDto : BaseDto<Guid>
     {
         private string userName;
-        private string account;
-        private string password; 
+        private string password;
         private string newPassword;
 
         public string UserName
@@ -20,11 +14,6 @@ namespace AdPang.FileManager.Shared.Dtos.SystemCommon
             set { userName = value; OnPropertyChanged(); }
         }
 
-        public string Account
-        {
-            get { return account; }
-            set { account = value; OnPropertyChanged(); }
-        }
 
 
         public string Password
@@ -33,7 +22,7 @@ namespace AdPang.FileManager.Shared.Dtos.SystemCommon
             set { password = value; OnPropertyChanged(); }
         }
 
-        
+
 
         public string NewPassword
         {

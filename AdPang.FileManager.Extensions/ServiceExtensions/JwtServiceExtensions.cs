@@ -1,12 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
-using Microsoft.IdentityModel.Tokens;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.IdentityModel.Tokens;
 
 namespace AdPang.FileManager.Extensions.ServiceExtensions
 {
@@ -21,7 +17,8 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
                 x.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 x.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
 
-            }).AddJwtBearer(o => {
+            }).AddJwtBearer(o =>
+            {
 
                 //读取配置文件
                 var audienceConfig = configuration.GetSection("Audience");

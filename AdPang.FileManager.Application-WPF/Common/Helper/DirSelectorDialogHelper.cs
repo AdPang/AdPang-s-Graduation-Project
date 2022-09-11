@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Winform = System.Windows.Forms;
+﻿using Winform = System.Windows.Forms;
 
 namespace AdPang.FileManager.Application_WPF.Common.Helper
 {

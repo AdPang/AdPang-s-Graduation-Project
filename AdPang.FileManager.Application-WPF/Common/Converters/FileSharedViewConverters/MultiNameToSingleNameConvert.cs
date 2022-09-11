@@ -1,12 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Data;
-using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
-using AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateFile;
 
 namespace AdPang.FileManager.Application_WPF.Common.Converters.FileSharedViewConverters
 {
@@ -19,7 +14,7 @@ namespace AdPang.FileManager.Application_WPF.Common.Converters.FileSharedViewCon
                 if (value.GetType().Equals(typeof(string)))
                     if (value != null) return value.ToString();
             }
-            return values.FirstOrDefault()??"";
+            return values.FirstOrDefault() ?? "";
         }
 
         public object[] ConvertBack(object value, Type[] targetTypes, object parameter, CultureInfo culture)

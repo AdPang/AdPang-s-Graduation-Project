@@ -1,12 +1,6 @@
-﻿using AdPang.FileManager.Shared.Dtos.Base;
+﻿using System.Collections.ObjectModel;
+using AdPang.FileManager.Shared.Dtos.Base;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;
-using AdPang.FileManager.Shared.Dtos.SystemCommon;
-using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo
 {
@@ -19,7 +13,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo
         /// <summary>
         /// 文件夹名
         /// </summary>
-        public string DirName { get { return dirName; } set { dirName = value;OnPropertyChanged(); } }
+        public string DirName { get { return dirName; } set { dirName = value; OnPropertyChanged(); } }
         /// <summary>
         /// 当前文件夹下的文件列表
         /// </summary>
@@ -31,7 +25,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo
         /// <summary>
         /// 当前文件夹下的文件夹列表
         /// </summary>
-        public ObservableCollection<DirInfoDetailDto> ChildrenDirInfo 
+        public ObservableCollection<DirInfoDetailDto> ChildrenDirInfo
         {
             get { return childrenDirInfo; }
             set { childrenDirInfo = value; OnPropertyChanged(); }
@@ -39,7 +33,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo
         /// <summary>
         /// 父节点（父文件夹）
         /// </summary>
-        public Guid? ParentDirInfoId { get { return parentDirInfoId; } set { parentDirInfoId = value;OnPropertyChanged(); } }
+        public Guid? ParentDirInfoId { get { return parentDirInfoId; } set { parentDirInfoId = value; OnPropertyChanged(); } }
 
 
     }

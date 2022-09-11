@@ -1,16 +1,10 @@
 ﻿using AdPang.FileManager.Shared.Dtos.Base;
-using AdPang.FileManager.Shared.Dtos.SystemCommon;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk
 {
     public class PrivateDiskInfoDto : BaseDto<Guid>
     {
-        private string diskName = "暂未命名";
+        private string diskName = "";
 
         /// <summary>
         /// 硬盘别名
@@ -20,6 +14,27 @@ namespace AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk
             get { return diskName; }
             set { diskName = value; OnPropertyChanged(); }
         }
+        /// <summary>
+        /// 计算机名称
+        /// </summary>
+        private string? computerName;
+        public string? ComputerName
+        {
+            get { return computerName; }
+            set { computerName = value; OnPropertyChanged(); }
+        }
+
+        /// <summary>
+        /// 硬盘盘符
+        /// </summary>
+        private string? driveName;
+
+        public string? DriveName
+        {
+            get { return driveName; }
+            set { driveName = value; OnPropertyChanged(); }
+        }
+
 
         /// <summary>
         /// 硬盘SN码（唯一标识）
@@ -29,9 +44,9 @@ namespace AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk
         public string DiskSN
         {
             get { return diskSN; }
-            set { diskSN = value;OnPropertyChanged(); }
+            set { diskSN = value; OnPropertyChanged(); }
         }
-                   
+
         private bool canDelete = false;
         /// <summary>
         /// 是否能删除
@@ -46,5 +61,5 @@ namespace AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk
     }
 
 
-    
+
 }

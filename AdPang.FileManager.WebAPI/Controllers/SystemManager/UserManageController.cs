@@ -53,11 +53,11 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// </summary>
         /// <param name="queryParameter"></param>
         /// <returns></returns>
-        [Authorize(Roles="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("GetAll/admin")]
         public ApiResponse<PagedList<UserDto>> GetUsers([FromQuery] QueryParameter queryParameter)
         {
-            var users = userManager.Users.Where(x => queryParameter.Search == null ? true : queryParameter.Search.Contains(x.UserName)||x.UserName.Contains(queryParameter.Search)).Take(queryParameter.PageSize).Skip(queryParameter.PageSize * queryParameter.PageIndex).ToList();
+            var users = userManager.Users.Where(x => queryParameter.Search == null ? true : queryParameter.Search.Contains(x.UserName) || x.UserName.Contains(queryParameter.Search)).Take(queryParameter.PageSize).Skip(queryParameter.PageSize * queryParameter.PageIndex).ToList();
             var userDtos = mapper.Map<List<UserDto>>(users);
             return new ApiResponse<PagedList<UserDto>>(true, new PagedList<UserDto>(userDtos, queryParameter.PageIndex, queryParameter.PageSize, default));
         }
@@ -66,7 +66,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// 根据角色名获取用户列表
         /// </summary>
         /// <returns></returns>
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpGet("Get/{roleName}/admin")]
         public async Task<ApiResponse<List<UserDto>>> GetUsersByRoleAsync(string roleName)
         {
@@ -75,7 +75,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             if (users == null) return new ApiResponse<List<UserDto>>(false, "角色名错误");
             var userDtos = mapper.Map<List<UserDto>>(users);
             return new ApiResponse<List<UserDto>>(true, userDtos);
-            
+
         }
 
         /// <summary>
@@ -84,9 +84,9 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <param name="userId">用户Id</param>
         /// <param name="roleName">角色名</param>
         /// <returns></returns>
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("Add/{userId}/{roleName}/admin")]
-        public async Task<ApiResponse<string>> AddUserToRoleAsync(Guid userId,string roleName)
+        public async Task<ApiResponse<string>> AddUserToRoleAsync(Guid userId, string roleName)
         {
             var user = userManager.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();
             if (user == null) return new ApiResponse<string>(false, "用户名为空");
@@ -119,7 +119,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             var result = await userManager.AddToRolesAsync(user, roleNames);
             if (result.Succeeded)
             {
-                return new ApiResponse<IList<string>>(true, msg:"添加成功");
+                return new ApiResponse<IList<string>>(true, msg: "添加成功");
             }
             else
             {
@@ -136,7 +136,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpPut("Remove/{userId}/{roleName}/admin")]
-        public async Task<ApiResponse<string>> RemoveRoleFormUserAsync(Guid userId,string roleName)
+        public async Task<ApiResponse<string>> RemoveRoleFormUserAsync(Guid userId, string roleName)
         {
             var user = userManager.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();
             if (user == null) return new ApiResponse<string>(false, "用户名为空");
@@ -159,7 +159,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <param name="userId">用户Id</param>
         /// <param name="roleNames">角色名列表</param>
         /// <returns></returns>
-        [Authorize(Roles ="Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPut("Rmoves/{userId}/admin")]
         public async Task<ApiResponse<IList<string>>> RemoveRolesFormUserAsync(Guid userId, IList<string> roleNames)
         {
@@ -168,11 +168,11 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             var result = await userManager.RemoveFromRolesAsync(user, roleNames);
             if (result.Succeeded)
             {
-                return new ApiResponse<IList<string>>(true, msg:"移除成功");
+                return new ApiResponse<IList<string>>(true, msg: "移除成功");
             }
             else
             {
-                var errorDescList = result.Errors.Select(x=>x.Description).ToList();
+                var errorDescList = result.Errors.Select(x => x.Description).ToList();
                 return new ApiResponse<IList<string>>(false, errorDescList);
             }
         }

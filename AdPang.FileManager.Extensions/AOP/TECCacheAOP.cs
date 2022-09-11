@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AdPang.FileManager.Common.MemoryCache;
+﻿using AdPang.FileManager.Common.MemoryCache;
 using Castle.DynamicProxy;
 
 namespace AdPang.FileManager.Extensions.AOP

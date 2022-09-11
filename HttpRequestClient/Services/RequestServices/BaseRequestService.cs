@@ -1,5 +1,5 @@
-﻿using AdPang.FileManager.Shared.Paremeters;
-using AdPang.FileManager.Shared;
+﻿using AdPang.FileManager.Shared;
+using AdPang.FileManager.Shared.Paremeters;
 using HttpRequestClient.Services.IRequestServices;
 
 namespace HttpRequestClient.Services.RequestServices

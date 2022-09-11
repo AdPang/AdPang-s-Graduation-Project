@@ -1,15 +1,8 @@
-﻿using AdPang.FileManager.IRepositories.Base;
+﻿using System.Linq.Expressions;
 using AdPang.FileManager.IRepositories.LocalPrivate;
 using AdPang.FileManager.IServices.LocalPrivate;
 using AdPang.FileManager.Models.FileManagerEntities.LocalPrivate;
 using AdPang.FileManager.Services.Base;
-using AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Services.LocalPrivate
 {
@@ -17,7 +10,7 @@ namespace AdPang.FileManager.Services.LocalPrivate
     {
         private readonly IPrivateDiskRepository privateDiskRepository;
 
-        public PrivateDiskService(IPrivateDiskRepository  privateDiskRepository) : base(privateDiskRepository)
+        public PrivateDiskService(IPrivateDiskRepository privateDiskRepository) : base(privateDiskRepository)
         {
             this.privateDiskRepository = privateDiskRepository;
         }

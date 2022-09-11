@@ -12,7 +12,7 @@ namespace AdPang.FileManager.WebAPI.Filter
         private readonly RequestInfoModel requestInfoModel;
         private readonly LogDbContext logDbContext;
 
-        public ApiLogFilter(ILogger<ApiLogFilter> logger,RequestInfoModel requestInfoModel, LogDbContext logDbContext)
+        public ApiLogFilter(ILogger<ApiLogFilter> logger, RequestInfoModel requestInfoModel, LogDbContext logDbContext)
         {
             this.logger = logger;
             this.requestInfoModel = requestInfoModel;
@@ -22,8 +22,8 @@ namespace AdPang.FileManager.WebAPI.Filter
         public async Task OnActionExecutionAsync(ActionExecutingContext context, ActionExecutionDelegate next)
         {
             //var claims = context.HttpContext.User.Claims.FirstOrDefault(x=>x.Type.Equals(ClaimTypes.NameIdentifier)).Value;
-            
-            
+
+
             string actionArguments = JsonConvert.SerializeObject(context.ActionArguments);
 
             var resultContext = await next();
@@ -50,7 +50,7 @@ namespace AdPang.FileManager.WebAPI.Filter
                 response = JsonConvert.SerializeObject(resultContext.Result);
             }
             string ipAddress = context.HttpContext.Connection.RemoteIpAddress is not null ?
-                context.HttpContext.Connection.RemoteIpAddress.ToString(): "";
+                context.HttpContext.Connection.RemoteIpAddress.ToString() : "";
             logDbContext.ActionLog.Add(new ActionLog
             {
                 RequsetUrl = url,
@@ -70,7 +70,7 @@ namespace AdPang.FileManager.WebAPI.Filter
         }
 
 
-        
+
     }
 
 }

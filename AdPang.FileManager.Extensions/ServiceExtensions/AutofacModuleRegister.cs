@@ -1,4 +1,5 @@
-﻿using AdPang.FileManager.Common.Helper;
+﻿using System.Reflection;
+using AdPang.FileManager.Common.Helper;
 using AdPang.FileManager.Extensions.AOP;
 using AdPang.FileManager.IRepositories.Base;
 using AdPang.FileManager.IServices.Base;
@@ -7,12 +8,6 @@ using AdPang.FileManager.Services.Base;
 using AdPang.FileManager.Shared.Common.Helper;
 using Autofac;
 using Autofac.Extras.DynamicProxy;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Extensions.ServiceExtensions
 {

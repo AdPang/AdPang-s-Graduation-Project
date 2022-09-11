@@ -1,16 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AdPang.FileManager.Shared
+﻿namespace AdPang.FileManager.Shared
 {
     public class ApiResponse
     {
         public ApiResponse()
         {
-            
+
         }
         public ApiResponse(string message, bool satus = false)
         {
@@ -26,7 +20,7 @@ namespace AdPang.FileManager.Shared
             }
             else
             {
-                if(result!=null&&result.GetType() == typeof(string))
+                if (result != null && result.GetType() == typeof(string))
                 {
                     Message = result.ToString();
                 }

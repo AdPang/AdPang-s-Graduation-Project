@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Prism.Events;
+﻿using Prism.Events;
 
 namespace AdPang.FileManager.Application_WPF.Common.Events
 {
-    public class MessageModel 
+    public class MessageModel
     {
         public string Filter { get; set; }
 

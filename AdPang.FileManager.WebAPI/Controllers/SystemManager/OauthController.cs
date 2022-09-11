@@ -1,12 +1,12 @@
-﻿using AdPang.FileManager.Common.Helper;
-using Microsoft.AspNetCore.Http;
+﻿using System.Security.Claims;
+using AdPang.FileManager.Common.Helper;
+using AdPang.FileManager.Common.RequestInfoModel;
+using AdPang.FileManager.Models.IdentityEntities;
+using AdPang.FileManager.Shared;
+using AdPang.FileManager.Shared.Dtos.SystemCommon;
+using AutoMapper;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Security.Claims;
-using AutoMapper;
-using AdPang.FileManager.Models.IdentityEntities;
-using AdPang.FileManager.Shared.Dtos.SystemCommon;
-using AdPang.FileManager.Shared;
 
 namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
 {
@@ -19,7 +19,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
     {
         private readonly ILogger<OauthController> _logger;
         private readonly IMapper _mapper;
-
+        private readonly RequestInfoModel requestInfoModel;
         private readonly UserManager<User> userManager;
         private readonly RoleManager<Role> roleManager;
         /// <summary>
@@ -29,12 +29,14 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <param name="roleManager"></param>
         /// <param name="logger"></param>
         /// <param name="mapper"></param>
-        public OauthController(UserManager<User> userManager, RoleManager<Role> roleManager, ILogger<OauthController> logger, IMapper mapper)
+        /// <param name="requestInfoModel"></param>
+        public OauthController(UserManager<User> userManager, RoleManager<Role> roleManager, ILogger<OauthController> logger, IMapper mapper, RequestInfoModel requestInfoModel)
         {
             this.userManager = userManager;
             this.roleManager = roleManager;
             _logger = logger;
             _mapper = mapper;
+            this.requestInfoModel = requestInfoModel;
         }
 
         /// <summary>
@@ -44,7 +46,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <param name="password"></param>
         /// <returns></returns>
         [HttpGet("Login")]
-        public async Task<ApiResponse<AuthDto>> Auth(string username,string password)
+        public async Task<ApiResponse<AuthDto>> Auth(string username, string password)
         {
             if (string.IsNullOrWhiteSpace(username) || string.IsNullOrWhiteSpace(password))
                 return new ApiResponse<AuthDto>(false, "用户名密码为空！");
@@ -76,13 +78,14 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         [HttpPost("Register")]
         public async Task<ApiResponse> Register(UserDto userDto)
         {
+            if (!requestInfoModel.ImgVerifyCodeIsVerify) return new ApiResponse(false, "验证码错误！");
             var mapperUser = _mapper.Map<User>(userDto);
             if (await roleManager.RoleExistsAsync("Ordinary") == false)
             {
                 Role role = new() { Name = "Ordinary" };
                 var result = await roleManager.CreateAsync(role);
                 if (!result.Succeeded)
-                    return new ApiResponse(false,"创建角色'Ordinary'发生错误！");
+                    return new ApiResponse(false, "创建角色'Ordinary'发生错误！");
             }
             User user = await userManager.FindByNameAsync(mapperUser.UserName);
             if (user is null)

@@ -1,12 +1,6 @@
 ﻿using AdPang.FileManager.Shared.Dtos.Base;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;
-using AdPang.FileManager.Shared.Dtos.SystemCommon;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo
 {
@@ -41,7 +35,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo
         public Guid? DirId
         {
             get { return dirId; }
-            set { dirId = value;OnPropertyChanged(); }
+            set { dirId = value; OnPropertyChanged(); }
         }
         /// <summary>
         /// 单个文件信息Id
@@ -51,7 +45,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo
         public Guid? SingleFileId
         {
             get { return singleFileId; }
-            set { singleFileId = value;OnPropertyChanged(); }
+            set { singleFileId = value; OnPropertyChanged(); }
         }
 
         /// <summary>
@@ -72,7 +66,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo
         public bool HasExpired
         {
             get { return hasExpired; }
-            set { hasExpired = value;OnPropertyChanged(); }
+            set { hasExpired = value; OnPropertyChanged(); }
         }
         /// <summary>
         /// 过期时间（默认7天）
@@ -82,7 +76,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo
         public DateTime? ExpiredTime
         {
             get { return expiredTime; }
-            set { expiredTime = value;OnPropertyChanged(); }
+            set { expiredTime = value; OnPropertyChanged(); }
         }
 
         /// <summary>
@@ -93,7 +87,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo
         public DirInfoDetailDto? DirInfo
         {
             get { return dirInfo; }
-            set { dirInfo = value;OnPropertyChanged(); }
+            set { dirInfo = value; OnPropertyChanged(); }
         }
 
         /// <summary>
@@ -104,7 +98,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.SharedFileInfo
         public UserPrivateFileInfoDto? SingleFileInfo
         {
             get { return singleFileInfo; }
-            set { singleFileInfo = value;OnPropertyChanged(); }
+            set { singleFileInfo = value; OnPropertyChanged(); }
         }
 
     }

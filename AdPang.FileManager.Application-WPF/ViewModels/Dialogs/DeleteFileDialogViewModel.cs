@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using AdPang.FileManager.Application_WPF.Common;
+﻿using AdPang.FileManager.Application_WPF.Common;
 using MaterialDesignThemes.Wpf;
 using Prism.Commands;
 using Prism.Mvvm;
@@ -22,13 +17,13 @@ namespace AdPang.FileManager.Application_WPF.ViewModels.Dialogs
         public bool IsDeleteLocalFile
         {
             get { return isDeleteLocalFile; }
-            set { isDeleteLocalFile = value;RaisePropertyChanged(); }
+            set { isDeleteLocalFile = value; RaisePropertyChanged(); }
         }
 
 
         public string Content
         {
-            get { return string.Format("确认移除{0}数据吗？",content); }
+            get { return string.Format("确认移除{0}数据吗？", content); }
             set { content = value; RaisePropertyChanged(); }
         }
 
@@ -61,7 +56,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels.Dialogs
                 DialogHost.Close(DialogHostName, new DialogResult(ButtonResult.OK, param));
             }
         }
-        
+
 
         public void OnDialogOpend(IDialogParameters parameters)
         {

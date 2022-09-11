@@ -27,7 +27,7 @@ namespace AdPang.FileManager.Application_WPF.Extensions
         /// </summary>
         /// <param name="aggregator"></param>
         /// <param name="message"></param>
-        public static void SendFileTransferMessage(this IEventAggregator aggregator, FileTransferMessage  fileTransferMessage, string filterName = "Download")
+        public static void SendFileTransferMessage(this IEventAggregator aggregator, FileTransferMessage fileTransferMessage, string filterName = "Download")
         {
             fileTransferMessage.Filter = filterName;
             aggregator.GetEvent<FileTransferEvent>().Publish(fileTransferMessage);

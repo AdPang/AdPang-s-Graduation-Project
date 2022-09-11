@@ -1,10 +1,5 @@
 ﻿using AdPang.FileManager.Shared.Dtos.Base;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.CloudFileInfo;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo
 {
@@ -15,7 +10,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo
         /// <summary>
         /// 展示给指定用户的文件名
         /// </summary>
-        public string FileName { get { return fileName; } set { fileName = value;OnPropertyChanged(); } }
+        public string FileName { get { return fileName; } set { fileName = value; OnPropertyChanged(); } }
         /// <summary>
         /// 真实文件信息
         /// </summary>
@@ -23,7 +18,7 @@ namespace AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo
         public CloudFileInfoDto? RealFileInfo
         {
             get { return realFileInfo; }
-            set { realFileInfo = value;OnPropertyChanged(); }
+            set { realFileInfo = value; OnPropertyChanged(); }
         }
 
     }

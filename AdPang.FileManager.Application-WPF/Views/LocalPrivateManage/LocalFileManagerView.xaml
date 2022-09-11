@@ -1,0 +1,221 @@
+﻿<UserControl x:Class="AdPang.FileManager.Application_WPF.Views.LocalPrivateManage.LocalFileManagerView"
+             xmlns:local="clr-namespace:AdPang.FileManager.Application_WPF.Views.LocalPrivateManage"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:md="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+             xmlns:cv="clr-namespace:AdPang.FileManager.Application_WPF.Common.Converters.LocalPrivateManageConverters.LocalFileManagerViewConverters"
+             xmlns:localprivatemanage="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels.LocalPrivateManage"
+             d:DataContext="{d:DesignInstance Type=localprivatemanage:LocalFileManagerViewModel}"
+             mc:Ignorable="d"
+             d:DesignHeight="768"
+             d:DesignWidth="1280">
+    <UserControl.Resources>
+        <cv:IntToBoolConverter x:Key="IntToBoolTool" />
+    </UserControl.Resources>
+    <Grid Margin="15">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition />
+            <ColumnDefinition Width="0.325*" />
+        </Grid.ColumnDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="0.1*" />
+                <RowDefinition Height="0.1*" />
+                <RowDefinition />
+            </Grid.RowDefinitions>
+            <DockPanel  Height="auto"
+                        Margin="5"
+                        Grid.Row="0"
+                        VerticalAlignment="Top"
+                        LastChildFill="True">
+                <Button FontSize="20"
+                        Width="170"
+                        Command="{Binding ShowDirBrowser}"
+                        CommandParameter="SelectRootDir"
+                        Height="40"
+                        Content="选择根目录"
+                        Margin="5,0,5,0"
+                        Cursor="Hand"></Button>
+                <TextBlock Text="{Binding RootPath}"
+                           Margin="10,0,0,0"
+                           VerticalAlignment="Center"
+                           d:Text="D:\"
+                           FontSize="25"
+                           TextAlignment="Left" />
+            </DockPanel>
+
+            <DockPanel Grid.Row="1"
+                       Margin="5"
+                       Height="40"
+                       VerticalAlignment="Top"
+                       LastChildFill="True">
+                <Button FontSize="20"
+                        IsEnabled="{Binding RootPathEnable}"
+                        Command="{Binding ShowDirBrowser}"
+                        CommandParameter="SelectDescDir"
+                        Width="170"
+                        Height="40"
+                        Content="选择目的地址"
+                        Margin="5,0,5,0"
+                        Cursor="Hand"></Button>
+                <TextBlock Text="{Binding DestPath}"
+                           Margin="10,0,0,0"
+                           d:Text="C:\"
+                           FontSize="25"
+                           VerticalAlignment="Center"
+                           TextAlignment="Left" />
+            </DockPanel>
+            <DataGrid IsReadOnly="True"
+                      x:Name="DgLocalFiles"
+                      Grid.Row="2"
+                      SelectedItem="{Binding SelectedFileInfo}"
+                      ItemsSource="{Binding FileInfos}"
+                      CanUserDeleteRows="False"
+                      CanUserResizeColumns="False"
+                      AutoGenerateColumns="False"
+                      CanUserAddRows="False"
+                      Margin="10">
+                <DataGrid.Columns>
+                    <DataGridTextColumn Binding="{Binding Id}"
+                                        Header="Id"
+                                        Width="1*" />
+                    <DataGridTextColumn Binding="{Binding File.Name}"
+                                        Header="文件名"
+                                        Width="3*" />
+                    <DataGridTextColumn Binding="{Binding File.FullName}"
+                                        Header="文件路径"
+                                        Width="6*" />
+                </DataGrid.Columns>
+            </DataGrid>
+        </Grid>
+
+        <StackPanel Orientation="Vertical"
+                    Grid.Column="1">
+            <StackPanel IsEnabled="{Binding RootPathEnable}"
+                        Orientation="Vertical">
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button FontSize="20"
+                            Command="{Binding OperateViewCommand}"
+                            CommandParameter="Refresh"
+                            Height="60"
+                            Width="60"
+                            Margin="25,0,0,0"
+                            HorizontalAlignment="Left"
+                            ToolTip="重新加载"
+                            Style="{StaticResource MaterialDesignFloatingActionButton }">
+                        <materialDesign:PackIcon Kind="Reload" />
+                    </Button>
+                    <Button FontSize="20"
+                            Command="{Binding OperateViewCommand}"
+                            CommandParameter="FindRepateFileName"
+                            Height="60"
+                            Width="60"
+                            Margin="20,0,0,0"
+                            HorizontalAlignment="Left"
+                            ToolTip="查找重复文件"
+                            Style="{StaticResource MaterialDesignFloatingActionButton }"
+                            Cursor="Hand">
+                        <materialDesign:PackIcon Kind="FindReplace" />
+                    </Button>
+                    <!--<Button FontSize="20"
+                            Margin="20,0,0,0"
+                            Command="{Binding OperateViewCommand}"
+                            CommandParameter="FindViolationFileName"
+                            Height="60"
+                            Width="60"
+                            HorizontalAlignment="Left"
+                            ToolTip="查找违规文件名文件"
+                            Style="{StaticResource MaterialDesignFloatingActionButton }"
+                            Cursor="Hand">
+                        <materialDesign:PackIcon Kind="FileAlertOutline" />
+                    </Button>-->
+                </StackPanel>
+                <StackPanel Orientation="Horizontal"
+                            HorizontalAlignment="Center">
+                    <Button FontSize="20"
+                            Height="60"
+                            Command="{Binding OperateViewCommand}"
+                            CommandParameter="MakeFileNameToUpper"
+                            Width="60"
+                            Margin="25,0,0,0"
+                            HorizontalAlignment="Left"
+                            ToolTip="文件名ToUpper"
+                            Style="{StaticResource MaterialDesignFloatingActionButton }">
+                        <materialDesign:PackIcon Kind="FormatLetterCaseUpper" />
+                    </Button>
+                    <Button FontSize="20"
+                            Height="60"
+                            Command="{Binding OperateViewCommand}"
+                            CommandParameter="MakeFileNameToLower"
+                            Width="60"
+                            Margin="25,0,0,0"
+                            HorizontalAlignment="Left"
+                            ToolTip="文件名ToLower"
+                            Style="{StaticResource MaterialDesignFloatingActionButton }">
+                        <materialDesign:PackIcon Kind="FormatLetterCaseLower" />
+                    </Button>
+                </StackPanel>
+                <Button Content="数据库预览"
+                        Margin="5,15,5,0"
+                        Command="{Binding OperateViewCommand}"
+                        CommandParameter="ShowFileDetailViewDialog"
+                        Height="45"
+                        FontSize="20"
+                        IsEnabled="{Binding RootPathEnable}"
+                        Width="200" />
+            </StackPanel>
+            <StackPanel Margin="0,10,0,0"
+                        IsEnabled="{Binding ElementName=DgLocalFiles, Path=SelectedIndex,Converter={StaticResource IntToBoolTool}}">
+                <Button Content="打开选中文件"
+                        Margin="5"
+                        Command="{Binding OperateFileCommand}"
+                        CommandParameter="OpenFile"
+                        Height="45"
+                        FontSize="20"
+                        Width="200"
+                        Cursor="Hand" />
+                <Button Content="打开选中文件位置"
+                        Margin="5"
+                        Command="{Binding OperateFileCommand}"
+                        CommandParameter="OpenFileDir"
+                        Height="45"
+                        FontSize="20"
+                        Width="200" />
+                <TextBox Width="200"
+                         Height="100"
+                         md:HintAssist.Hint="请输入新文件名"
+                         AcceptsReturn="True"
+                         Name="TxtReNameValue"
+                         TextWrapping="Wrap"
+                         Text="{Binding SelectedFileInfo.FileName}"
+                         VerticalScrollBarVisibility="Visible"
+                         Cursor="IBeam">
+                </TextBox>
+                <Button Content="重命名"
+                        Margin="5"
+                        Command="{Binding OperateFileCommand}"
+                        CommandParameter="ReNameFile"
+                        Height="45"
+                        FontSize="20"
+                        Width="200" />
+
+                <StackPanel Margin="0,10,0,0"
+                            IsEnabled="{Binding DestRootPathEnable}">
+                    <Button Content="移动选中文件"
+                            Margin="5"
+                            Command="{Binding OperateFileCommand}"
+                            CommandParameter="MoveFile"
+                            Height="45"
+                            FontSize="20"
+                            Width="200" />
+                </StackPanel>
+            </StackPanel>
+
+        </StackPanel>
+    </Grid>
+</UserControl>

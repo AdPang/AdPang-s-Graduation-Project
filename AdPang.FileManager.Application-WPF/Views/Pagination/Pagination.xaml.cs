@@ -1,19 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
-using System.Text;
+﻿using System.ComponentModel;
 using System.Text.RegularExpressions;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace AdPang.FileManager.Application_WPF.Views.Pagination
 {
@@ -27,12 +16,12 @@ namespace AdPang.FileManager.Application_WPF.Views.Pagination
             InitializeComponent();
             PageSizeCmb.SelectedIndex = 0;
         }
-        
+
         public event PropertyChangedEventHandler PropertyChanged;
 
         public void RaisePropertyChanged(string propertyName)
         {
-            PropertyChanged?.Invoke(this,new PropertyChangedEventArgs(propertyName));
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
         public ICommand FirstPage
@@ -135,7 +124,7 @@ namespace AdPang.FileManager.Application_WPF.Views.Pagination
         // Using a DependencyProperty as the backing store for PageCount.  This enables animation, styling, binding, etc...
         public static readonly DependencyProperty PageCountProperty =
             DependencyProperty.Register("PageCount", typeof(int), typeof(Pagination), new PropertyMetadata(0));
-        
+
 
 
         public int PageSize

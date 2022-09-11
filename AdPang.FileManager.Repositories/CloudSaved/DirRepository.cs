@@ -1,14 +1,9 @@
-﻿using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
+﻿using System.Linq.Expressions;
+using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
 using AdPang.FileManager.IRepositories.CloudSaved;
 using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Repositories.Base;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AdPang.FileManager.Repositories.CloudSaved
 {
@@ -21,7 +16,7 @@ namespace AdPang.FileManager.Repositories.CloudSaved
         public async Task<IList<DirInfo>> GetDirDetailListAsync(Expression<Func<DirInfo, bool>> predicate)
         {
             return await DbContext().DirInfos.Where(predicate).Include(x => x.ChildrenFileInfo).ThenInclude(x => x.RealFileInfo).ToListAsync();
-            
+
         }
 
         //public async Task<DirInfo?> GetRootDirInfosAsync(Guid userId)

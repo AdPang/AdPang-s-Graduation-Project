@@ -328,10 +328,9 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
 
         private void DownloadDir()
         {
-            var dir = CurrentSelectedItem;
+            var dir = CurrentSelectedItem.ChildrenDirInfo[SelectedDirIndex];
             var fileList = new List<FileTransferMessage>();
-            var dirName = string.Empty;
-            GetAllFiles(dir, dirName, fileList);
+            GetAllFiles(dir, "\\"+ dir.DirName, fileList);
             foreach (var file in fileList)
             {
                 _aggregator.SendFileTransferMessage(file, "Download");

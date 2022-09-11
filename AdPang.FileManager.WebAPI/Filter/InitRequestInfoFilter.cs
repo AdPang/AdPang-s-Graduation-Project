@@ -1,8 +1,8 @@
-﻿using AdPang.FileManager.Common.Helper.Mail;
+﻿using System.Security.Claims;
+using AdPang.FileManager.Common.Helper.Mail;
 using AdPang.FileManager.Common.Helper.VerifyCode;
 using AdPang.FileManager.Common.RequestInfoModel;
 using Microsoft.AspNetCore.Mvc.Filters;
-using System.Security.Claims;
 
 namespace AdPang.FileManager.WebAPI.Filter
 {
@@ -12,7 +12,7 @@ namespace AdPang.FileManager.WebAPI.Filter
         private readonly ImgVerifyCodeHelper imgVerfiyCodeHelper;
         private readonly MailVerifyCodeHelper mailVerifyCodeHelper;
 
-        public InitRequestInfoFilter(RequestInfoModel requestInfoModel,ImgVerifyCodeHelper imgVerfiyCodeHelper, MailVerifyCodeHelper mailVerifyCodeHelper)
+        public InitRequestInfoFilter(RequestInfoModel requestInfoModel, ImgVerifyCodeHelper imgVerfiyCodeHelper, MailVerifyCodeHelper mailVerifyCodeHelper)
         {
             this.requestInfoModel = requestInfoModel;
             this.imgVerfiyCodeHelper = imgVerfiyCodeHelper;
@@ -62,7 +62,7 @@ namespace AdPang.FileManager.WebAPI.Filter
                     string email = request.Headers["Email"].ToString();
                     string verifyCode = request.Headers["MailVerifyCode"].ToString();
                     string operaTypeStr = request.Headers["OperaType"].ToString();
-                    if (int.TryParse(operaTypeStr,out int operaTypeInt))
+                    if (int.TryParse(operaTypeStr, out int operaTypeInt))
                     {
 
                         isVerify = mailVerifyCodeHelper.VerifyImgCode(email, verifyCode, (MailMsgOperaType)operaTypeInt);

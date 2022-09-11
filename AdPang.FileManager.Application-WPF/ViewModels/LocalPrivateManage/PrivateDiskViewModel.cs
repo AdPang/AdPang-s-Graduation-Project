@@ -1,29 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using AdPang.FileManager.Application_WPF.Common.Models;
 using AdPang.FileManager.Application_WPF.Extensions;
 using AdPang.FileManager.Application_WPF.Services.IServices;
-using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
 using AdPang.FileManager.Shared.Dtos.LocalPrivateDto.PrivateDisk;
 using HttpRequestClient.Services.IRequestServices;
-using MaterialDesignThemes.Wpf;
 using Prism.Commands;
 using Prism.Ioc;
 using Prism.Regions;
 using Prism.Services.Dialogs;
 
-namespace AdPang.FileManager.Application_WPF.ViewModels
+namespace AdPang.FileManager.Application_WPF.ViewModels.LocalPrivateManage
 {
     public class PrivateDiskViewModel : NavigationViewModel
     {
         #region 构造
         public PrivateDiskViewModel(IContainerProvider containerProvider, ILocalInfoService localInfoService, IPrivateDiskRequestService privateDiskRequestService, IRegionManager regionManager, PrivateFileInfoViewModel privateFileInfoViewModel) : base(containerProvider)
         {
-            this.dialogHost = containerProvider.Resolve<IDialogHostService>();
+            dialogHost = containerProvider.Resolve<IDialogHostService>();
             this.localInfoService = localInfoService;
             this.privateDiskRequestService = privateDiskRequestService;
             RefreshModelCommand = new DelegateCommand(RefreshModels);
@@ -37,7 +33,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 {
                     DiskId = (Guid)diskInfo.Id
                 });
-                regionManager.Regions[PrismManager.MainViewRegionName].RequestNavigate("PrivateFileInfoView");
+                regionManager.Regions[PrismManager.LocalManageViewRegionName].RequestNavigate("PrivateFileInfoView");
             });
 
             RefreshModels();
@@ -63,14 +59,14 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         public ObservableCollection<LocalDiskInfo> LocalDiskInfos
         {
             get { return localDiskInfos; }
-            set { localDiskInfos = value;RaisePropertyChanged(); }
+            set { localDiskInfos = value; RaisePropertyChanged(); }
         }
 
 
-        public ObservableCollection<PrivateDiskInfoDto> DiskInfos 
+        public ObservableCollection<PrivateDiskInfoDto> DiskInfos
         {
             get { return diskInfos; }
-            set { diskInfos = value;RaisePropertyChanged(); }
+            set { diskInfos = value; RaisePropertyChanged(); }
         }
 
         #endregion
@@ -85,7 +81,7 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
         {
             var questResult = await dialogHost.Question("温馨提示", $"是否删除硬盘：{diskInfo.DiskName}？");
             if (questResult.Result != ButtonResult.OK) return;
-            if(diskInfo == null || diskInfo.Id == null)
+            if (diskInfo == null || diskInfo.Id == null)
             {
                 _aggregator.SendMessage("发生错误,请刷新重试！");
                 return;
@@ -118,18 +114,18 @@ namespace AdPang.FileManager.Application_WPF.ViewModels
                 try
                 {
                     UpdateLoading(true);
-                    if(diskInfo.Id != null)
+                    if (diskInfo.Id != null)
                     {
                         //修改
                         var updateResult = await privateDiskRequestService.UpdateAsync(diskInfo);
-                        if (!updateResult.Status) 
+                        if (!updateResult.Status)
                         {
                             _aggregator.SendMessage("更新失败：" + updateResult.Message);
                             return;
                         }
                         _aggregator.SendMessage("更新成功");
                         var disk = DiskInfos.Where(x => x.Id.Equals(updateResult.Result.Id)).FirstOrDefault();
-                        if(disk==null) return;
+                        if (disk == null) return;
                         disk.DiskName = updateResult.Result.DiskName;
                         disk.DiskSN = updateResult.Result.DiskSN;
                     }

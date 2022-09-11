@@ -2,7 +2,6 @@
 using AdPang.FileManager.Common.Helper.VerifyCode;
 using AdPang.FileManager.Common.RequestInfoModel;
 using AdPang.FileManager.Shared;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace AdPang.FileManager.WebAPI.Controllers.SystemManager

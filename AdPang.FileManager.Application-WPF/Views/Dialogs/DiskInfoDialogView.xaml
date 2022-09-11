@@ -23,6 +23,11 @@
                    FontSize="20" />
         <DockPanel Grid.Row="1"
                    LastChildFill="False">
+            <StackPanel Margin="20,10" DockPanel.Dock="top" Orientation="Horizontal">
+                <TextBlock Text="电脑名称：" VerticalAlignment="Center"/>
+                <TextBlock Text="{Binding Model.ComputerName}" VerticalAlignment="Center" />
+            </StackPanel>
+            
             <StackPanel Margin="20,10"
                         DockPanel.Dock="Top"
                         Orientation="Horizontal">

@@ -2,7 +2,6 @@
 using System.IO;
 using System.Windows;
 using System.Windows.Input;
-using AdPang.FileManager.Application_WPF.Common.Events;
 using AdPang.FileManager.Application_WPF.Extensions;
 using AdPang.FileManager.Application_WPF.Services.IServices;
 using AdPang.FileManager.Application_WPF.ViewModels;
@@ -56,7 +55,7 @@ namespace AdPang.FileManager.Application_WPF.Views
             {
                 var dialogResult = await dialogHostService.Question("温馨提示", "确认退出系统?");
                 if (dialogResult.Result != Prism.Services.Dialogs.ButtonResult.OK) return;
-                
+
                 this.Close();
             };
             ColorZone.MouseMove += (s, e) =>

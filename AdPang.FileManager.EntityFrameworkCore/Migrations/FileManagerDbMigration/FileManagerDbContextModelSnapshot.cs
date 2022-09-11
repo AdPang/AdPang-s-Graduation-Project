@@ -64,7 +64,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("CloudFileInfos", (string)null);
+                    b.ToTable("CloudFileInfos");
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.DirInfo", b =>
@@ -95,7 +95,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("DirInfos", (string)null);
+                    b.ToTable("DirInfos");
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.SharedFileInfo", b =>
@@ -144,7 +144,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("SingleFileId");
 
-                    b.ToTable("SharedFileInfos", (string)null);
+                    b.ToTable("SharedFileInfos");
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.CloudSaved.UserPrivateFileInfo", b =>
@@ -180,7 +180,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("UserPrivateFileInfos", (string)null);
+                    b.ToTable("UserPrivateFileInfos");
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.LocalPrivate.PrivateDiskInfo", b =>
@@ -188,6 +188,9 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.Property<Guid>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("ComputerName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("CreatTime")
                         .HasColumnType("datetime2");
@@ -201,8 +204,10 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.Property<string>("DiskSN")
                         .IsRequired()
                         .HasMaxLength(64)
-                        .HasColumnType("nvarchar(64)")
-                        .HasColumnName("char");
+                        .HasColumnType("char(64)");
+
+                    b.Property<string>("DriveName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("UpdateTime")
                         .HasColumnType("datetime2");
@@ -212,9 +217,12 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasKey("Id");
 
+                    b.HasIndex("DiskSN")
+                        .IsUnique();
+
                     b.HasIndex("UserId");
 
-                    b.ToTable("PrivateDiskInfos", (string)null);
+                    b.ToTable("PrivateDiskInfos");
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.FileManagerEntities.LocalPrivate.PrivateFileInfo", b =>
@@ -260,7 +268,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("PrivateFileInfos", (string)null);
+                    b.ToTable("PrivateFileInfos");
                 });
 
             modelBuilder.Entity("AdPang.FileManager.Models.IdentityEntities.Role", b =>
@@ -369,7 +377,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
 
                     b.HasIndex("UsersId");
 
-                    b.ToTable("CloudFileInfoUser", (string)null);
+                    b.ToTable("CloudFileInfoUser");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<System.Guid>", b =>

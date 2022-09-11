@@ -7,6 +7,8 @@
              xmlns:pass="clr-namespace:AdPang.FileManager.Application_WPF.Extensions"
              xmlns:prism="http://prismlibrary.com/"
              xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+             xmlns:viewmodels="clr-namespace:AdPang.FileManager.Application_WPF.ViewModels"
+             d:DataContext="{d:DesignInstance Type=viewmodels:LoginViewModel}"
              mc:Ignorable="d"
              Width="600"
              Height="350">
@@ -97,10 +99,6 @@
                                FontSize="22"
                                FontWeight="Bold"
                                DockPanel.Dock="Top" />
-                    <TextBox Text="{Binding UserDto.Account}"
-                             md:HintAssist.Hint="请输入账号"
-                             Margin="0,10"
-                             DockPanel.Dock="Top" />
                     <TextBox Text="{Binding UserDto.UserName}"
                              md:HintAssist.Hint="请输入用户名"
                              DockPanel.Dock="Top"
@@ -123,6 +121,23 @@
                             <pass:PasswordBehavior />
                         </i:Interaction.Behaviors>
                     </PasswordBox>
+                    <StackPanel DockPanel.Dock="Top"
+                                Orientation="Horizontal">
+                        <TextBox Text="{Binding VerfiyCode,Mode=TwoWay}"
+                                 md:HintAssist.Hint="请输入验证码"
+                                 Margin="0,10"
+                                 DockPanel.Dock="Top" />
+                        <Image Source="{Binding VerfiyCodeImgUrl}"
+                               Margin="20,0"
+                               Width="90">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="MouseLeftButtonDown">
+                                    <i:InvokeCommandAction Command="{Binding ExecuteCommand}"
+                                                           CommandParameter="RefreshVerfiyCode" />
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </Image>
+                    </StackPanel>
 
                     <Button Content="注册账号"
                             Command="{Binding ExecuteCommand}"

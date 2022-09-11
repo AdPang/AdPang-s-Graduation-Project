@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Threading.Tasks;
+using System.Windows;
 using AdPang.FileManager.Application_WPF.Common;
 using AdPang.FileManager.Application_WPF.Services.IServices;
 using MaterialDesignThemes.Wpf;
 using Prism.Ioc;
 using Prism.Mvvm;
 using Prism.Services.Dialogs;
-using System.Windows;
 
 namespace AdPang.FileManager.Application_WPF.Services.Services
 {

@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using System.Linq.Dynamic.Core;
 using System.Linq.Expressions;
-using System.Linq.Dynamic.Core;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using AdPang.FileManager.IRepositories.Base;
 using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
+using AdPang.FileManager.IRepositories.Base;
+using Microsoft.EntityFrameworkCore;
 
 namespace AdPang.FileManager.Repositories.Base
 {
@@ -134,7 +128,7 @@ namespace AdPang.FileManager.Repositories.Base
             return entity;
         }
 
-        public Task<List<TEntity>> GetListAsync(CancellationToken cancellationToken = default,bool IsTracking = false)
+        public Task<List<TEntity>> GetListAsync(CancellationToken cancellationToken = default, bool IsTracking = false)
         {
             if (!IsTracking)
                 return _context.Set<TEntity>().AsNoTracking().ToListAsync(cancellationToken); ;
@@ -143,7 +137,7 @@ namespace AdPang.FileManager.Repositories.Base
 
         public Task<List<TEntity>> GetListAsync(Expression<Func<TEntity, bool>> predicate, CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            if(!IsTracking)
+            if (!IsTracking)
                 return _context.Set<TEntity>().AsNoTracking().Where(predicate).ToListAsync(cancellationToken);
             return _context.Set<TEntity>().Where(predicate).ToListAsync(cancellationToken);
 
@@ -152,7 +146,7 @@ namespace AdPang.FileManager.Repositories.Base
         public Task<List<TEntity>> GetPagedListAsync(int skipCount, int maxResultCount, string sorting,
             CancellationToken cancellationToken = default, bool IsTracking = false)
         {
-            if(!IsTracking)
+            if (!IsTracking)
                 return _context.Set<TEntity>().AsNoTracking().OrderBy(sorting).Skip(skipCount).Take(maxResultCount).ToListAsync(cancellationToken);
             return _context.Set<TEntity>().OrderBy(sorting).Skip(skipCount).Take(maxResultCount).ToListAsync(cancellationToken);
         }
