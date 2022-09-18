@@ -20,6 +20,7 @@ using Microsoft.EntityFrameworkCore.Diagnostics;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Serialization;
 
+const string DefaultCorsPolicyName = "Default";
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.Configure<FormOptions>(options =>
 {
@@ -50,6 +51,23 @@ builder.Services.AddControllersWithViews()
     });
 #endregion
 
+builder.Services.AddCors(options =>
+{
+    var urls = builder.Configuration["App:CorsOrigins"]
+                    .Split(",", StringSplitOptions.RemoveEmptyEntries)
+                    .ToArray();
+    options.AddPolicy(DefaultCorsPolicyName, oo =>
+    {
+        oo
+            .WithOrigins(urls)
+            .SetIsOriginAllowedToAllowWildcardSubdomains()
+            .AllowAnyHeader()
+            .AllowAnyMethod()
+            .AllowCredentials();
+    });
+});
+
+
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 //AppSetting注入
@@ -75,6 +93,7 @@ builder.Services.AddMvc(options =>
 builder.Services
     .AddJwtAddAuthentication(builder.Configuration)
     .AddSwaggerAuthoritarian();
+
 
 
 #region dbConfig
@@ -157,6 +176,7 @@ app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseRouting(); // 路由中间件一定要添加
 // 先开启认证
+app.UseCors(DefaultCorsPolicyName);
 app.UseAuthentication();
 // 然后是授权中间件
 app.UseAuthorization();

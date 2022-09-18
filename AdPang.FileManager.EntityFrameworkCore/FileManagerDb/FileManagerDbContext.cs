@@ -1,4 +1,5 @@
 ﻿using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
+using AdPang.FileManager.Models.FileManagerEntities.Common;
 using AdPang.FileManager.Models.FileManagerEntities.LocalPrivate;
 using AdPang.FileManager.Models.IdentityEntities;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
@@ -18,6 +19,7 @@ namespace AdPang.FileManager.EntityFrameworkCore.FileManagerDb
         public virtual DbSet<DirInfo> DirInfos { get; set; }
         public virtual DbSet<UserPrivateFileInfo> UserPrivateFileInfos { get; set; }
         public virtual DbSet<SharedFileInfo> SharedFileInfos { get; set; }
+        public virtual DbSet<Menu> Menus { get; set; }
 
 
 

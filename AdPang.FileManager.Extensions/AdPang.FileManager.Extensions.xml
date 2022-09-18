@@ -70,5 +70,20 @@
             <param name="parent"></param>
             <param name="dirInfos"></param>
         </member>
+        <member name="M:AdPang.FileManager.Common.Extensions.ListExtensions.Merge(System.Collections.Generic.IEnumerable{AdPang.FileManager.Models.FileManagerEntities.Common.Menu},AdPang.FileManager.Models.FileManagerEntities.Common.Menu)">
+            <summary>
+            菜单合并
+            </summary>
+            <param name="menus"></param>
+            <param name="parent"></param>
+        </member>
+        <member name="M:AdPang.FileManager.Common.Extensions.ListExtensions.FindParentMenu(AdPang.FileManager.Models.FileManagerEntities.Common.Menu,System.Collections.Generic.IEnumerable{AdPang.FileManager.Models.FileManagerEntities.Common.Menu},System.Collections.Generic.List{AdPang.FileManager.Models.FileManagerEntities.Common.Menu})">
+            <summary>
+            找父菜单
+            </summary>
+            <param name="childrenMenu"></param>
+            <param name="allMenus">所有菜单集合</param>
+            <param name="result">结果</param>
+        </member>
     </members>
 </doc>

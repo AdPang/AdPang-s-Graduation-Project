@@ -388,6 +388,76 @@
             <param name="queryParameter"></param>
             <returns></returns>
         </member>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController">
+            <summary>
+            菜单资源控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.#ctor(AdPang.FileManager.IServices.Common.IMenuService,AutoMapper.IMapper,Microsoft.AspNetCore.Identity.RoleManager{AdPang.FileManager.Models.IdentityEntities.Role},AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User})">
+            <summary>
+            构造
+            </summary>
+            <param name="menuService"></param>
+            <param name="mapper"></param>
+            <param name="roleManager"></param>
+            <param name="requestInfoModel"></param>
+            <param name="userManager"></param>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.GetAllMenus">
+            <summary>
+            获取菜单列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.GetMyMenusAsync">
+            <summary>
+            获取自己的菜单
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.EditMenusForRoleAsync(System.Guid,System.Collections.Generic.List{System.Guid})">
+            <summary>
+            修改角色权限
+            </summary>
+            <param name="roleId"></param>
+            <param name="menuIds"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.GetAllMenusToTreeAsync">
+            <summary>
+            获取所有权限树
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.AddMenuAsync(AdPang.FileManager.Shared.Dtos.SystemCommon.MenuDto)">
+            <summary>
+            添加菜单
+            </summary>
+            <param name="menuDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.EditMenuAsync(AdPang.FileManager.Shared.Dtos.SystemCommon.MenuDto)">
+            <summary>
+            修改菜单名
+            </summary>
+            <param name="menuDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.DeleteMenuAsync(System.Guid)">
+            <summary>
+            删除菜单
+            </summary>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.AddMenuToRoleAsync(System.Guid,System.Guid)">
+            <summary>
+            给角色添加菜单
+            </summary>
+            <param name="roleId"></param>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
         <member name="T:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController">
             <summary>
             验证控制器
@@ -423,7 +493,7 @@
             角色控制器
             </summary>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.#ctor(Microsoft.AspNetCore.Identity.RoleManager{AdPang.FileManager.Models.IdentityEntities.Role},AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,AutoMapper.IMapper,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User})">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.#ctor(Microsoft.AspNetCore.Identity.RoleManager{AdPang.FileManager.Models.IdentityEntities.Role},AdPang.FileManager.Common.RequestInfoModel.RequestInfoModel,AutoMapper.IMapper,Microsoft.AspNetCore.Identity.UserManager{AdPang.FileManager.Models.IdentityEntities.User},AdPang.FileManager.IServices.Common.IMenuService)">
             <summary>
             构造
             </summary>
@@ -431,22 +501,30 @@
             <param name="requestInfoModel"></param>
             <param name="mapper"></param>
             <param name="userManager"></param>
+            <param name="menuService"></param>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRoles(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
             <summary>
             获取角色列表
             </summary>
             <param name="queryParameter">分页信息</param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesByUserId(System.Guid)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesByUserIdAsync(System.Guid)">
             <summary>
             根据userId获取对应的角色列表
             </summary>
             <param name="userId">用户Id</param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesASync">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRoleByIdAsync(System.Guid)">
+            <summary>
+            根据角色id获取角色
+            </summary>
+            <param name="roleId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesAsync">
             <summary>
             获取当前请求人的角色
             </summary>

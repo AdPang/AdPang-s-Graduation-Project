@@ -12,6 +12,7 @@ namespace AdPang.FileManager.Extensions.AutoMapper.SystemCommon
         public RoleProfile()
         {
             CreateMap<Role, RoleDto>().ReverseMap();
+            CreateMap<Role, RoleDetailDto>().ReverseMap();
         }
     }
 }

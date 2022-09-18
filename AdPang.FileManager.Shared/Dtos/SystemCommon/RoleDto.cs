@@ -8,4 +8,12 @@ namespace AdPang.FileManager.Shared.Dtos.SystemCommon
         //public string NormalizedName { get; set; }
 
     }
+
+    public class RoleDetailDto : BaseDto<Guid>
+    {
+        public string Name { get; set; }
+        //public string NormalizedName { get; set; }
+        public virtual ICollection<MenuDto> Menus { get; set; } = new List<MenuDto>();
+
+    }
 }

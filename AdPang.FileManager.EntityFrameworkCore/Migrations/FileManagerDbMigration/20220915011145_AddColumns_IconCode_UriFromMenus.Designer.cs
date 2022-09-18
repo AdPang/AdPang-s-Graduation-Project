@@ -4,6 +4,7 @@ using AdPang.FileManager.EntityFrameworkCore.FileManagerDb;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,10 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigration
 {
     [DbContext(typeof(FileManagerDbContext))]
-    partial class FileManagerDbContextModelSnapshot : ModelSnapshot
+    [Migration("20220915011145_AddColumns_IconCode_UriFromMenus")]
+    partial class AddColumns_IconCode_UriFromMenus
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -192,8 +194,8 @@ namespace AdPang.FileManager.EntityFrameworkCore.Migrations.FileManagerDbMigrati
                     b.Property<DateTime>("CreatTime")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("IconStr")
-                        .HasColumnType("nvarchar(max)");
+                    b.Property<int>("IconCode")
+                        .HasColumnType("int");
 
                     b.Property<int>("MenuLevel")
                         .HasColumnType("int");
