@@ -503,9 +503,15 @@
             <param name="userManager"></param>
             <param name="menuService"></param>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesAsync">
             <summary>
             获取角色列表
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesDetailAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+            <summary>
+            获取角色详情列表
             </summary>
             <param name="queryParameter">分页信息</param>
             <returns></returns>
@@ -524,7 +530,7 @@
             <param name="roleId"></param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesAsync">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetMyRolesAsync">
             <summary>
             获取当前请求人的角色
             </summary>
@@ -571,17 +577,47 @@
             </summary>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.GetUsers(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.GetUsersAsync(AdPang.FileManager.Shared.Paremeters.QueryParameter)">
             <summary>
             获得用户列表
             </summary>
             <param name="queryParameter"></param>
             <returns></returns>
         </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.GetUserByIdAsync(System.Guid)">
+            <summary>
+            根据Id获取角色详情
+            </summary>
+            <param name="userId"></param>
+            <returns></returns>
+        </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.GetUsersByRoleAsync(System.String)">
             <summary>
             根据角色名获取用户列表
             </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.AddUser(AdPang.FileManager.Shared.Dtos.SystemCommon.UserDto)">
+            <summary>
+            添加用户（管理员）
+            </summary>
+            <param name="userDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.EditAsync(System.Guid,AdPang.FileManager.Shared.Dtos.SystemCommon.UserDto)">
+            <summary>
+            修改用户信息
+            </summary>
+            <param name="userId"></param>
+            <param name="userDto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.AccountRestoreAsync(System.Guid,System.Boolean)">
+            <summary>
+            解封账号
+            </summary>
+            <param name="userId"></param>
+            <param name="isSuspended"></param>
             <returns></returns>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.AddUserToRoleAsync(System.Guid,System.String)">
@@ -592,12 +628,12 @@
             <param name="roleName">角色名</param>
             <returns></returns>
         </member>
-        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.AddUsersToRoleAsync(System.Guid,System.Collections.Generic.IList{System.String})">
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.AddUsersToRoleAsync(System.Guid,System.Collections.Generic.IList{System.Guid})">
             <summary>
             给用户添加角色
             </summary>
             <param name="userId">用户Id</param>
-            <param name="roleNames">角色名列表</param>
+            <param name="roleIds">角色Id列表</param>
             <returns></returns>
         </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.UserManageController.RemoveRoleFormUserAsync(System.Guid,System.String)">

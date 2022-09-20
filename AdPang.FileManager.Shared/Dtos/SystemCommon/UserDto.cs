@@ -15,12 +15,11 @@ namespace AdPang.FileManager.Shared.Dtos.SystemCommon
         /// <summary>
         /// 密码
         /// </summary>
-        public string Password { get; set; }
+        public string? Password { get; set; }
         /// <summary>
         /// 电话
         /// </summary>
         public string? PhoneNumber { get; set; }
-
 
     }
 }

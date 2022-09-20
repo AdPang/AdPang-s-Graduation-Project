@@ -43,14 +43,27 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             this.userManager = userManager;
             this.menuService = menuService;
         }
+
         /// <summary>
         /// 获取角色列表
+        /// </summary>
+        /// <returns></returns>
+        [Authorize(Roles ="Admin")]
+        [HttpGet("GetAll/Admin")]
+        public async Task<ApiResponse<IList<RoleDto>>> GetRolesAsync()
+        {
+            var roles = await roleManager.Roles.AsNoTracking().ToListAsync();
+            return new ApiResponse<IList<RoleDto>>(true, mapper.Map<IList<RoleDto>>(roles));
+        }
+
+        /// <summary>
+        /// 获取角色详情列表
         /// </summary>
         /// <param name="queryParameter">分页信息</param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
         [HttpGet("Gets/admin")]
-        public async Task<ApiResponse<PagedList<RoleDetailDto>>> GetRolesAsync([FromQuery] QueryParameter queryParameter)
+        public async Task<ApiResponse<PagedList<RoleDetailDto>>> GetRolesDetailAsync([FromQuery] QueryParameter queryParameter)
         {
             //获取符合条件的角色列表
             var roles = roleManager.Roles.Include(x=>x.Menus).Skip(queryParameter.PageIndex * queryParameter.PageSize).Take(queryParameter.PageSize).Where(x => queryParameter.Search != null ? x.Name.Contains(queryParameter.Search) || x.NormalizedName.Contains(queryParameter.Search) : true).AsNoTracking().ToList();
@@ -115,7 +128,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <returns></returns>
         [Authorize]
         [HttpGet("GetRoles")]
-        public async Task<ApiResponse<IList<string>>> GetRolesAsync()
+        public async Task<ApiResponse<IList<string>>> GetMyRolesAsync()
         {
             var user = userManager.Users.Where(x => x.Id.Equals(requestInfoModel.CurrentOperaingUser)).FirstOrDefault();
             if (user == null) return new ApiResponse<IList<string>>(false, "用户不存在");
