@@ -516,6 +516,14 @@
             <param name="queryParameter">分页信息</param>
             <returns></returns>
         </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.DeleteMenuFromRoleAsync(System.Guid,System.Guid)">
+            <summary>
+            删除角色上的菜单
+            </summary>
+            <param name="roleId"></param>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.RoleManageController.GetRolesByUserIdAsync(System.Guid)">
             <summary>
             根据userId获取对应的角色列表

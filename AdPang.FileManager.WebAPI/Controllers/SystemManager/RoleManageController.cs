@@ -62,7 +62,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <param name="queryParameter">分页信息</param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
-        [HttpGet("Gets/admin")]
+        [HttpGet("Gets/Admin")]
         public async Task<ApiResponse<PagedList<RoleDetailDto>>> GetRolesDetailAsync([FromQuery] QueryParameter queryParameter)
         {
             //获取符合条件的角色列表
@@ -95,12 +95,31 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         }
 
         /// <summary>
+        /// 删除角色上的菜单
+        /// </summary>
+        /// <param name="roleId"></param>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
+        [Authorize(Roles = "Admin")]
+        [HttpDelete("Delete/{roleId}/{menuId}/Admin")]
+        public async Task<ApiResponse> DeleteMenuFromRoleAsync(Guid roleId,Guid menuId)
+        {
+            var roleDetail = await roleManager.Roles.Where(x => x.Id.Equals(roleId)).Include(x=>x.Menus).FirstOrDefaultAsync();
+            if (roleDetail == null) return new ApiResponse(false, "不存在的角色");
+            var menu = roleDetail.Menus.Where(x => x.Id.Equals(menuId)).FirstOrDefault();
+            if(menu == null) return new ApiResponse(false, "不存在的菜单");
+            roleDetail.Menus.Remove(menu);
+            await roleManager.UpdateAsync(roleDetail);
+            return new ApiResponse(true, "删除成功！");
+        }
+
+        /// <summary>
         /// 根据userId获取对应的角色列表
         /// </summary>
         /// <param name="userId">用户Id</param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
-        [HttpGet("GetRoles/{userId}/admin")]
+        [HttpGet("GetRoles/{userId}/Admin")]
         public async Task<ApiResponse<IList<string>>> GetRolesByUserIdAsync(Guid userId)
         {
             var user = userManager.Users.Where(x => x.Id.Equals(userId)).FirstOrDefault();
@@ -114,7 +133,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <param name="roleId"></param>
         /// <returns></returns>
         [Authorize(Roles="Admin")]
-        [HttpGet("{roleId}/admin")]
+        [HttpGet("{roleId}/Admin")]
         public async Task<ApiResponse<RoleDto>> GetRoleByIdAsync(Guid roleId)
         {
             var role = await roleManager.Roles.Where(x => x.Id.Equals(roleId)).FirstOrDefaultAsync();
@@ -126,7 +145,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// 获取当前请求人的角色
         /// </summary>
         /// <returns></returns>
-        [Authorize]
+        [Authorize("Ordinary")]
         [HttpGet("GetRoles")]
         public async Task<ApiResponse<IList<string>>> GetMyRolesAsync()
         {
@@ -192,7 +211,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         /// <param name="roleId">角色Id</param>
         /// <returns></returns>
         [Authorize(Roles = "Admin")]
-        [HttpDelete("Delete/{roleId}/admin")]
+        [HttpDelete("Delete/{roleId}/Admin")]
         public async Task<ApiResponse> DeleteRoleAsync(Guid roleId)
         {
             var role = roleManager.Roles.FirstOrDefault(x => x.Id == roleId);
