@@ -20,23 +20,13 @@ namespace AdPang.FileManager.Extensions.ServiceExtensions
         {
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Admin FileManagent System API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "AdPang's FileManager System API", Version = "v1" });
 
-                //c.AddServer(new OpenApiServer()
-                //{
-                //    Url = "",
-                //    Description = "vvv"
-                //});
                 c.CustomOperationIds(apiDesc =>
                 {
                     var controllerAction = apiDesc.ActionDescriptor as ControllerActionDescriptor;
                     return controllerAction.ControllerName + "-" + controllerAction.ActionName;
                 });
-                //var filePath = Path.Combine(AppContext.BaseDirectory, "LT.PropertyManage.WebApi.xml");
-                //c.IncludeXmlComments(filePath, true);
-
-
-
                 Assembly assembly = Assembly.GetExecutingAssembly();
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var basePath = AppContext.BaseDirectory;

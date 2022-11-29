@@ -175,8 +175,9 @@ if (app.Environment.IsDevelopment())
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseRouting(); // 路由中间件一定要添加
-// 先开启认证
+
 app.UseCors(DefaultCorsPolicyName);
+// 先开启认证
 app.UseAuthentication();
 // 然后是授权中间件
 app.UseAuthorization();

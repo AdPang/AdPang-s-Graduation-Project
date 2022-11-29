@@ -6,6 +6,7 @@ using AdPang.FileManager.Models.FileManagerEntities.CloudSaved;
 using AdPang.FileManager.Models.IdentityEntities;
 using AdPang.FileManager.Shared;
 using AdPang.FileManager.Shared.Dtos.CloudSavedDto.DirInfo;
+using AdPang.FileManager.Shared.Dtos.CloudSavedDto.UserPrivateFileInfo;
 using AdPang.FileManager.Shared.Dtos.SystemCommon;
 using AdPang.FileManager.Shared.Paremeters;
 using AutoMapper;
@@ -90,6 +91,41 @@ namespace AdPang.FileManager.WebAPI.Controllers.CloudSaved
             dirInfos.Merge(root);
             var disInfoDto = mapper.Map<DirInfoDetailDto>(root);
             return new ApiResponse<DirInfoDetailDto>(true, disInfoDto);
+        }
+
+        /// <summary>
+        /// 根据dirId获取文件夹详情
+        /// </summary>
+        /// <param name="dirId"></param>
+        /// <returns></returns>
+        [HttpGet("GetDir/")]
+        [Authorize(Roles = "Ordinary")]
+        public async Task<ApiResponse<DirInfoDetailDto>> GetDirById(Guid? dirId)
+        {
+            var userId = requestInfoModel.CurrentOperaingUser;
+            if (userId == null) return new ApiResponse<DirInfoDetailDto>(false, "发生错误！");
+            var dirInfos = await dirService.GetDirDetailListAsync(x => x.UserId.Equals(userId));
+            if(dirId == null)
+            {
+                DirInfoDetailDto dirResult = new() { Id = Guid.NewGuid(), ChildrenDirInfo = new ObservableCollection<DirInfoDetailDto>(), DirName = "云盘文件", ParentDirInfoId = null};
+                var roots = dirInfos.Where(x => x.ParentDirInfoId == null);
+                foreach (var root in roots)
+                {
+                    var rootDto = mapper.Map<DirInfoDetailDto>(root);
+                    rootDto.ParentDirInfoId = dirResult.Id;
+                    dirResult.ChildrenDirInfo.Add(rootDto);
+                }
+                return new ApiResponse<DirInfoDetailDto>(true, dirResult);
+
+            }
+            else
+            {
+                var root = dirInfos.Where(x => x.Id == dirId).FirstOrDefault();
+                if (root == null) return new ApiResponse<DirInfoDetailDto>(false, "未找到该文件夹！");
+                //dirInfos.Merge(root);
+                var disInfoDto = mapper.Map<DirInfoDetailDto>(root);
+                return new ApiResponse<DirInfoDetailDto>(true, disInfoDto);
+            }
         }
 
         /// <summary>

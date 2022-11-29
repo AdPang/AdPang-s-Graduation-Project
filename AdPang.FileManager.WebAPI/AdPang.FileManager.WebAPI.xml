@@ -4,6 +4,17 @@
         <name>AdPang.FileManager.WebAPI</name>
     </assembly>
     <members>
+        <member name="T:AdPang.FileManager.WebAPI.Controllers.CloudSaved.ClientController">
+            <summary>
+            客户端控制器
+            </summary>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.ClientController.DownloadClient">
+            <summary>
+            客户端下载
+            </summary>
+            <returns></returns>
+        </member>
         <member name="T:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController">
             <summary>
             个人云盘文件夹控制器
@@ -30,6 +41,13 @@
         <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetAsync(System.Guid)">
             <summary>
             获取指定文件夹详情
+            </summary>
+            <param name="dirId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.CloudSaved.DirInfoController.GetDirById(System.Nullable{System.Guid})">
+            <summary>
+            根据dirId获取文件夹详情
             </summary>
             <param name="dirId"></param>
             <returns></returns>
