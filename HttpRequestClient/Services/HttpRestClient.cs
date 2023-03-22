@@ -37,7 +37,7 @@ namespace HttpRequestClient.Services
             return new ApiResponse(false, response.ErrorMessage);
         }
 
-
+            
 
         public async Task<ApiResponse<T>> ExecuteAsync<T>(BaseRequest baseRequest, bool hasAuth = true)
         {

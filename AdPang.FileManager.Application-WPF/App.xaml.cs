@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Windows;
 using AdPang.FileManager.Application_WPF.Common;
 using AdPang.FileManager.Application_WPF.Services.IServices;
@@ -72,8 +73,8 @@ namespace AdPang.FileManager.Application_WPF
             #region HttpRequestDI
             containerRegistry.GetContainer()
                 .Register<HttpRestClient>(made: Parameters.Of.Type<string>(serviceKey: "webUrl"));
-
-            containerRegistry.GetContainer().RegisterInstance(@"http://192.168.1.7:5006/", serviceKey: "webUrl");
+            var hostUrl = ConfigurationManager.AppSettings["HostUrl"];
+            containerRegistry.GetContainer().RegisterInstance(hostUrl, serviceKey: "webUrl");
 
 
             containerRegistry.Register<IUserCloudDirInfoRequestService, UserCloudDirInfoRequestService>();
@@ -121,6 +122,7 @@ namespace AdPang.FileManager.Application_WPF
             containerRegistry.RegisterForNavigation<SettingsView, SettingsViewModel>();
             containerRegistry.RegisterForNavigation<SystemSettingsView, SystemSettingsViewModel>();
             containerRegistry.RegisterForNavigation<AboutView>();
+            containerRegistry.RegisterForNavigation<IndexView>();
         }
     }
 }

@@ -44,7 +44,7 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             }
             catch (Exception e)
             {
-                return BadRequest("生成验证码错误" + e.Message);
+                return BadRequest("生成验证 码错误" + e.Message);
             }
 
         }

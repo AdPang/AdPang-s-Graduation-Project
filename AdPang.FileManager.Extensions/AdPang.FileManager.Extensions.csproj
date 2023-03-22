@@ -18,7 +18,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AdPang.FileManager.Common\AdPang.FileManager.Common.csproj" />
-    <ProjectReference Include="..\AdPang.FileManager.EntityFrameworkCore\AdPang.FileManager.EntityFrameworkCore.csproj" />
     <ProjectReference Include="..\AdPang.FileManager.Repositories\AdPang.FileManager.Repositories.csproj" />
     <ProjectReference Include="..\AdPang.FileManager.Services\AdPang.FileManager.Services.csproj" />
   </ItemGroup>

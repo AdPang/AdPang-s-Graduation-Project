@@ -7,7 +7,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AdPang.FileManager.IRepositories\AdPang.FileManager.IRepositories.csproj" />
     <ProjectReference Include="..\AdPang.FileManager.IServices\AdPang.FileManager.IServices.csproj" />
   </ItemGroup>
 

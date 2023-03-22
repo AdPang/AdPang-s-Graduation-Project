@@ -5,6 +5,9 @@ using AdPang.FileManager.Models.IdentityEntities;
 
 namespace AdPang.FileManager.Models.FileManagerEntities.CloudSaved
 {
+    /// <summary>
+    /// 云盘文件信息表
+    /// </summary>
     public class CloudFileInfo : BaseModel<Guid>, IBaseFiles
     {
         /// <summary>

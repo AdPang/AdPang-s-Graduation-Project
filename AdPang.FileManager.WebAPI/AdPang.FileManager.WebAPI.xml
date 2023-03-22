@@ -427,6 +427,13 @@
             </summary>
             <returns></returns>
         </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.GetMenuByIdAsync(System.Guid)">
+            <summary>
+            获取指定菜单
+            </summary>
+            <param name="menuId"></param>
+            <returns></returns>
+        </member>
         <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.GetMyMenusAsync">
             <summary>
             获取自己的菜单
@@ -474,6 +481,14 @@
             </summary>
             <param name="roleId"></param>
             <param name="menuId"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AdPang.FileManager.WebAPI.Controllers.SystemManager.MenuController.GetAllParentMenu(AdPang.FileManager.Models.FileManagerEntities.Common.Menu,System.Collections.Generic.List{AdPang.FileManager.Models.FileManagerEntities.Common.Menu})">
+            <summary>
+            获取所有的父节点菜单
+            </summary>
+            <param name="menu"></param>
+            <param name="menus"></param>
             <returns></returns>
         </member>
         <member name="T:AdPang.FileManager.WebAPI.Controllers.SystemManager.OauthController">

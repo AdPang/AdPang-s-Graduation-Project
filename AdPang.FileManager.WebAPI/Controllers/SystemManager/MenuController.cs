@@ -63,7 +63,11 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             }
             return new ApiResponse<IList<MenusDto>>(true, menusDto);
         }
-
+        /// <summary>
+        /// 获取指定菜单
+        /// </summary>
+        /// <param name="menuId"></param>
+        /// <returns></returns>
         [HttpGet("Get/{menuId}/Admin")]
         [Authorize(Roles ="Admin")]
         public async Task<ApiResponse<MenuDto>> GetMenuByIdAsync(Guid menuId)
@@ -236,6 +240,12 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
             return new ApiResponse(true, "添加完成");
         }
 
+        /// <summary>
+        /// 获取所有的父节点菜单
+        /// </summary>
+        /// <param name="menu"></param>
+        /// <param name="menus"></param>
+        /// <returns></returns>
         private async Task GetAllParentMenu(Menu menu, List<Menu> menus)
         {
             menus.Add(menu);
@@ -246,3 +256,4 @@ namespace AdPang.FileManager.WebAPI.Controllers.SystemManager
         }
     }
 }
+    
